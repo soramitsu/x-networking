@@ -45,7 +45,7 @@ val coroutineVersion = "1.6.1"
 val ktorVersion = "2.0.0"
 
 kotlin {
-    val iosFrameworkName = "X-Networking"
+    val iosFrameworkName = "commonnetworking"
     val xcf = XCFramework()
 
     android()

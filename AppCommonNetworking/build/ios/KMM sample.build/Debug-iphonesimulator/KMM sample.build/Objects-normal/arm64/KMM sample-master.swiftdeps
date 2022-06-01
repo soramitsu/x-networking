@@ -1,7 +1,7 @@
 version: "Apple Swift version 5.6 (swiftlang-5.6.0.323.62 clang-1316.0.20.8)"
 options: "03c4bd42a155e46fc17c10db6dbc25acc9f29d5e60fd7cf94acff08867a73e82"
-build_start_time: [1654079659, 887198925]
-build_end_time: [1654079660, 347170829]
+build_start_time: [1654117626, 220326900]
+build_end_time: [1654117627, 32109022]
 inputs:
-  "/Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/KMM sample/KMM sample/ContentView.swift": [1654079586, 251394271]
+  "/Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/KMM sample/KMM sample/ContentView.swift": [1654116141, 467895746]
   "/Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/KMM sample/KMM sample/KMM_sampleApp.swift": [1652637426, 415212869]

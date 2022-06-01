@@ -1,6 +1,0 @@
-framework module X_Networking {
-    umbrella header "X_Networking.h"
-
-    export *
-    module * { export * }
-}
