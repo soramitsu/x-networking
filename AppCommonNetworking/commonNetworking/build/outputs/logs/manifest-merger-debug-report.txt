@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml:2:1-56
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml:2:1-56
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml:2:1-56
+	package
+		ADDED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml:2:11-53
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml:2:1-56
+uses-sdk
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+		ADDED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+		ADDED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml
+		INJECTED from /Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/commonNetworking/src/androidMain/AndroidManifest.xml

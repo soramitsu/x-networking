@@ -1,0 +1,6 @@
+framework module commonNetworking {
+  umbrella header "placeholder.h"
+
+  export *
+  module * { export * }
+}
