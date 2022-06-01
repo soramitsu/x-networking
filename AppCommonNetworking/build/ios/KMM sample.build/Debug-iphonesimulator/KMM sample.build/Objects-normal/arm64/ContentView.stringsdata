@@ -1,0 +1,16 @@
+{
+  "source": "/Users/shlyapkinin/Desktop/common-mobile-libraries/AppCommonNetworking/KMM sample/KMM sample/ContentView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Hello, world!"
+      },
+      {
+        "comment": "",
+        "key": "test"
+      }
+    ]
+  },
+  "version": 1
+}

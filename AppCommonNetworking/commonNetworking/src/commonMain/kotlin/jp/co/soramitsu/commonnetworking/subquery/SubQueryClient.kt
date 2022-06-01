@@ -16,7 +16,6 @@ import jp.co.soramitsu.commonnetworking.subquery.history.SoraSubqueryResponse
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.math.max
 import kotlin.math.min
-import kotlinx.coroutines.*
 
 class SubQueryClient internal constructor(
     private val networkClient: SoramitsuNetworkClient,
@@ -91,20 +90,17 @@ class SubQueryClient internal constructor(
         page: Long,
     ): SoraHistoryInfo {
 
-        withContext(Dispatchers.Default) {
-            require(((page > 1 && historyAddress.isEmpty()) || page < 1).not()) { "First page value must = 1" }
-            if (page == 1L) {
+        require(((page > 1 && historyAddress.isEmpty()) || page < 1).not()) { "First page value must = 1" }
+        if (page == 1L) {
 
 
-            }
-            historyAddress = address
-            curSignerInfo = historyDatabase.getSignerInfo(historyAddress)
-            loadInfo()
         }
+        historyAddress = address
+        curSignerInfo = historyDatabase.getSignerInfo(historyAddress)
+        loadInfo()
 
-        return withContext(Dispatchers.Default) {
-            getHistoryInfo(page)
-        }
+
+        return getHistoryInfo(page)
     }
 
     private suspend fun getHistoryInfo(page: Long): SoraHistoryInfo {
@@ -170,6 +166,6 @@ class SubQueryClient internal constructor(
                 HistoryMapper.mapItems(extrinsic, nestedMapped)
             }
         }
-        return SoraHistoryInfo(endReached, mapped)
+        return SoraHistoryInfo(endReached, mapped, curSignerInfo.oldCursor)
     }
 }

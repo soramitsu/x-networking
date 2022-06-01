@@ -1006,13 +1006,15 @@ __attribute__((swift_name("HistoryResponsePageInfo_.Companion")))
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("SoraHistoryInfo")))
 @interface X_NetworkingSoraHistoryInfo : X_NetworkingBase
-- (instancetype)initWithEndReached:(BOOL)endReached items:(NSArray<X_NetworkingSoraHistoryItem *> *)items __attribute__((swift_name("init(endReached:items:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithEndReached:(BOOL)endReached items:(NSArray<X_NetworkingSoraHistoryItem *> *)items cursor:(NSString * _Nullable)cursor __attribute__((swift_name("init(endReached:items:cursor:)"))) __attribute__((objc_designated_initializer));
 - (BOOL)component1 __attribute__((swift_name("component1()")));
 - (NSArray<X_NetworkingSoraHistoryItem *> *)component2 __attribute__((swift_name("component2()")));
-- (X_NetworkingSoraHistoryInfo *)doCopyEndReached:(BOOL)endReached items:(NSArray<X_NetworkingSoraHistoryItem *> *)items __attribute__((swift_name("doCopy(endReached:items:)")));
+- (NSString * _Nullable)component3 __attribute__((swift_name("component3()")));
+- (X_NetworkingSoraHistoryInfo *)doCopyEndReached:(BOOL)endReached items:(NSArray<X_NetworkingSoraHistoryItem *> *)items cursor:(NSString * _Nullable)cursor __attribute__((swift_name("doCopy(endReached:items:cursor:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
+@property (readonly) NSString * _Nullable cursor __attribute__((swift_name("cursor")));
 @property (readonly) BOOL endReached __attribute__((swift_name("endReached")));
 @property (readonly) NSArray<X_NetworkingSoraHistoryItem *> *items __attribute__((swift_name("items")));
 @end;

@@ -2,7 +2,8 @@ package jp.co.soramitsu.commonnetworking.subquery.history
 
 data class SoraHistoryInfo(
     val endReached: Boolean,
-    val items: List<SoraHistoryItem>
+    val items: List<SoraHistoryItem>,
+    val cursor: String?
 )
 
 data class SoraHistoryItem(

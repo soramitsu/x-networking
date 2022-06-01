@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+X-Networking in Pods, no dependencies
+Pods-KMM sample in Pods, depends on:
+X-Networking in Pods (explicit)
+KMM sample in KMM sample, depends on:
+Pods-KMM sample in Pods (implicit dependency via file 'Pods_KMM_sample.framework' in build phase 'Link Binary')
