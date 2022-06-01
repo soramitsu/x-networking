@@ -1,5 +1,5 @@
-framework module commonnetworking {
-    umbrella header "commonnetworking.h"
+framework module commonNetworking {
+    umbrella header "commonNetworking.h"
 
     export *
     module * { export * }

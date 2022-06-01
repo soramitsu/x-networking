@@ -11,14 +11,14 @@ plugins {
 
 group = "jp.co.soramitsu"
 
-version = "0.0.26"
+version = "0.0.27"
 
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "jp.co.soramitsu"
             artifactId = "common-networking"
-            version = "0.0.26"
+            version = "0.0.27"
 
             afterEvaluate {
                 from(components["release"])
@@ -45,7 +45,7 @@ val coroutineVersion = "1.6.1"
 val ktorVersion = "2.0.0"
 
 kotlin {
-    val iosFrameworkName = "commonnetworking"
+    val iosFrameworkName = "commonNetworking"
     val xcf = XCFramework()
 
     android()

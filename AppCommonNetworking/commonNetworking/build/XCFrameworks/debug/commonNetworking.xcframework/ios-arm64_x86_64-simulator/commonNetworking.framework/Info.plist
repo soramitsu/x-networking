@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleExecutable</key>
-	<string>commonnetworking</string>
+	<string>commonNetworking</string>
 	<key>CFBundleIdentifier</key>
-	<string>jp.co.soramitsu.commonnetworking.commonnetworking</string>
+	<string>jp.co.soramitsu.commonnetworking.commonNetworking</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>commonnetworking</string>
+	<string>commonNetworking</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
