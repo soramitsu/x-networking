@@ -1,0 +1,6 @@
+framework module commonNetworking {
+    umbrella header "commonNetworking.h"
+
+    export *
+    module * { export * }
+}

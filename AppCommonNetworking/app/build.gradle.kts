@@ -34,7 +34,7 @@ dependencies {
     implementation("com.google.android.material:material:1.5.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-    implementation(project(mapOf("path" to ":commonNetworking")))
+    implementation(project(mapOf("path" to ":X_Networking")))
 
     //test
 //    implementation("androidx.legacy:legacy-support-v4:1.0.0")

@@ -14,4 +14,4 @@ pluginManagement {
 //}
 rootProject.name = "AppCommonNetworking"
 include(":app")
-include(":commonNetworking")
+include(":X_Networking")

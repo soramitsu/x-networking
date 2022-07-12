@@ -1,0 +1,72 @@
+{
+  "ios": [
+    {
+      "2.0.6": [
+        {
+          "chain": "chains/main.json",
+          "hash": "qwe",
+          "id": "123"
+        },
+        {
+          "chain": "chains/slave.json",
+          "hash": "asd",
+          "id": "123"
+        },
+        {
+          "chain": "chains/third.json",
+          "hash": "zxc",
+          "id": "123"
+        }
+      ]
+    },
+    {
+      "2.0.0": [
+        {
+          "chain": "chains/main.json",
+          "hash": "qwe",
+          "id": "123"
+        },
+        {
+          "chain": "chains/slave.json",
+          "hash": "asd",
+          "id": "123"
+        }
+      ]
+    }
+  ],
+  "android": [
+    {
+      "2.0.6": [
+        {
+          "chain": "chains/main.json",
+          "hash": "qwe",
+          "id": "123"
+        },
+        {
+          "chain": "chains/slave.json",
+          "hash": "asd",
+          "id": "456"
+        },
+        {
+          "chain": "chains/third.json",
+          "hash": "zxc",
+          "id": "789"
+        }
+      ]
+    },
+    {
+      "2.0.0": [
+        {
+          "chain": "chains/main.json",
+          "hash": "qwe",
+          "id": "123"
+        },
+        {
+          "chain": "chains/slave.json",
+          "hash": "asd",
+          "id": "123"
+        }
+      ]
+    }
+  ]
+}
