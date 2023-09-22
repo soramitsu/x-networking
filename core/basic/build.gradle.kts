@@ -84,36 +84,35 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                // Public
                 api("com.apollographql.apollo3:apollo-runtime:3.8.2")
-
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                api("io.ktor:ktor-client-core:$ktorVersion")
+                api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 //implementation("io.ktor:ktor-client-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                api("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                api("io.ktor:ktor-client-logging:$ktorVersion")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
+                // Private
                 //implementation("com.ionspin.kotlin:bignum:0.3.6")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
 
-                api("com.russhwolf:multiplatform-settings:1.0.0")
+                implementation("com.russhwolf:multiplatform-settings:1.0.0")
                 implementation("com.russhwolf:multiplatform-settings-serialization:1.0.0")
+
+                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
             }
         }
         val commonTest = getByName("commonTest") {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
             }
         }
 
         val androidMain by getting {
             dependencies {
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }

@@ -13,8 +13,8 @@ import io.ktor.serialization.kotlinx.json.json
 import jp.co.soramitsu.xnetworking.basic.networkclient.NetworkClientConfig
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuHttpClientProvider
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.FearlessChainsBuilder
-import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.VersionNotFoundException
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.chainbuilder.FearlessChainsBuilder
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.chainbuilder.VersionNotFoundException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json

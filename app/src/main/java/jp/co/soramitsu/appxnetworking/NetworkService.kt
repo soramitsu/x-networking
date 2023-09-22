@@ -1,32 +1,29 @@
 package jp.co.soramitsu.appxnetworking
 
 import io.ktor.client.call.body
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.basic.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.basic.engines.rest.api.models.AbstractRestServerRequest
-import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItem
-import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.FearlessChainsBuilder
-import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubQueryClientForFearlessWallet
+import jp.co.soramitsu.xnetworking.fearlesswallet.common.interactors.txhistory.api.TxHistoryInteractor as FearlessTxHistoryInteractor
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.chainbuilder.FearlessChainsBuilder
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.txhistory.client.SubQueryClientForFearlessWallet
 import jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.api.BlockExplorerInteractor
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.AssetsInfoResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.SoraConfig
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.SoraRemoteConfigBuilder
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.polkaswapwhitelist.api.AbstractWhitelistedToken
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.polkaswapwhitelist.api.WhitelistRepository
-import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.client.SubQueryClientForSoraWallet
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.util.concurrent.TimeUnit
 
 class NetworkService(
-    private val client: SoramitsuNetworkClient,
     private val fearlessChainsBuilder: FearlessChainsBuilder,
     private val soraConfigBuilder: SoraRemoteConfigBuilder,
-    private val subQueryClientForFearlessWallet: SubQueryClientForFearlessWallet,
-    private val subQueryClientForSoraWallet: SubQueryClientForSoraWallet,
     private val restClient: RestClient,
     private val blockExplorerInteractor: BlockExplorerInteractor,
     private val whitelistRepository: WhitelistRepository,
+    private val txHistoryInteractor: FearlessTxHistoryInteractor
 ) {
 
     suspend fun getRequest() = restClient.get(
@@ -69,20 +66,20 @@ class NetworkService(
 
     suspend fun getApy() = blockExplorerInteractor.getSbApyInfo()
 
-    suspend fun getHistorySora(page: Long, f: (TxHistoryItem) -> Boolean) =
-        subQueryClientForSoraWallet.getTransactionHistoryPaged(
+    suspend fun getHistorySora(page: Long) =
+        txHistoryInteractor.getTransactionHistoryPaged(
             address = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
             page = page,
-            filter = f
+            requestUrl = "",
+            networkName = "fearless"
         )
 
-    suspend fun getHistoryFearless(page: Long, f: (TxHistoryItem) -> Boolean) =
-        subQueryClientForFearlessWallet.getTransactionHistoryPaged(
+    suspend fun getHistoryFearless(page: Long) =
+        txHistoryInteractor.getTransactionHistoryPaged(
             address = "5ETrb47YCHE9pYxKfpm4b3bMNvKd7Zusi22yZLLHKadP5oYn",
             networkName = "fearless",
             page = page,
-            url = "https://api.subquery.network/sq/soramitsu/fearless-wallet-westend",
-            filter = f,
+            requestUrl = "https://api.subquery.network/sq/soramitsu/fearless-wallet-westend"
         )
 
     suspend fun getChains() = fearlessChainsBuilder.getChains(
@@ -91,7 +88,7 @@ class NetworkService(
     )
 
     suspend fun getPeers(query: String) =
-        subQueryClientForSoraWallet.getTransactionPeers(query)
+        txHistoryInteractor.getTransactionPeers(query, "fearless")
 
     suspend fun getSoraConfig(): SoraConfig? {
         return soraConfigBuilder.getConfig()

@@ -1,9 +1,9 @@
 package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.subquery.models
 
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryInfo
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItem
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItemNested
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItemParam
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryInfo
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryItem
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryItemNested
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryItemParam
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive

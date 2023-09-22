@@ -1,7 +1,7 @@
 package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.graphql.usecase
 
 import com.apollographql.apollo3.ApolloClient
-import jp.co.soramitsu.xnetworking.GetFiatDataQuery
+import jp.co.soramitsu.xnetworking.sorawallet.GetFiatDataQuery
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.FiatDataResponse
 
 internal class GetFiatDataUseCase {
@@ -11,7 +11,7 @@ internal class GetFiatDataUseCase {
     ): List<FiatDataResponse> {
         val result = mutableListOf<FiatDataResponse>()
 
-        var cursor: Any = ""
+        var cursor = ""
 
         while (true) {
             val response = apolloClient.query(
@@ -19,7 +19,7 @@ internal class GetFiatDataUseCase {
                     pageCount = 100,
                     cursor = cursor
                 )
-            ).execute().data?.entities ?: return emptyList()
+            ).execute().dataAssertNoErrors.entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
                 result.add(node.mapToFiatDataResponse())

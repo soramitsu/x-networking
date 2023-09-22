@@ -1,9 +1,13 @@
 package jp.co.soramitsu.xnetworking.basic.engines.apollo.impl
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloRequest
+import com.apollographql.apollo3.api.ApolloResponse
+import com.apollographql.apollo3.api.Operation
 import com.apollographql.apollo3.api.http.HttpMethod
 import com.apollographql.apollo3.network.http.LoggingInterceptor
 import jp.co.soramitsu.xnetworking.basic.engines.apollo.api.ApolloClientStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

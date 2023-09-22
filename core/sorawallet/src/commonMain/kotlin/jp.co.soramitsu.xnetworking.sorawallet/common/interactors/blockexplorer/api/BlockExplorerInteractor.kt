@@ -1,5 +1,6 @@
 package jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.api
 
+import com.apollographql.apollo3.exception.ApolloException
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkException
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.AssetsInfoResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.FiatDataResponse
@@ -10,6 +11,7 @@ import kotlin.coroutines.cancellation.CancellationException
 interface BlockExplorerInteractor {
 
     @Throws(
+        ApolloException::class,
         SoramitsuNetworkException::class,
         CancellationException::class,
         IllegalArgumentException::class
@@ -20,6 +22,7 @@ interface BlockExplorerInteractor {
     ): List<AssetsInfoResponse>
 
     @Throws(
+        ApolloException::class,
         SoramitsuNetworkException::class,
         CancellationException::class,
         IllegalArgumentException::class
@@ -27,6 +30,7 @@ interface BlockExplorerInteractor {
     suspend fun getFiat(): List<FiatDataResponse>
 
     @Throws(
+        ApolloException::class,
         SoramitsuNetworkException::class,
         CancellationException::class,
         IllegalArgumentException::class
@@ -36,6 +40,7 @@ interface BlockExplorerInteractor {
     ): List<ReferrerRewardResponse>
 
     @Throws(
+        ApolloException::class,
         SoramitsuNetworkException::class,
         CancellationException::class,
         IllegalArgumentException::class

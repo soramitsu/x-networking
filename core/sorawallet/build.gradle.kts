@@ -88,30 +88,18 @@ kotlin {
     }
 
     sourceSets {
-        val androidMain by getting {
-            dependencies {
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
-            }
-        }
-        
         val commonMain by getting {
             dependencies {
-                implementation(project(":core:basic"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                api(project(":core:basic"))
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                //implementation("io.ktor:ktor-client-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
 
                 implementation("com.russhwolf:multiplatform-settings:1.0.0")
                 implementation("com.russhwolf:multiplatform-settings-serialization:1.0.0")
             }
         }
+
+        val androidMain by getting
 
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -119,9 +107,6 @@ kotlin {
 
         val iosMain by creating {
             dependsOn(commonMain)
-            dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
-            }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -144,10 +129,20 @@ android {
 
 apollo {
     service("sorawallet") {
-        packageName.set("jp.co.soramitsu.xnetworking")
-        schemaFiles.setFrom(file("../../schema/schema.graphqls"))
-        srcDir(file("src/commonMain/qraphql"))
+        packageName.set("jp.co.soramitsu.xnetworking.sorawallet")
+        schemaFiles.setFrom(file("../../schema/sora_schema.graphqls"))
+        srcDir(file("${project.projectDir}/src/commonMain/qraphql"))
         outputDir.set(File("${project.buildDir}/generated/apollo/", "schemas"))
+
+        mapScalarToKotlinString("Cursor")
+        mapScalarToKotlinString("BigInt")
+        mapScalarToKotlinString("BigFloat")
+
+        mapScalar(
+            "JSON",
+            "kotlinx.serialization.json.JsonElement",
+            "jp.co.soramitsu.xnetworking.basic.engines.apollo.impl.adapters.JSONAdapter()"
+        )
     }
 }
 

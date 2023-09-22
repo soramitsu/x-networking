@@ -2,8 +2,10 @@ package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.im
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
-import jp.co.soramitsu.xnetworking.GetAssetsInfoQuery
 import jp.co.soramitsu.xnetworking.basic.common.Utils.toDoubleNan
+import jp.co.soramitsu.xnetworking.basic.engines.apollo.impl.utils.getPrimitiveContentOrEmpty
+import jp.co.soramitsu.xnetworking.basic.engines.apollo.impl.utils.asJsonObjectNullable
+import jp.co.soramitsu.xnetworking.sorawallet.GetAssetsInfoQuery
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.AssetsInfoResponse
 
 internal class GetAssetsInfoUseCase {
@@ -15,7 +17,7 @@ internal class GetAssetsInfoUseCase {
     ): List<AssetsInfoResponse> {
         val result = mutableListOf<AssetsInfoResponse>()
 
-        var cursor: Any = ""
+        var cursor = ""
 
         while (true) {
             val response = apolloClient.query(
@@ -25,7 +27,7 @@ internal class GetAssetsInfoUseCase {
                     tokenIds = Optional.present(tokenIds),
                     timestamp = timeStamp
                 )
-            ).execute().data?.entities ?: return emptyList()
+            ).execute().dataAssertNoErrors.entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
                 result.add(node.mapToAssetsInfoResponse())
@@ -47,9 +49,9 @@ internal class GetAssetsInfoUseCase {
     private fun GetAssetsInfoQuery.Node.mapToAssetsInfoResponse() =
         AssetsInfoResponse(
             id = id,
-            liquidity = liquidity.toString(),
-            previousPrice = hourSnapshots.nodes.lastOrNull()?.priceUSD?.toString()
-                ?.substringAfter("open=")?.substringBefore(",")?.toDoubleNan() // TODO JSON conversion
+            liquidity = liquidity,
+            previousPrice = hourSnapshots.nodes.lastOrNull()?.priceUSD
+                ?.asJsonObjectNullable?.getPrimitiveContentOrEmpty("open")?.toDoubleNan()
         )
 
 }

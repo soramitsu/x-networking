@@ -1,18 +1,20 @@
 package jp.co.soramitsu.xnetworking.basic.engines.preferences.impl
 
-import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.serialization.decodeValueOrNull
 import com.russhwolf.settings.serialization.encodeValue
 import jp.co.soramitsu.xnetworking.basic.engines.preferences.api.KeyValuePreferences
+import jp.co.soramitsu.xnetworking.basic.engines.preferences.impl.builder.ExpectActualKeyValuePreferencesEngineFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 
 class KeyValuePreferencesImpl(
-    private val settings: Settings
+    private val keyValuePreferencesEngine: ExpectActualKeyValuePreferencesEngineFactory
 ): KeyValuePreferences {
+
+    private val settings = keyValuePreferencesEngine.createEngine()
 
     override val dataFlow: Flow<Pair<String, Any>> = flow {
         settings.keys.map {

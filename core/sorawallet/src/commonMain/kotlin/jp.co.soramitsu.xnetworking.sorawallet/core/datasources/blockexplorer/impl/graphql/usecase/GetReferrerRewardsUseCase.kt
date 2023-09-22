@@ -1,7 +1,7 @@
 package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.graphql.usecase
 
 import com.apollographql.apollo3.ApolloClient
-import jp.co.soramitsu.xnetworking.GetReferrerRewardsQuery
+import jp.co.soramitsu.xnetworking.sorawallet.GetReferrerRewardsQuery
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.ReferrerRewardResponse
 
 internal class GetReferrerRewardsUseCase {
@@ -12,7 +12,7 @@ internal class GetReferrerRewardsUseCase {
     ): List<ReferrerRewardResponse> {
         val result = mutableListOf<ReferrerRewardResponse>()
 
-        var cursor: Any = ""
+        var cursor = ""
 
         while (true) {
             val response = apolloClient.query(
@@ -21,7 +21,7 @@ internal class GetReferrerRewardsUseCase {
                     cursor = cursor,
                     address = address
                 )
-            ).execute().data?.entities ?: return emptyList()
+            ).execute().dataAssertNoErrors.entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
                 result.add(node.mapReferrerRewardsResponse())

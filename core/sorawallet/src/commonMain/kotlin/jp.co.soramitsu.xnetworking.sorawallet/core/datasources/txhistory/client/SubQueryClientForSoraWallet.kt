@@ -1,11 +1,11 @@
 package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.client
 
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryInfo
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.models.TxHistoryItem
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.api.wrappers.TxHistoryResult
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.impl.old.HistoryDatabaseProvider
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.impl.old.client.SubQueryClient
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.HistoryDatabaseProvider
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryInfo
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItem
-import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryResult
-import jp.co.soramitsu.xnetworking.basic.txhistory.client.SubQueryClient
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.subquery.soraHistoryGraphQLRequest
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.subquery.models.SoraWalletSubQueryHistoryMapper
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.SoraRemoteConfigBuilder

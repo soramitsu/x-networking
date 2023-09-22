@@ -1,10 +1,5 @@
 package jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.impl
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.ApolloRequest
-import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.api.Operation
-import com.apollographql.apollo3.network.NetworkTransport
 import jp.co.soramitsu.xnetworking.basic.engines.apollo.api.ApolloClientStore
 import jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.api.BlockExplorerInteractor
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.BlockExplorerRepository
@@ -13,7 +8,6 @@ import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.ReferrerRewardResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.SbApyInfoResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.polkaswapconfig.api.ConfigRepository
-import kotlinx.coroutines.flow.Flow
 
 class BlockExplorerInteractorImpl(
     private val apolloClientStore: ApolloClientStore,

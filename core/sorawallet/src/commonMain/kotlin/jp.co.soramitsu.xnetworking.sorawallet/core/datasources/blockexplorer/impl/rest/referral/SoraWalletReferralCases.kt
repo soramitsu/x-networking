@@ -1,8 +1,8 @@
 package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.referral
 
 import io.ktor.http.HttpMethod
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.impl.old.subquery.graphqlrequest.SubQueryRequest
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.SubQueryRequest
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.ReferrerRewardResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.BasicCases
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.referral.case1.SoraWalletReferrerCase1Response

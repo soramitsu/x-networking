@@ -53,6 +53,7 @@ private fun MainScreen() {
                         Log.e("foxxx", "r = ${r}")
                     } catch (t: Throwable) {
                         Log.e("foxxx", "t= ${t.localizedMessage}")
+                        t.printStackTrace()
                     }
                 }
             },
@@ -66,20 +67,40 @@ private fun MainScreen() {
                 GlobalScope.launch {
                     Log.e("foxxx", "r start btn 2")
                     try {
-                        val r = DepBuilder.networkService.getHistorySora(1) {
-                            true
-                        }!!
+                        val r = DepBuilder.networkService.getHistoryFearless(1)
                         Log.e(
                             "foxxx",
                             "r = ${r.endReached} ${r.page} ${r.items.size} ${r.errorMessage}"
                         )
                     } catch (t: Throwable) {
                         Log.e("foxxx", "t= ${t.localizedMessage}")
+                        t.printStackTrace()
                     }
                 }
             },
             content = {
-                Text(text = "btn2")
+                Text(text = "Get TxHistoryItems")
+            },
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(
+            onClick = {
+                GlobalScope.launch {
+                    Log.e("foxxx", "r start btn 2")
+                    try {
+                        val r = DepBuilder.networkService.getPeers("")
+                        Log.e(
+                            "foxxx",
+                            "r = ${r.size}"
+                        )
+                    } catch (t: Throwable) {
+                        Log.e("foxxx", "t= ${t.localizedMessage}")
+                        t.printStackTrace()
+                    }
+                }
+            },
+            content = {
+                Text(text = "Get Peers")
             },
         )
         Spacer(modifier = Modifier.size(8.dp))
@@ -92,6 +113,7 @@ private fun MainScreen() {
                         Log.e("foxxx", "r = $r")
                     } catch (t: Throwable) {
                         Log.e("foxxx", "t = ${t.localizedMessage}")
+                        t.printStackTrace()
                     }
                 }
             },

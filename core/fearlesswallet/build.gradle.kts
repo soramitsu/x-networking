@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization")
     kotlin("native.cocoapods")
     id("maven-publish")
+    id("com.apollographql.apollo3") version "3.8.2"
 }
 
 group = "jp.co.soramitsu.xnetworking"
@@ -87,38 +88,28 @@ kotlin {
     }
 
     sourceSets {
-
         val commonMain by getting {
             dependencies {
-                implementation(project(":core:basic"))
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                // Public
+                api(project(":core:basic"))
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                //implementation("io.ktor:ktor-client-json:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-
-                implementation("com.russhwolf:multiplatform-settings:1.0.0")
-                implementation("com.russhwolf:multiplatform-settings-serialization:1.0.0")
             }
         }
         val commonTest = getByName("commonTest") {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(project(":core:basic"))
+
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
             }
         }
-        val androidMain by getting {
-            dependencies {
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion")
-            }
-        }
+
+        val androidMain by getting
+
         val androidAndroidTest by getting
+
         val androidTest by getting {
             dependsOn(commonTest)
             androidAndroidTest.dependsOn(this)
@@ -130,9 +121,6 @@ kotlin {
 
         val iosMain by creating {
             dependsOn(commonMain)
-            dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
-            }
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
@@ -162,6 +150,24 @@ android {
         targetSdk = 33
     }
     namespace = "jp.co.soramitsu.xnetworking.fearlesswallet"
+}
+
+apollo {
+    service("fearlesswallet") {
+        packageName.set("jp.co.soramitsu.xnetworking.fearlesswallet")
+        schemaFiles.setFrom(file("../../schema/fearless_westend_schema.graphqls"))
+        srcDir(file("${project.projectDir}/src/commonMain/graphql"))
+        outputDir.set(File("${project.buildDir}/generated/apollo/", "schemas"))
+
+        mapScalarToKotlinString("Cursor")
+        mapScalarToKotlinString("BigFloat")
+
+        mapScalar(
+            "JSON",
+            "kotlinx.serialization.json.JsonElement",
+            "jp.co.soramitsu.xnetworking.basic.engines.apollo.impl.adapters.JSONAdapter()"
+        )
+    }
 }
 
 tasks.register<Copy>("copyiOSTestResources") {

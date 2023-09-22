@@ -17,9 +17,10 @@ import jp.co.soramitsu.xnetworking.basic.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.basic.networkclient.NetworkClientConfig
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuHttpClientProvider
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.FearlessChainsBuilder
-import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.ResultChainInfo
-import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubQueryClientForFearlessWallet
+import jp.co.soramitsu.xnetworking.fearlesswallet.common.interactors.txhistory.api.TxHistoryInteractor
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.chainbuilder.FearlessChainsBuilder
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.chainbuilder.ResultChainInfo
+import jp.co.soramitsu.xnetworking.fearlesswallet.core.datasources.txhistory.client.SubQueryClientForFearlessWallet
 import jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.api.BlockExplorerInteractor
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.SoraWalletBlockExplorerInfo
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.ConfigExplorerType
@@ -53,15 +54,6 @@ class ExampleUnitTest {
     lateinit var soraRemoteConfigBuilder: SoraRemoteConfigBuilder
 
     @MockK
-    lateinit var soraWalletBlockExplorerInfo: SoraWalletBlockExplorerInfo
-
-    @MockK
-    lateinit var subQuerySora: SubQueryClientForSoraWallet
-
-    @MockK
-    lateinit var subQueryFearless: SubQueryClientForFearlessWallet
-
-    @MockK
     lateinit var restClient: RestClient
 
     @MockK
@@ -70,6 +62,9 @@ class ExampleUnitTest {
     @MockK
     lateinit var whitelistManager: WhitelistRepository
 
+    @MockK
+    lateinit var txHistoryInteractor: TxHistoryInteractor
+
     lateinit var networkService: NetworkService
 
     @Before
@@ -77,14 +72,12 @@ class ExampleUnitTest {
         MockKAnnotations.init(this)
         networkService =
             NetworkService(
-                soramitsuNetworkClient,
                 fearlessChainsBuilder,
                 soraRemoteConfigBuilder,
-                subQueryFearless,
-                subQuerySora,
                 restClient,
                 blockExplorerInteractor,
                 whitelistManager,
+                txHistoryInteractor,
             )
     }
 

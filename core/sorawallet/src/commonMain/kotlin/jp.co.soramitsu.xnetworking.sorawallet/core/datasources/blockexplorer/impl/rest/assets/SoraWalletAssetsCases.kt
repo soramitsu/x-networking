@@ -2,8 +2,8 @@ package jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.im
 
 import io.ktor.http.HttpMethod
 import jp.co.soramitsu.xnetworking.basic.common.Utils.toDoubleNan
+import jp.co.soramitsu.xnetworking.basic.datasources.txhistory.impl.old.subquery.graphqlrequest.SubQueryRequest
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.SubQueryRequest
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.api.models.AssetsInfoResponse
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.BasicCases
 import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.assets.case0.SoraWalletAssetsCase0Response

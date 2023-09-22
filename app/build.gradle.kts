@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":core:basic")))
     implementation(project(mapOf("path" to ":core:sorawallet")))
     implementation(project(mapOf("path" to ":core:fearlesswallet")))
     implementation("com.google.android.material:material:1.9.0")
