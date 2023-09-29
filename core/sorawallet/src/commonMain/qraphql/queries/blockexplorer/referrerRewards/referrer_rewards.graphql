@@ -1,0 +1,19 @@
+query GetReferrerRewards($pageCount: Int!, $cursor: Cursor!, $address: String!) {
+    entities:
+        referrerRewards(
+            first: $pageCount
+            before: $cursor
+            filter: {
+                referrer: { equalTo: $address }
+            }
+        ) {
+            nodes {
+                referral
+                amount
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+            }
+        }
+}

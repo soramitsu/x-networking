@@ -1,0 +1,15 @@
+query GetSbApyInfo($pageCount: Int!, $cursor: Cursor!) {
+    entities:
+        poolXYKs(
+            first: $pageCount
+            before: $cursor
+        ) {
+            nodes {
+                id
+                strategicBonusApy
+            }
+            pageInfo {
+                endCursor
+            }
+        }
+}

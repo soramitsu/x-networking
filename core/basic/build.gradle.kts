@@ -85,6 +85,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                api("com.apollographql.apollo3:apollo-runtime:3.8.2")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
 
@@ -97,7 +98,7 @@ kotlin {
                 //implementation("com.ionspin.kotlin:bignum:0.3.6")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
 
-                implementation("com.russhwolf:multiplatform-settings:1.0.0")
+                api("com.russhwolf:multiplatform-settings:1.0.0")
                 implementation("com.russhwolf:multiplatform-settings-serialization:1.0.0")
             }
         }

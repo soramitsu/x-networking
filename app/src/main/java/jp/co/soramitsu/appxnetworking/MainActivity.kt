@@ -57,7 +57,7 @@ private fun MainScreen() {
                 }
             },
             content = {
-                Text(text = "btn1")
+                Text(text = "Custom BlockExplorer #2")
             },
         )
         Spacer(modifier = Modifier.size(8.dp))

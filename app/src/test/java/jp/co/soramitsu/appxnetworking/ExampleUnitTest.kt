@@ -13,18 +13,19 @@ import io.ktor.utils.io.ByteReadChannel
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import jp.co.soramitsu.xnetworking.basic.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.basic.networkclient.NetworkClientConfig
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuHttpClientProvider
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
 import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.FearlessChainsBuilder
 import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.ResultChainInfo
 import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubQueryClientForFearlessWallet
-import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.SoraWalletBlockExplorerInfo
-import jp.co.soramitsu.xnetworking.sorawallet.mainconfig.ConfigExplorerType
-import jp.co.soramitsu.xnetworking.sorawallet.mainconfig.SoraConfig
-import jp.co.soramitsu.xnetworking.sorawallet.mainconfig.SoraRemoteConfigBuilder
-import jp.co.soramitsu.xnetworking.sorawallet.tokenwhitelist.SoraTokensWhitelistManager
-import jp.co.soramitsu.xnetworking.sorawallet.txhistory.client.SubQueryClientForSoraWallet
+import jp.co.soramitsu.xnetworking.sorawallet.common.interactors.blockexplorer.api.BlockExplorerInteractor
+import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.blockexplorer.impl.rest.SoraWalletBlockExplorerInfo
+import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.ConfigExplorerType
+import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.SoraRemoteConfigBuilder
+import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.polkaswapwhitelist.api.WhitelistRepository
+import jp.co.soramitsu.xnetworking.sorawallet.core.datasources.txhistory.client.SubQueryClientForSoraWallet
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.Serializable
@@ -61,7 +62,13 @@ class ExampleUnitTest {
     lateinit var subQueryFearless: SubQueryClientForFearlessWallet
 
     @MockK
-    lateinit var whitelistManager: SoraTokensWhitelistManager
+    lateinit var restClient: RestClient
+
+    @MockK
+    lateinit var blockExplorerInteractor: BlockExplorerInteractor
+
+    @MockK
+    lateinit var whitelistManager: WhitelistRepository
 
     lateinit var networkService: NetworkService
 
@@ -75,7 +82,8 @@ class ExampleUnitTest {
                 soraRemoteConfigBuilder,
                 subQueryFearless,
                 subQuerySora,
-                soraWalletBlockExplorerInfo,
+                restClient,
+                blockExplorerInteractor,
                 whitelistManager,
             )
     }
@@ -101,10 +109,15 @@ class ExampleUnitTest {
     fun getSoraConfig() = runTest {
         coEvery {
             soraRemoteConfigBuilder.getConfig()
-        } returns SoraConfig(
+        } returns jp.co.soramitsu.xnetworking.sorawallet.core.datasources.mainconfig.SoraConfig(
             true,
             "",
-            ConfigExplorerType("", "", "", ""),
+            ConfigExplorerType(
+                "",
+                "",
+                "",
+                ""
+            ),
             emptyList(),
             "",
             "",

@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization")
     kotlin("native.cocoapods")
     id("maven-publish")
+    id("com.apollographql.apollo3") version "3.8.2"
 }
 
 group = "jp.co.soramitsu.xnetworking"
@@ -142,6 +143,15 @@ android {
         targetSdk = 33
     }
     namespace = "jp.co.soramitsu.xnetworking.sorawallet"
+}
+
+apollo {
+    service("sorawallet") {
+        packageName.set("jp.co.soramitsu.xnetworking")
+        schemaFiles.setFrom(file("../../schema/schema.graphqls"))
+        srcDir(file("src/commonMain/qraphql"))
+        outputDir.set(File("${project.buildDir}/generated/apollo/", "schemas"))
+    }
 }
 
 tasks.register<Copy>("copyiOSTestResources") {
