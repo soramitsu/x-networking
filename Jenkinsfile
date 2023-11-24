@@ -1,6 +1,12 @@
 @Library('jenkins-library') _
 
-new org.android.ShareFeature().call(
+def jobParams  = [
+  booleanParam(defaultValue: false, name: 'prDeployment'),
+]
+
+def pipeline = new org.android.ShareFeature().call(
+  steps: this,
+  jobParams: jobParams,
   detekt: false,
   test: true,
   dockerImage: "build-tools/android-build-box:jdk17",

@@ -1,0 +1,8 @@
+framework module XNetworking_fearlesswallet {
+    umbrella header "XNetworking_fearlesswallet.h"
+
+    export *
+    module * { export * }
+
+    use Foundation
+}

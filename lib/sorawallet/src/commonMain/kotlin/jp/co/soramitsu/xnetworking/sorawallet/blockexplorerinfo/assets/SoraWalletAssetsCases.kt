@@ -3,7 +3,7 @@ package jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.assets
 import io.ktor.http.HttpMethod
 import jp.co.soramitsu.xnetworking.basic.common.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.SubQueryRequest
+import jp.co.soramitsu.xnetworking.basic.common.BlockExplorerGraphQlRequest
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.BasicCases
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.assets.case0.SoraWalletAssetsCase0Response
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.assets.case0.graphQLRequestSoraWalletAssetsCase0
@@ -44,7 +44,7 @@ private class SoraWalletAssetsCase0 : SoraWalletAssetsCase {
                 val response = networkClient.createJsonRequest<SoraWalletAssetsCase0Response>(
                     url,
                     HttpMethod.Post,
-                    SubQueryRequest(graphQLRequestSoraWalletAssetsCase0(cursor, tokenIdsFormatted, timestamp.toString())),
+                    BlockExplorerGraphQlRequest(graphQLRequestSoraWalletAssetsCase0(cursor, tokenIdsFormatted, timestamp.toString())),
                 )
                 response.data.entities.nodes.forEach { node ->
                     val prevPrice = node.periods.nodes.lastOrNull()?.price?.open?.toDoubleNan()

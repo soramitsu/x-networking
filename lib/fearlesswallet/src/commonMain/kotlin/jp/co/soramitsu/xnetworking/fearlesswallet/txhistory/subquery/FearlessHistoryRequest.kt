@@ -1,8 +1,8 @@
 package jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subquery
 
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varAfterCursor
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varCountRemote
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varMyAddress
+import jp.co.soramitsu.xnetworking.basic.common.varAfterCursor
+import jp.co.soramitsu.xnetworking.basic.common.varCountRemote
+import jp.co.soramitsu.xnetworking.basic.common.varMyAddress
 
 internal fun fearlessHistoryGraphQLRequest() = """
     query ($varCountRemote: Int, $varMyAddress: String, $varAfterCursor: Cursor) {

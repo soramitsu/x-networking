@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("maven-publish")
     kotlin("plugin.serialization")
+    kotlin("native.cocoapods")
 }
 
 val libVersion: String by project
@@ -48,6 +49,7 @@ val sqlDelightVersion: String by project
 kotlin {
     targetHierarchy.default()
     val xcf = XCFramework()
+    val iosFrameworkName = "XNetworking-fearlesswallet"
 
     androidTarget {
         compilations.all {
@@ -63,20 +65,36 @@ kotlin {
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
-        it.binaries.framework {
-            baseName = "fearlesswallet"
-            xcf.add(this)
-            export(project(":lib:basic"))
-        }
         it.compilations.forEach { knc ->
             knc.kotlinOptions.freeCompilerArgs += arrayOf("-linker-options", "-lsqlite3")
         }
     }
 
+    cocoapods {
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        ios.deploymentTarget = "14.1"
+        version = libVersion
+        source = "{ :git => 'https://github.com/soramitsu/x-networking.git', :tag => '$libVersion' }"//, :tag => '0.0.61' }
+        framework {
+            baseName = iosFrameworkName
+            export(project(":lib:basic"))
+            transitiveExport = true
+            isStatic = true
+        }
+//        dependencies {
+//this.
+//        }
+//        pod("basic") {
+////            version = "1.0"
+//            source = path(project.file("../basic/build/XCFrameworks/release/basic.xcframework"))
+//        }
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":lib:basic"))
+                api(project(":lib:basic"))
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")

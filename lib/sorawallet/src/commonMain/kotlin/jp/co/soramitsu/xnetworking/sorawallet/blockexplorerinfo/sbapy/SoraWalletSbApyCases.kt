@@ -3,7 +3,7 @@ package jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.sbapy
 import io.ktor.http.HttpMethod
 import jp.co.soramitsu.xnetworking.basic.common.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.SubQueryRequest
+import jp.co.soramitsu.xnetworking.basic.common.BlockExplorerGraphQlRequest
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.BasicCases
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.sbapy.case2.SoraWalletSbApyCase2Response
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.sbapy.case2.graphQLRequestSoraWalletSbApyCase2
@@ -35,7 +35,7 @@ private class SoraWalletSbApyCase2 : SoraWalletSbApyCase {
             val response = networkClient.createJsonRequest<SoraWalletSbApyCase2Response>(
                 url,
                 HttpMethod.Post,
-                SubQueryRequest(graphQLRequestSoraWalletSbApyCase2(cursor)),
+                BlockExplorerGraphQlRequest(graphQLRequestSoraWalletSbApyCase2(cursor)),
             )
             response.data.entities.nodes.forEach { node ->
                 list.add(SbApyInfo(id = node.id, sbApy = node.strategicBonusApy?.toDoubleNan()))

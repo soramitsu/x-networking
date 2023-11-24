@@ -1,8 +1,8 @@
 package jp.co.soramitsu.xnetworking.sorawallet.txhistory.subquery
 
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varAfterCursor
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varCountRemote
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.varMyAddress
+import jp.co.soramitsu.xnetworking.basic.common.varAfterCursor
+import jp.co.soramitsu.xnetworking.basic.common.varCountRemote
+import jp.co.soramitsu.xnetworking.basic.common.varMyAddress
 
 internal fun soraHistoryGraphQLRequest(
 ) = """

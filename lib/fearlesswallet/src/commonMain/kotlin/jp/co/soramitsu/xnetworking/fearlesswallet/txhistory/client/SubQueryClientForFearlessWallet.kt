@@ -5,7 +5,7 @@ import jp.co.soramitsu.xnetworking.basic.txhistory.HistoryDatabaseProvider
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItem
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryResult
-import jp.co.soramitsu.xnetworking.basic.txhistory.client.SubQueryClient
+import jp.co.soramitsu.xnetworking.basic.txhistory.client.subquery.SubQueryClient
 import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subquery.fearlessHistoryGraphQLRequest
 import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subquery.models.FearlessSubQueryResponse
 import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subquery.models.FearlessWalletSubQueryHistoryMapper

@@ -4,7 +4,8 @@ import android.content.Context
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
 import jp.co.soramitsu.xnetworking.fearlesswallet.chainbuilder.FearlessChainsBuilder
 import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubQueryClientForFearlessWallet
-import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubQueryClientForFearlessWalletFactory
+import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.SubSquidClientForFearlessWallet
+import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.client.TxHistoryClientForFearlessWalletFactory
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.SoraWalletBlockExplorerInfo
 import jp.co.soramitsu.xnetworking.sorawallet.mainconfig.SoraRemoteConfigProvider
 import jp.co.soramitsu.xnetworking.sorawallet.tokenwhitelist.SoraTokensWhitelistManager
@@ -22,6 +23,7 @@ object DepBuilder {
 
     lateinit var subQueryClientForSoraWallet: SubQueryClientForSoraWallet
     lateinit var subQueryClientForFearlessWallet: SubQueryClientForFearlessWallet
+    lateinit var subSquidClientForFearlessWallet: SubSquidClientForFearlessWallet
     lateinit var networkService: NetworkService
 
     fun build(ctx: Context) {
@@ -40,9 +42,16 @@ object DepBuilder {
                 soraRemoteConfigBuilder,
             )
         subQueryClientForFearlessWallet =
-            SubQueryClientForFearlessWalletFactory(
+            TxHistoryClientForFearlessWalletFactory(
                 ctx
-            ).create(
+            ).createSubQuery(
+                soraNetworkClient,
+                30,
+            )
+        subSquidClientForFearlessWallet =
+            TxHistoryClientForFearlessWalletFactory(
+                ctx
+            ).createSubSquid(
                 soraNetworkClient,
                 30,
             )

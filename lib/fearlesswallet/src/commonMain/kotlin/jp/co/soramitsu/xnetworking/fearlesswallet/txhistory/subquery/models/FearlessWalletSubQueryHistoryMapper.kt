@@ -2,7 +2,12 @@ package jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subquery.models
 
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItem
+import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItemNested
 import jp.co.soramitsu.xnetworking.basic.txhistory.TxHistoryItemParam
+import jp.co.soramitsu.xnetworking.fearlesswallet.txhistory.subsquid.models.FearlessSubSquidResponse
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 internal object FearlessWalletSubQueryHistoryMapper {
     fun map(response: FearlessSubQueryResponse): TxHistoryInfo {

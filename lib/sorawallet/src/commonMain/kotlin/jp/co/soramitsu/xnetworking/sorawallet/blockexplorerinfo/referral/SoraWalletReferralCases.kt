@@ -2,7 +2,7 @@ package jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.referral
 
 import io.ktor.http.HttpMethod
 import jp.co.soramitsu.xnetworking.basic.networkclient.SoramitsuNetworkClient
-import jp.co.soramitsu.xnetworking.basic.txhistory.subquery.graphqlrequest.SubQueryRequest
+import jp.co.soramitsu.xnetworking.basic.common.BlockExplorerGraphQlRequest
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.BasicCases
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.referral.case1.SoraWalletReferrerCase1Response
 import jp.co.soramitsu.xnetworking.sorawallet.blockexplorerinfo.referral.case1.graphQLRequestSoraWalletReferrerCase1
@@ -38,7 +38,7 @@ private class SoraWalletReferralCase1 : SoraWalletReferralCase {
             val response = networkClient.createJsonRequest<SoraWalletReferrerCase1Response>(
                 url,
                 HttpMethod.Post,
-                SubQueryRequest(graphQLRequestSoraWalletReferrerCase1(address, cursor))
+                BlockExplorerGraphQlRequest(graphQLRequestSoraWalletReferrerCase1(address, cursor))
             )
             response.data.referrerRewards.nodes.forEach {
                 list[it.referral] = it.amount

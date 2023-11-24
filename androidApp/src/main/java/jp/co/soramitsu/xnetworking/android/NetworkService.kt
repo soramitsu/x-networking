@@ -68,6 +68,15 @@ class NetworkService(
             filter = f,
         )
 
+    suspend fun getHistoryFearlessSubsquid(page: Long, f: (TxHistoryItem) -> Boolean) =
+        DepBuilder.subSquidClientForFearlessWallet.getTransactionHistoryPaged(
+            "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
+            "fearless",
+            page,
+            "https://squid.subsquid.io/sora/v/v4/graphql",
+            f
+        )
+
     suspend fun getPeers(query: String) =
         subQueryClientForSoraWallet.getTransactionPeers(query)
 
