@@ -1373,14 +1373,14 @@ __attribute__((swift_name("SoraWalletAssetsCase1ResponseDataEntitiesNode.Compani
 __attribute__((objc_subclassing_restricted))
 __attribute__((swift_name("SoraWalletAssetsCase1ResponseDataEntitiesNodeHour")))
 @interface SorawalletSoraWalletAssetsCase1ResponseDataEntitiesNodeHour : SorawalletBase
-- (instancetype)initWithId:(NSString *)id priceChangeDay:(SorawalletDouble * _Nullable)priceChangeDay liquidityUSD:(NSString * _Nullable)liquidityUSD __attribute__((swift_name("init(id:priceChangeDay:liquidityUSD:)"))) __attribute__((objc_designated_initializer));
+- (instancetype)initWithId:(NSString *)id priceChangeDay:(SorawalletDouble * _Nullable)priceChangeDay liquidity:(NSString * _Nullable)liquidity __attribute__((swift_name("init(id:priceChangeDay:liquidity:)"))) __attribute__((objc_designated_initializer));
 @property (class, readonly, getter=companion) SorawalletSoraWalletAssetsCase1ResponseDataEntitiesNodeHourCompanion *companion __attribute__((swift_name("companion")));
-- (SorawalletSoraWalletAssetsCase1ResponseDataEntitiesNodeHour *)doCopyId:(NSString *)id priceChangeDay:(SorawalletDouble * _Nullable)priceChangeDay liquidityUSD:(NSString * _Nullable)liquidityUSD __attribute__((swift_name("doCopy(id:priceChangeDay:liquidityUSD:)")));
+- (SorawalletSoraWalletAssetsCase1ResponseDataEntitiesNodeHour *)doCopyId:(NSString *)id priceChangeDay:(SorawalletDouble * _Nullable)priceChangeDay liquidity:(NSString * _Nullable)liquidity __attribute__((swift_name("doCopy(id:priceChangeDay:liquidity:)")));
 - (BOOL)isEqual:(id _Nullable)other __attribute__((swift_name("isEqual(_:)")));
 - (NSUInteger)hash __attribute__((swift_name("hash()")));
 - (NSString *)description __attribute__((swift_name("description()")));
 @property (readonly) NSString *id __attribute__((swift_name("id")));
-@property (readonly) NSString * _Nullable liquidityUSD __attribute__((swift_name("liquidityUSD")));
+@property (readonly) NSString * _Nullable liquidity __attribute__((swift_name("liquidity")));
 @property (readonly) SorawalletDouble * _Nullable priceChangeDay __attribute__((swift_name("priceChangeDay")));
 @end
 
