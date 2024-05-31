@@ -1,0 +1,28 @@
+query GetFearlessHistoryElements(
+    $pageCount: Int!
+    $cursor: Cursor!
+    $address: String!
+    $orderBy: [HistoryElementsOrderBy!]
+) {
+    historyElements(
+        after: $cursor
+        first: $pageCount
+        orderBy: $orderBy
+        filter: {
+            address: { equalTo: $address }
+        }
+    ) {
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+        nodes {
+            id
+            timestamp
+            address
+            reward
+            transfer
+            extrinsic
+        }
+    }
+}

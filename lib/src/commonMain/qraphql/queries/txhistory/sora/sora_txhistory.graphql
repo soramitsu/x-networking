@@ -1,0 +1,29 @@
+query GetSoraHistoryElements(
+    $pageCount: Int
+    $cursor: Cursor
+    $orderBy: [HistoryElementsOrderBy!]
+    $filter: HistoryElementFilter
+) {
+    historyElements(
+        first: $pageCount
+        after: $cursor
+        orderBy: $orderBy
+        filter: $filter
+    ) {
+        nodes {
+            id
+            blockHash
+            module
+            method
+            address
+            networkFee
+            execution
+            timestamp
+            data
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}

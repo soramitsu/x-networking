@@ -1,0 +1,6340 @@
+"""
+The root query type which gives access points into the data universe.
+"""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """
+  Fetches an object given its globally unique `ID`.
+  """
+  node("The globally unique `ID`." nodeId: ID!): Node
+
+  """
+  Reads and enables pagination through a set of `Account`.
+  """
+  accounts("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `Account`." orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AccountFilter, "Fields to be distinct" distinct: [accounts_distinct_enum] = null): AccountsConnection
+
+  """
+  Reads and enables pagination through a set of `AssetSnapshot`.
+  """
+  assetSnapshots("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `AssetSnapshot`." orderBy: [AssetSnapshotsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AssetSnapshotFilter, "Fields to be distinct" distinct: [asset_snapshots_distinct_enum] = null): AssetSnapshotsConnection
+
+  """
+  Reads and enables pagination through a set of `Asset`.
+  """
+  assets("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `Asset`." orderBy: [AssetsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AssetFilter, "Fields to be distinct" distinct: [assets_distinct_enum] = null): AssetsConnection
+
+  """
+  Reads and enables pagination through a set of `HistoryElement`.
+  """
+  historyElements("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `HistoryElement`." orderBy: [HistoryElementsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: HistoryElementFilter, "Fields to be distinct" distinct: [history_elements_distinct_enum] = null): HistoryElementsConnection
+
+  """
+  Reads and enables pagination through a set of `NetworkSnapshot`.
+  """
+  networkSnapshots("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `NetworkSnapshot`." orderBy: [NetworkSnapshotsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: NetworkSnapshotFilter, "Fields to be distinct" distinct: [network_snapshots_distinct_enum] = null): NetworkSnapshotsConnection
+
+  """
+  Reads and enables pagination through a set of `NetworkStat`.
+  """
+  networkStats("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `NetworkStat`." orderBy: [NetworkStatsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: NetworkStatFilter, "Fields to be distinct" distinct: [network_stats_distinct_enum] = null): NetworkStatsConnection
+
+  """
+  Reads and enables pagination through a set of `PoolXYK`.
+  """
+  poolXYKs("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `PoolXYK`." orderBy: [PoolXyksOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: PoolXYKFilter, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXyksConnection
+
+  """
+  Reads and enables pagination through a set of `ReferrerReward`.
+  """
+  referrerRewards("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `ReferrerReward`." orderBy: [ReferrerRewardsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: ReferrerRewardFilter, "Fields to be distinct" distinct: [referrer_rewards_distinct_enum] = null): ReferrerRewardsConnection
+
+  account(id: String!): Account
+
+  assetSnapshot(id: String!): AssetSnapshot
+
+  asset(id: String!): Asset
+
+  historyElement(id: String!): HistoryElement
+
+  networkSnapshot(id: String!): NetworkSnapshot
+
+  networkStat(id: String!): NetworkStat
+
+  poolXYK(id: String!): PoolXYK
+
+  referrerReward(id: String!): ReferrerReward
+
+  """
+  Reads a single `Account` using its globally unique `ID`.
+  """
+  accountByNodeId("The globally unique `ID` to be used in selecting a single `Account`." nodeId: ID!, "Fields to be distinct" distinct: [accounts_distinct_enum] = null): Account
+
+  """
+  Reads a single `AssetSnapshot` using its globally unique `ID`.
+  """
+  assetSnapshotByNodeId("The globally unique `ID` to be used in selecting a single `AssetSnapshot`." nodeId: ID!, "Fields to be distinct" distinct: [asset_snapshots_distinct_enum] = null): AssetSnapshot
+
+  """
+  Reads a single `Asset` using its globally unique `ID`.
+  """
+  assetByNodeId("The globally unique `ID` to be used in selecting a single `Asset`." nodeId: ID!, "Fields to be distinct" distinct: [assets_distinct_enum] = null): Asset
+
+  """
+  Reads a single `HistoryElement` using its globally unique `ID`.
+  """
+  historyElementByNodeId("The globally unique `ID` to be used in selecting a single `HistoryElement`." nodeId: ID!, "Fields to be distinct" distinct: [history_elements_distinct_enum] = null): HistoryElement
+
+  """
+  Reads a single `NetworkSnapshot` using its globally unique `ID`.
+  """
+  networkSnapshotByNodeId("The globally unique `ID` to be used in selecting a single `NetworkSnapshot`." nodeId: ID!, "Fields to be distinct" distinct: [network_snapshots_distinct_enum] = null): NetworkSnapshot
+
+  """
+  Reads a single `NetworkStat` using its globally unique `ID`.
+  """
+  networkStatByNodeId("The globally unique `ID` to be used in selecting a single `NetworkStat`." nodeId: ID!, "Fields to be distinct" distinct: [network_stats_distinct_enum] = null): NetworkStat
+
+  """
+  Reads a single `PoolXYK` using its globally unique `ID`.
+  """
+  poolXYKByNodeId("The globally unique `ID` to be used in selecting a single `PoolXYK`." nodeId: ID!, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXYK
+
+  """
+  Reads a single `ReferrerReward` using its globally unique `ID`.
+  """
+  referrerRewardByNodeId("The globally unique `ID` to be used in selecting a single `ReferrerReward`." nodeId: ID!, "Fields to be distinct" distinct: [referrer_rewards_distinct_enum] = null): ReferrerReward
+
+  _metadata(chainId: String): _Metadata
+}
+
+"""
+An object with a globally unique `ID`.
+"""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+"""
+scalar ID
+
+"""
+A connection to a list of `Account` values.
+"""
+type AccountsConnection {
+  """
+  A list of `Account` objects.
+  """
+  nodes: [Account]!
+
+  """
+  A list of edges which contains the `Account` and cursor to aid in pagination.
+  """
+  edges: [AccountsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `Account` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AccountAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `Account` for these aggregates." groupBy: [AccountsGroupBy!]!, "Conditions on the grouped aggregates." having: AccountsHavingInput): [AccountAggregates!]
+}
+
+type Account implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  latestHistoryElementId: String
+
+  """
+  Reads a single `HistoryElement` that is related to this `Account`.
+  """
+  latestHistoryElement: HistoryElement
+}
+
+"""
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+"""
+scalar String
+
+type HistoryElement implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  blockHeight: BigFloat!
+
+  blockHash: String!
+
+  module: String!
+
+  method: String!
+
+  address: String!
+
+  networkFee: String!
+
+  execution: JSON!
+
+  timestamp: Int!
+
+  data: JSON
+
+  """
+  Reads and enables pagination through a set of `Account`.
+  """
+  accountsByLatestHistoryElementId("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `Account`." orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AccountFilter, "Fields to be distinct" distinct: [accounts_distinct_enum] = null): AccountsConnection!
+}
+
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+"""
+scalar Int
+
+"""
+A location in a connection that can be used for resuming pagination.
+"""
+scalar Cursor
+
+"""
+Methods to use when ordering `Account`.
+"""
+enum AccountsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  LATEST_HISTORY_ELEMENT_ID_ASC
+
+  LATEST_HISTORY_ELEMENT_ID_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `Account` object types. All fields are combined with a logical ‘and.’
+"""
+input AccountFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `latestHistoryElementId` field.
+  """
+  latestHistoryElementId: StringFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [AccountFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [AccountFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: AccountFilter
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: String
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: String
+
+  """
+  Included in the specified list.
+  """
+  in: [String!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [String!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: String
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: String
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: String
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: String
+
+  """
+  Contains the specified string (case-sensitive).
+  """
+  includes: String
+
+  """
+  Does not contain the specified string (case-sensitive).
+  """
+  notIncludes: String
+
+  """
+  Contains the specified string (case-insensitive).
+  """
+  includesInsensitive: String
+
+  """
+  Does not contain the specified string (case-insensitive).
+  """
+  notIncludesInsensitive: String
+
+  """
+  Starts with the specified string (case-sensitive).
+  """
+  startsWith: String
+
+  """
+  Does not start with the specified string (case-sensitive).
+  """
+  notStartsWith: String
+
+  """
+  Starts with the specified string (case-insensitive).
+  """
+  startsWithInsensitive: String
+
+  """
+  Does not start with the specified string (case-insensitive).
+  """
+  notStartsWithInsensitive: String
+
+  """
+  Ends with the specified string (case-sensitive).
+  """
+  endsWith: String
+
+  """
+  Does not end with the specified string (case-sensitive).
+  """
+  notEndsWith: String
+
+  """
+  Ends with the specified string (case-insensitive).
+  """
+  endsWithInsensitive: String
+
+  """
+  Does not end with the specified string (case-insensitive).
+  """
+  notEndsWithInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """
+  Equal to the specified value (case-insensitive).
+  """
+  equalToInsensitive: String
+
+  """
+  Not equal to the specified value (case-insensitive).
+  """
+  notEqualToInsensitive: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """
+  Included in the specified list (case-insensitive).
+  """
+  inInsensitive: [String!]
+
+  """
+  Not included in the specified list (case-insensitive).
+  """
+  notInInsensitive: [String!]
+
+  """
+  Less than the specified value (case-insensitive).
+  """
+  lessThanInsensitive: String
+
+  """
+  Less than or equal to the specified value (case-insensitive).
+  """
+  lessThanOrEqualToInsensitive: String
+
+  """
+  Greater than the specified value (case-insensitive).
+  """
+  greaterThanInsensitive: String
+
+  """
+  Greater than or equal to the specified value (case-insensitive).
+  """
+  greaterThanOrEqualToInsensitive: String
+}
+
+"""
+The `Boolean` scalar type represents `true` or `false`.
+"""
+scalar Boolean
+
+enum accounts_distinct_enum {
+  ID
+
+  LATEST_HISTORY_ELEMENT_ID
+}
+
+"""
+A `Account` edge in the connection.
+"""
+type AccountsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `Account` at the end of the edge.
+  """
+  node: Account
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: Cursor
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: Cursor
+}
+
+type AccountAggregates {
+  keys: [String!]
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: AccountDistinctCountAggregates
+}
+
+type AccountDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of latestHistoryElementId across the matching connection
+  """
+  latestHistoryElementId: BigInt
+}
+
+"""
+A signed eight-byte integer. The upper big integer values are greater than the
+max value for a JavaScript number. Therefore all big integers will be output as
+strings and not numbers.
+"""
+scalar BigInt
+
+"""
+Grouping methods for `Account` for usage during aggregation.
+"""
+enum AccountsGroupBy {
+  LATEST_HISTORY_ELEMENT_ID
+}
+
+"""
+Conditions for `Account` aggregates.
+"""
+input AccountsHavingInput {
+  AND: [AccountsHavingInput!]
+
+  OR: [AccountsHavingInput!]
+}
+
+"""
+A connection to a list of `AssetSnapshot` values.
+"""
+type AssetSnapshotsConnection {
+  """
+  A list of `AssetSnapshot` objects.
+  """
+  nodes: [AssetSnapshot]!
+
+  """
+  A list of edges which contains the `AssetSnapshot` and cursor to aid in pagination.
+  """
+  edges: [AssetSnapshotsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AssetSnapshot` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AssetSnapshotAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `AssetSnapshot` for these aggregates." groupBy: [AssetSnapshotsGroupBy!]!, "Conditions on the grouped aggregates." having: AssetSnapshotsHavingInput): [AssetSnapshotAggregates!]
+}
+
+type AssetSnapshot implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  assetId: String!
+
+  timestamp: Int!
+
+  type: SnapshotType!
+
+  priceUSD: JSON
+
+  volume: JSON
+
+  liquidity: BigFloat
+
+  supply: BigFloat!
+
+  mint: BigFloat!
+
+  burn: BigFloat!
+
+  """
+  Reads a single `Asset` that is related to this `AssetSnapshot`.
+  """
+  asset: Asset
+}
+
+enum SnapshotType {
+  DEFAULT
+
+  HOUR
+
+  DAY
+
+  MONTH
+}
+
+type Asset implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  priceUSD: String!
+
+  supply: BigFloat!
+
+  liquidity: BigFloat!
+
+  """
+  Reads and enables pagination through a set of `AssetSnapshot`.
+  """
+  data("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `AssetSnapshot`." orderBy: [AssetSnapshotsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AssetSnapshotFilter, "Fields to be distinct" distinct: [asset_snapshots_distinct_enum] = null): AssetSnapshotsConnection!
+
+  """
+  Reads and enables pagination through a set of `PoolXYK`.
+  """
+  poolXYKsByBaseAssetId("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `PoolXYK`." orderBy: [PoolXyksOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: PoolXYKFilter, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXyksConnection!
+
+  """
+  Reads and enables pagination through a set of `PoolXYK`.
+  """
+  poolXYK("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `PoolXYK`." orderBy: [PoolXyksOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: PoolXYKFilter, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXyksConnection!
+
+  """
+  Reads and enables pagination through a set of `Asset`.
+  """
+  assetsByPoolXYKBaseAssetIdAndTargetAssetId("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `Asset`." orderBy: [AssetsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AssetFilter, "Fields to be distinct" distinct: [assets_distinct_enum] = null): AssetAssetsByPoolXykBaseAssetIdAndTargetAssetIdManyToManyConnection!
+
+  """
+  Reads and enables pagination through a set of `Asset`.
+  """
+  assetsByPoolXYKTargetAssetIdAndBaseAssetId("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `Asset`." orderBy: [AssetsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AssetFilter, "Fields to be distinct" distinct: [assets_distinct_enum] = null): AssetAssetsByPoolXykTargetAssetIdAndBaseAssetIdManyToManyConnection!
+}
+
+"""
+Methods to use when ordering `AssetSnapshot`.
+"""
+enum AssetSnapshotsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  ASSET_ID_ASC
+
+  ASSET_ID_DESC
+
+  TIMESTAMP_ASC
+
+  TIMESTAMP_DESC
+
+  TYPE_ASC
+
+  TYPE_DESC
+
+  PRICE_U_S_D_ASC
+
+  PRICE_U_S_D_DESC
+
+  VOLUME_ASC
+
+  VOLUME_DESC
+
+  LIQUIDITY_ASC
+
+  LIQUIDITY_DESC
+
+  SUPPLY_ASC
+
+  SUPPLY_DESC
+
+  MINT_ASC
+
+  MINT_DESC
+
+  BURN_ASC
+
+  BURN_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `AssetSnapshot` object types. All fields are combined with a logical ‘and.’
+"""
+input AssetSnapshotFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `assetId` field.
+  """
+  assetId: StringFilter
+
+  """
+  Filter by the object’s `timestamp` field.
+  """
+  timestamp: IntFilter
+
+  """
+  Filter by the object’s `type` field.
+  """
+  type: SnapshotTypeFilter
+
+  """
+  Filter by the object’s `priceUSD` field.
+  """
+  priceUSD: JSONFilter
+
+  """
+  Filter by the object’s `volume` field.
+  """
+  volume: JSONFilter
+
+  """
+  Filter by the object’s `liquidity` field.
+  """
+  liquidity: BigFloatFilter
+
+  """
+  Filter by the object’s `supply` field.
+  """
+  supply: BigFloatFilter
+
+  """
+  Filter by the object’s `mint` field.
+  """
+  mint: BigFloatFilter
+
+  """
+  Filter by the object’s `burn` field.
+  """
+  burn: BigFloatFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [AssetSnapshotFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [AssetSnapshotFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: AssetSnapshotFilter
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: Int
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: Int
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: Int
+
+  """
+  Included in the specified list.
+  """
+  in: [Int!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [Int!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: Int
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: Int
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: Int
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: Int
+}
+
+"""
+A filter to be used against SnapshotType fields. All fields are combined with a logical ‘and.’
+"""
+input SnapshotTypeFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: SnapshotType
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: SnapshotType
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: SnapshotType
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: SnapshotType
+
+  """
+  Included in the specified list.
+  """
+  in: [SnapshotType!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [SnapshotType!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: SnapshotType
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: SnapshotType
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: SnapshotType
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: SnapshotType
+}
+
+"""
+A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+"""
+input JSONFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: JSON
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: JSON
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: JSON
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: JSON
+
+  """
+  Included in the specified list.
+  """
+  in: [JSON!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [JSON!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: JSON
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: JSON
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: JSON
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: JSON
+
+  """
+  Contains the specified JSON.
+  """
+  contains: JSON
+
+  """
+  Contains the specified key.
+  """
+  containsKey: String
+
+  """
+  Contains all of the specified keys.
+  """
+  containsAllKeys: [String!]
+
+  """
+  Contains any of the specified keys.
+  """
+  containsAnyKeys: [String!]
+
+  """
+  Contained by the specified JSON.
+  """
+  containedBy: JSON
+}
+
+"""
+A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’
+"""
+input BigFloatFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: BigFloat
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: BigFloat
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigFloat
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: BigFloat
+
+  """
+  Included in the specified list.
+  """
+  in: [BigFloat!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [BigFloat!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: BigFloat
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: BigFloat
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: BigFloat
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: BigFloat
+}
+
+enum asset_snapshots_distinct_enum {
+  ID
+
+  ASSET_ID
+
+  TIMESTAMP
+
+  TYPE
+
+  PRICE_U_S_D
+
+  VOLUME
+
+  LIQUIDITY
+
+  SUPPLY
+
+  MINT
+
+  BURN
+}
+
+"""
+A connection to a list of `PoolXYK` values.
+"""
+type PoolXyksConnection {
+  """
+  A list of `PoolXYK` objects.
+  """
+  nodes: [PoolXYK]!
+
+  """
+  A list of edges which contains the `PoolXYK` and cursor to aid in pagination.
+  """
+  edges: [PoolXyksEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `PoolXYK` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: PoolXYKAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `PoolXYK` for these aggregates." groupBy: [PoolXYKsGroupBy!]!, "Conditions on the grouped aggregates." having: PoolXYKsHavingInput): [PoolXYKAggregates!]
+}
+
+type PoolXYK implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  baseAssetId: String!
+
+  targetAssetId: String!
+
+  baseAssetReserves: BigFloat!
+
+  targetAssetReserves: BigFloat!
+
+  multiplier: Int!
+
+  priceUSD: String
+
+  strategicBonusApy: String
+
+  """
+  Reads a single `Asset` that is related to this `PoolXYK`.
+  """
+  baseAsset: Asset
+
+  """
+  Reads a single `Asset` that is related to this `PoolXYK`.
+  """
+  targetAsset: Asset
+}
+
+"""
+A `PoolXYK` edge in the connection.
+"""
+type PoolXyksEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `PoolXYK` at the end of the edge.
+  """
+  node: PoolXYK
+}
+
+type PoolXYKAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: PoolXYKSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: PoolXYKDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: PoolXYKMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: PoolXYKMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: PoolXYKAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: PoolXYKStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: PoolXYKStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: PoolXYKVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: PoolXYKVariancePopulationAggregates
+}
+
+type PoolXYKSumAggregates {
+  """
+  Sum of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat!
+
+  """
+  Sum of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat!
+
+  """
+  Sum of multiplier across the matching connection
+  """
+  multiplier: BigInt!
+}
+
+type PoolXYKDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of baseAssetId across the matching connection
+  """
+  baseAssetId: BigInt
+
+  """
+  Distinct count of targetAssetId across the matching connection
+  """
+  targetAssetId: BigInt
+
+  """
+  Distinct count of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigInt
+
+  """
+  Distinct count of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigInt
+
+  """
+  Distinct count of multiplier across the matching connection
+  """
+  multiplier: BigInt
+
+  """
+  Distinct count of priceUSD across the matching connection
+  """
+  priceUSD: BigInt
+
+  """
+  Distinct count of strategicBonusApy across the matching connection
+  """
+  strategicBonusApy: BigInt
+}
+
+type PoolXYKMinAggregates {
+  """
+  Minimum of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Minimum of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Minimum of multiplier across the matching connection
+  """
+  multiplier: Int
+}
+
+type PoolXYKMaxAggregates {
+  """
+  Maximum of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Maximum of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Maximum of multiplier across the matching connection
+  """
+  multiplier: Int
+}
+
+type PoolXYKAverageAggregates {
+  """
+  Mean average of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Mean average of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Mean average of multiplier across the matching connection
+  """
+  multiplier: BigFloat
+}
+
+type PoolXYKStddevSampleAggregates {
+  """
+  Sample standard deviation of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Sample standard deviation of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Sample standard deviation of multiplier across the matching connection
+  """
+  multiplier: BigFloat
+}
+
+type PoolXYKStddevPopulationAggregates {
+  """
+  Population standard deviation of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Population standard deviation of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Population standard deviation of multiplier across the matching connection
+  """
+  multiplier: BigFloat
+}
+
+type PoolXYKVarianceSampleAggregates {
+  """
+  Sample variance of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Sample variance of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Sample variance of multiplier across the matching connection
+  """
+  multiplier: BigFloat
+}
+
+type PoolXYKVariancePopulationAggregates {
+  """
+  Population variance of baseAssetReserves across the matching connection
+  """
+  baseAssetReserves: BigFloat
+
+  """
+  Population variance of targetAssetReserves across the matching connection
+  """
+  targetAssetReserves: BigFloat
+
+  """
+  Population variance of multiplier across the matching connection
+  """
+  multiplier: BigFloat
+}
+
+"""
+Grouping methods for `PoolXYK` for usage during aggregation.
+"""
+enum PoolXYKsGroupBy {
+  BASE_ASSET_ID
+
+  TARGET_ASSET_ID
+
+  BASE_ASSET_RESERVES
+
+  TARGET_ASSET_RESERVES
+
+  MULTIPLIER
+
+  PRICE_U_S_D
+
+  STRATEGIC_BONUS_APY
+}
+
+"""
+Conditions for `PoolXYK` aggregates.
+"""
+input PoolXYKsHavingInput {
+  AND: [PoolXYKsHavingInput!]
+
+  OR: [PoolXYKsHavingInput!]
+
+  sum: PoolXYKsHavingSumInput
+
+  distinctCount: PoolXYKsHavingDistinctCountInput
+
+  min: PoolXYKsHavingMinInput
+
+  max: PoolXYKsHavingMaxInput
+
+  average: PoolXYKsHavingAverageInput
+
+  stddevSample: PoolXYKsHavingStddevSampleInput
+
+  stddevPopulation: PoolXYKsHavingStddevPopulationInput
+
+  varianceSample: PoolXYKsHavingVarianceSampleInput
+
+  variancePopulation: PoolXYKsHavingVariancePopulationInput
+}
+
+input PoolXYKsHavingSumInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input HavingBigfloatFilter {
+  equalTo: BigFloat
+
+  notEqualTo: BigFloat
+
+  greaterThan: BigFloat
+
+  greaterThanOrEqualTo: BigFloat
+
+  lessThan: BigFloat
+
+  lessThanOrEqualTo: BigFloat
+}
+
+input HavingIntFilter {
+  equalTo: Int
+
+  notEqualTo: Int
+
+  greaterThan: Int
+
+  greaterThanOrEqualTo: Int
+
+  lessThan: Int
+
+  lessThanOrEqualTo: Int
+}
+
+input PoolXYKsHavingDistinctCountInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingMinInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingMaxInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingAverageInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingStddevSampleInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingStddevPopulationInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingVarianceSampleInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+input PoolXYKsHavingVariancePopulationInput {
+  baseAssetReserves: HavingBigfloatFilter
+
+  targetAssetReserves: HavingBigfloatFilter
+
+  multiplier: HavingIntFilter
+}
+
+"""
+Methods to use when ordering `PoolXYK`.
+"""
+enum PoolXyksOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  BASE_ASSET_ID_ASC
+
+  BASE_ASSET_ID_DESC
+
+  TARGET_ASSET_ID_ASC
+
+  TARGET_ASSET_ID_DESC
+
+  BASE_ASSET_RESERVES_ASC
+
+  BASE_ASSET_RESERVES_DESC
+
+  TARGET_ASSET_RESERVES_ASC
+
+  TARGET_ASSET_RESERVES_DESC
+
+  MULTIPLIER_ASC
+
+  MULTIPLIER_DESC
+
+  PRICE_U_S_D_ASC
+
+  PRICE_U_S_D_DESC
+
+  STRATEGIC_BONUS_APY_ASC
+
+  STRATEGIC_BONUS_APY_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `PoolXYK` object types. All fields are combined with a logical ‘and.’
+"""
+input PoolXYKFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `baseAssetId` field.
+  """
+  baseAssetId: StringFilter
+
+  """
+  Filter by the object’s `targetAssetId` field.
+  """
+  targetAssetId: StringFilter
+
+  """
+  Filter by the object’s `baseAssetReserves` field.
+  """
+  baseAssetReserves: BigFloatFilter
+
+  """
+  Filter by the object’s `targetAssetReserves` field.
+  """
+  targetAssetReserves: BigFloatFilter
+
+  """
+  Filter by the object’s `multiplier` field.
+  """
+  multiplier: IntFilter
+
+  """
+  Filter by the object’s `priceUSD` field.
+  """
+  priceUSD: StringFilter
+
+  """
+  Filter by the object’s `strategicBonusApy` field.
+  """
+  strategicBonusApy: StringFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [PoolXYKFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [PoolXYKFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: PoolXYKFilter
+}
+
+enum pool_x_y_ks_distinct_enum {
+  ID
+
+  BASE_ASSET_ID
+
+  TARGET_ASSET_ID
+
+  BASE_ASSET_RESERVES
+
+  TARGET_ASSET_RESERVES
+
+  MULTIPLIER
+
+  PRICE_U_S_D
+
+  STRATEGIC_BONUS_APY
+}
+
+"""
+A connection to a list of `Asset` values, with data from `PoolXYK`.
+"""
+type AssetAssetsByPoolXykBaseAssetIdAndTargetAssetIdManyToManyConnection {
+  """
+  A list of `Asset` objects.
+  """
+  nodes: [Asset]!
+
+  """
+  A list of edges which contains the `Asset`, info from the `PoolXYK`, and the cursor to aid in pagination.
+  """
+  edges: [AssetAssetsByPoolXykBaseAssetIdAndTargetAssetIdManyToManyEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `Asset` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AssetAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `Asset` for these aggregates." groupBy: [AssetsGroupBy!]!, "Conditions on the grouped aggregates." having: AssetsHavingInput): [AssetAggregates!]
+}
+
+"""
+A `Asset` edge in the connection, with data from `PoolXYK`.
+"""
+type AssetAssetsByPoolXykBaseAssetIdAndTargetAssetIdManyToManyEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `Asset` at the end of the edge.
+  """
+  node: Asset
+
+  """
+  Reads and enables pagination through a set of `PoolXYK`.
+  """
+  poolXYK("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `PoolXYK`." orderBy: [PoolXyksOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: PoolXYKFilter, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXyksConnection!
+}
+
+type AssetAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: AssetSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: AssetDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: AssetMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: AssetMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: AssetAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: AssetStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: AssetStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: AssetVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: AssetVariancePopulationAggregates
+}
+
+type AssetSumAggregates {
+  """
+  Sum of supply across the matching connection
+  """
+  supply: BigFloat!
+
+  """
+  Sum of liquidity across the matching connection
+  """
+  liquidity: BigFloat!
+}
+
+type AssetDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of priceUSD across the matching connection
+  """
+  priceUSD: BigInt
+
+  """
+  Distinct count of supply across the matching connection
+  """
+  supply: BigInt
+
+  """
+  Distinct count of liquidity across the matching connection
+  """
+  liquidity: BigInt
+}
+
+type AssetMinAggregates {
+  """
+  Minimum of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Minimum of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetMaxAggregates {
+  """
+  Maximum of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Maximum of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetAverageAggregates {
+  """
+  Mean average of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Mean average of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetStddevSampleAggregates {
+  """
+  Sample standard deviation of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Sample standard deviation of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetStddevPopulationAggregates {
+  """
+  Population standard deviation of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Population standard deviation of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetVarianceSampleAggregates {
+  """
+  Sample variance of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Sample variance of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+type AssetVariancePopulationAggregates {
+  """
+  Population variance of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Population variance of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+}
+
+"""
+Grouping methods for `Asset` for usage during aggregation.
+"""
+enum AssetsGroupBy {
+  PRICE_U_S_D
+
+  SUPPLY
+
+  LIQUIDITY
+}
+
+"""
+Conditions for `Asset` aggregates.
+"""
+input AssetsHavingInput {
+  AND: [AssetsHavingInput!]
+
+  OR: [AssetsHavingInput!]
+
+  sum: AssetsHavingSumInput
+
+  distinctCount: AssetsHavingDistinctCountInput
+
+  min: AssetsHavingMinInput
+
+  max: AssetsHavingMaxInput
+
+  average: AssetsHavingAverageInput
+
+  stddevSample: AssetsHavingStddevSampleInput
+
+  stddevPopulation: AssetsHavingStddevPopulationInput
+
+  varianceSample: AssetsHavingVarianceSampleInput
+
+  variancePopulation: AssetsHavingVariancePopulationInput
+}
+
+input AssetsHavingSumInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingDistinctCountInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingMinInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingMaxInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingAverageInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingStddevSampleInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingStddevPopulationInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingVarianceSampleInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+input AssetsHavingVariancePopulationInput {
+  supply: HavingBigfloatFilter
+
+  liquidity: HavingBigfloatFilter
+}
+
+"""
+Methods to use when ordering `Asset`.
+"""
+enum AssetsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  PRICE_U_S_D_ASC
+
+  PRICE_U_S_D_DESC
+
+  SUPPLY_ASC
+
+  SUPPLY_DESC
+
+  LIQUIDITY_ASC
+
+  LIQUIDITY_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+
+  DATA_COUNT_ASC
+
+  DATA_COUNT_DESC
+
+  DATA_SUM_ID_ASC
+
+  DATA_SUM_ID_DESC
+
+  DATA_SUM_ASSET_ID_ASC
+
+  DATA_SUM_ASSET_ID_DESC
+
+  DATA_SUM_TIMESTAMP_ASC
+
+  DATA_SUM_TIMESTAMP_DESC
+
+  DATA_SUM_TYPE_ASC
+
+  DATA_SUM_TYPE_DESC
+
+  DATA_SUM_PRICE_U_S_D_ASC
+
+  DATA_SUM_PRICE_U_S_D_DESC
+
+  DATA_SUM_VOLUME_ASC
+
+  DATA_SUM_VOLUME_DESC
+
+  DATA_SUM_LIQUIDITY_ASC
+
+  DATA_SUM_LIQUIDITY_DESC
+
+  DATA_SUM_SUPPLY_ASC
+
+  DATA_SUM_SUPPLY_DESC
+
+  DATA_SUM_MINT_ASC
+
+  DATA_SUM_MINT_DESC
+
+  DATA_SUM_BURN_ASC
+
+  DATA_SUM_BURN_DESC
+
+  DATA_DISTINCT_COUNT_ID_ASC
+
+  DATA_DISTINCT_COUNT_ID_DESC
+
+  DATA_DISTINCT_COUNT_ASSET_ID_ASC
+
+  DATA_DISTINCT_COUNT_ASSET_ID_DESC
+
+  DATA_DISTINCT_COUNT_TIMESTAMP_ASC
+
+  DATA_DISTINCT_COUNT_TIMESTAMP_DESC
+
+  DATA_DISTINCT_COUNT_TYPE_ASC
+
+  DATA_DISTINCT_COUNT_TYPE_DESC
+
+  DATA_DISTINCT_COUNT_PRICE_U_S_D_ASC
+
+  DATA_DISTINCT_COUNT_PRICE_U_S_D_DESC
+
+  DATA_DISTINCT_COUNT_VOLUME_ASC
+
+  DATA_DISTINCT_COUNT_VOLUME_DESC
+
+  DATA_DISTINCT_COUNT_LIQUIDITY_ASC
+
+  DATA_DISTINCT_COUNT_LIQUIDITY_DESC
+
+  DATA_DISTINCT_COUNT_SUPPLY_ASC
+
+  DATA_DISTINCT_COUNT_SUPPLY_DESC
+
+  DATA_DISTINCT_COUNT_MINT_ASC
+
+  DATA_DISTINCT_COUNT_MINT_DESC
+
+  DATA_DISTINCT_COUNT_BURN_ASC
+
+  DATA_DISTINCT_COUNT_BURN_DESC
+
+  DATA_MIN_ID_ASC
+
+  DATA_MIN_ID_DESC
+
+  DATA_MIN_ASSET_ID_ASC
+
+  DATA_MIN_ASSET_ID_DESC
+
+  DATA_MIN_TIMESTAMP_ASC
+
+  DATA_MIN_TIMESTAMP_DESC
+
+  DATA_MIN_TYPE_ASC
+
+  DATA_MIN_TYPE_DESC
+
+  DATA_MIN_PRICE_U_S_D_ASC
+
+  DATA_MIN_PRICE_U_S_D_DESC
+
+  DATA_MIN_VOLUME_ASC
+
+  DATA_MIN_VOLUME_DESC
+
+  DATA_MIN_LIQUIDITY_ASC
+
+  DATA_MIN_LIQUIDITY_DESC
+
+  DATA_MIN_SUPPLY_ASC
+
+  DATA_MIN_SUPPLY_DESC
+
+  DATA_MIN_MINT_ASC
+
+  DATA_MIN_MINT_DESC
+
+  DATA_MIN_BURN_ASC
+
+  DATA_MIN_BURN_DESC
+
+  DATA_MAX_ID_ASC
+
+  DATA_MAX_ID_DESC
+
+  DATA_MAX_ASSET_ID_ASC
+
+  DATA_MAX_ASSET_ID_DESC
+
+  DATA_MAX_TIMESTAMP_ASC
+
+  DATA_MAX_TIMESTAMP_DESC
+
+  DATA_MAX_TYPE_ASC
+
+  DATA_MAX_TYPE_DESC
+
+  DATA_MAX_PRICE_U_S_D_ASC
+
+  DATA_MAX_PRICE_U_S_D_DESC
+
+  DATA_MAX_VOLUME_ASC
+
+  DATA_MAX_VOLUME_DESC
+
+  DATA_MAX_LIQUIDITY_ASC
+
+  DATA_MAX_LIQUIDITY_DESC
+
+  DATA_MAX_SUPPLY_ASC
+
+  DATA_MAX_SUPPLY_DESC
+
+  DATA_MAX_MINT_ASC
+
+  DATA_MAX_MINT_DESC
+
+  DATA_MAX_BURN_ASC
+
+  DATA_MAX_BURN_DESC
+
+  DATA_AVERAGE_ID_ASC
+
+  DATA_AVERAGE_ID_DESC
+
+  DATA_AVERAGE_ASSET_ID_ASC
+
+  DATA_AVERAGE_ASSET_ID_DESC
+
+  DATA_AVERAGE_TIMESTAMP_ASC
+
+  DATA_AVERAGE_TIMESTAMP_DESC
+
+  DATA_AVERAGE_TYPE_ASC
+
+  DATA_AVERAGE_TYPE_DESC
+
+  DATA_AVERAGE_PRICE_U_S_D_ASC
+
+  DATA_AVERAGE_PRICE_U_S_D_DESC
+
+  DATA_AVERAGE_VOLUME_ASC
+
+  DATA_AVERAGE_VOLUME_DESC
+
+  DATA_AVERAGE_LIQUIDITY_ASC
+
+  DATA_AVERAGE_LIQUIDITY_DESC
+
+  DATA_AVERAGE_SUPPLY_ASC
+
+  DATA_AVERAGE_SUPPLY_DESC
+
+  DATA_AVERAGE_MINT_ASC
+
+  DATA_AVERAGE_MINT_DESC
+
+  DATA_AVERAGE_BURN_ASC
+
+  DATA_AVERAGE_BURN_DESC
+
+  DATA_STDDEV_SAMPLE_ID_ASC
+
+  DATA_STDDEV_SAMPLE_ID_DESC
+
+  DATA_STDDEV_SAMPLE_ASSET_ID_ASC
+
+  DATA_STDDEV_SAMPLE_ASSET_ID_DESC
+
+  DATA_STDDEV_SAMPLE_TIMESTAMP_ASC
+
+  DATA_STDDEV_SAMPLE_TIMESTAMP_DESC
+
+  DATA_STDDEV_SAMPLE_TYPE_ASC
+
+  DATA_STDDEV_SAMPLE_TYPE_DESC
+
+  DATA_STDDEV_SAMPLE_PRICE_U_S_D_ASC
+
+  DATA_STDDEV_SAMPLE_PRICE_U_S_D_DESC
+
+  DATA_STDDEV_SAMPLE_VOLUME_ASC
+
+  DATA_STDDEV_SAMPLE_VOLUME_DESC
+
+  DATA_STDDEV_SAMPLE_LIQUIDITY_ASC
+
+  DATA_STDDEV_SAMPLE_LIQUIDITY_DESC
+
+  DATA_STDDEV_SAMPLE_SUPPLY_ASC
+
+  DATA_STDDEV_SAMPLE_SUPPLY_DESC
+
+  DATA_STDDEV_SAMPLE_MINT_ASC
+
+  DATA_STDDEV_SAMPLE_MINT_DESC
+
+  DATA_STDDEV_SAMPLE_BURN_ASC
+
+  DATA_STDDEV_SAMPLE_BURN_DESC
+
+  DATA_STDDEV_POPULATION_ID_ASC
+
+  DATA_STDDEV_POPULATION_ID_DESC
+
+  DATA_STDDEV_POPULATION_ASSET_ID_ASC
+
+  DATA_STDDEV_POPULATION_ASSET_ID_DESC
+
+  DATA_STDDEV_POPULATION_TIMESTAMP_ASC
+
+  DATA_STDDEV_POPULATION_TIMESTAMP_DESC
+
+  DATA_STDDEV_POPULATION_TYPE_ASC
+
+  DATA_STDDEV_POPULATION_TYPE_DESC
+
+  DATA_STDDEV_POPULATION_PRICE_U_S_D_ASC
+
+  DATA_STDDEV_POPULATION_PRICE_U_S_D_DESC
+
+  DATA_STDDEV_POPULATION_VOLUME_ASC
+
+  DATA_STDDEV_POPULATION_VOLUME_DESC
+
+  DATA_STDDEV_POPULATION_LIQUIDITY_ASC
+
+  DATA_STDDEV_POPULATION_LIQUIDITY_DESC
+
+  DATA_STDDEV_POPULATION_SUPPLY_ASC
+
+  DATA_STDDEV_POPULATION_SUPPLY_DESC
+
+  DATA_STDDEV_POPULATION_MINT_ASC
+
+  DATA_STDDEV_POPULATION_MINT_DESC
+
+  DATA_STDDEV_POPULATION_BURN_ASC
+
+  DATA_STDDEV_POPULATION_BURN_DESC
+
+  DATA_VARIANCE_SAMPLE_ID_ASC
+
+  DATA_VARIANCE_SAMPLE_ID_DESC
+
+  DATA_VARIANCE_SAMPLE_ASSET_ID_ASC
+
+  DATA_VARIANCE_SAMPLE_ASSET_ID_DESC
+
+  DATA_VARIANCE_SAMPLE_TIMESTAMP_ASC
+
+  DATA_VARIANCE_SAMPLE_TIMESTAMP_DESC
+
+  DATA_VARIANCE_SAMPLE_TYPE_ASC
+
+  DATA_VARIANCE_SAMPLE_TYPE_DESC
+
+  DATA_VARIANCE_SAMPLE_PRICE_U_S_D_ASC
+
+  DATA_VARIANCE_SAMPLE_PRICE_U_S_D_DESC
+
+  DATA_VARIANCE_SAMPLE_VOLUME_ASC
+
+  DATA_VARIANCE_SAMPLE_VOLUME_DESC
+
+  DATA_VARIANCE_SAMPLE_LIQUIDITY_ASC
+
+  DATA_VARIANCE_SAMPLE_LIQUIDITY_DESC
+
+  DATA_VARIANCE_SAMPLE_SUPPLY_ASC
+
+  DATA_VARIANCE_SAMPLE_SUPPLY_DESC
+
+  DATA_VARIANCE_SAMPLE_MINT_ASC
+
+  DATA_VARIANCE_SAMPLE_MINT_DESC
+
+  DATA_VARIANCE_SAMPLE_BURN_ASC
+
+  DATA_VARIANCE_SAMPLE_BURN_DESC
+
+  DATA_VARIANCE_POPULATION_ID_ASC
+
+  DATA_VARIANCE_POPULATION_ID_DESC
+
+  DATA_VARIANCE_POPULATION_ASSET_ID_ASC
+
+  DATA_VARIANCE_POPULATION_ASSET_ID_DESC
+
+  DATA_VARIANCE_POPULATION_TIMESTAMP_ASC
+
+  DATA_VARIANCE_POPULATION_TIMESTAMP_DESC
+
+  DATA_VARIANCE_POPULATION_TYPE_ASC
+
+  DATA_VARIANCE_POPULATION_TYPE_DESC
+
+  DATA_VARIANCE_POPULATION_PRICE_U_S_D_ASC
+
+  DATA_VARIANCE_POPULATION_PRICE_U_S_D_DESC
+
+  DATA_VARIANCE_POPULATION_VOLUME_ASC
+
+  DATA_VARIANCE_POPULATION_VOLUME_DESC
+
+  DATA_VARIANCE_POPULATION_LIQUIDITY_ASC
+
+  DATA_VARIANCE_POPULATION_LIQUIDITY_DESC
+
+  DATA_VARIANCE_POPULATION_SUPPLY_ASC
+
+  DATA_VARIANCE_POPULATION_SUPPLY_DESC
+
+  DATA_VARIANCE_POPULATION_MINT_ASC
+
+  DATA_VARIANCE_POPULATION_MINT_DESC
+
+  DATA_VARIANCE_POPULATION_BURN_ASC
+
+  DATA_VARIANCE_POPULATION_BURN_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_COUNT_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_COUNT_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_SUM_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_DISTINCT_COUNT_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MIN_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_MAX_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_AVERAGE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_SAMPLE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_STDDEV_POPULATION_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_SAMPLE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_BASE_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_BASE_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_TARGET_ASSET_ID_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_TARGET_ASSET_ID_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_MULTIPLIER_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_MULTIPLIER_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_PRICE_U_S_D_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_PRICE_U_S_D_DESC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYKS_BY_BASE_ASSET_ID_VARIANCE_POPULATION_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_COUNT_ASC
+
+  POOL_XYK_COUNT_DESC
+
+  POOL_XYK_SUM_ID_ASC
+
+  POOL_XYK_SUM_ID_DESC
+
+  POOL_XYK_SUM_BASE_ASSET_ID_ASC
+
+  POOL_XYK_SUM_BASE_ASSET_ID_DESC
+
+  POOL_XYK_SUM_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_SUM_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_SUM_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_SUM_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_SUM_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_SUM_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_SUM_MULTIPLIER_ASC
+
+  POOL_XYK_SUM_MULTIPLIER_DESC
+
+  POOL_XYK_SUM_PRICE_U_S_D_ASC
+
+  POOL_XYK_SUM_PRICE_U_S_D_DESC
+
+  POOL_XYK_SUM_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_SUM_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_DISTINCT_COUNT_ID_ASC
+
+  POOL_XYK_DISTINCT_COUNT_ID_DESC
+
+  POOL_XYK_DISTINCT_COUNT_BASE_ASSET_ID_ASC
+
+  POOL_XYK_DISTINCT_COUNT_BASE_ASSET_ID_DESC
+
+  POOL_XYK_DISTINCT_COUNT_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_DISTINCT_COUNT_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_DISTINCT_COUNT_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_DISTINCT_COUNT_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_DISTINCT_COUNT_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_DISTINCT_COUNT_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_DISTINCT_COUNT_MULTIPLIER_ASC
+
+  POOL_XYK_DISTINCT_COUNT_MULTIPLIER_DESC
+
+  POOL_XYK_DISTINCT_COUNT_PRICE_U_S_D_ASC
+
+  POOL_XYK_DISTINCT_COUNT_PRICE_U_S_D_DESC
+
+  POOL_XYK_DISTINCT_COUNT_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_DISTINCT_COUNT_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_MIN_ID_ASC
+
+  POOL_XYK_MIN_ID_DESC
+
+  POOL_XYK_MIN_BASE_ASSET_ID_ASC
+
+  POOL_XYK_MIN_BASE_ASSET_ID_DESC
+
+  POOL_XYK_MIN_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_MIN_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_MIN_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_MIN_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_MIN_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_MIN_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_MIN_MULTIPLIER_ASC
+
+  POOL_XYK_MIN_MULTIPLIER_DESC
+
+  POOL_XYK_MIN_PRICE_U_S_D_ASC
+
+  POOL_XYK_MIN_PRICE_U_S_D_DESC
+
+  POOL_XYK_MIN_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_MIN_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_MAX_ID_ASC
+
+  POOL_XYK_MAX_ID_DESC
+
+  POOL_XYK_MAX_BASE_ASSET_ID_ASC
+
+  POOL_XYK_MAX_BASE_ASSET_ID_DESC
+
+  POOL_XYK_MAX_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_MAX_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_MAX_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_MAX_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_MAX_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_MAX_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_MAX_MULTIPLIER_ASC
+
+  POOL_XYK_MAX_MULTIPLIER_DESC
+
+  POOL_XYK_MAX_PRICE_U_S_D_ASC
+
+  POOL_XYK_MAX_PRICE_U_S_D_DESC
+
+  POOL_XYK_MAX_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_MAX_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_AVERAGE_ID_ASC
+
+  POOL_XYK_AVERAGE_ID_DESC
+
+  POOL_XYK_AVERAGE_BASE_ASSET_ID_ASC
+
+  POOL_XYK_AVERAGE_BASE_ASSET_ID_DESC
+
+  POOL_XYK_AVERAGE_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_AVERAGE_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_AVERAGE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_AVERAGE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_AVERAGE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_AVERAGE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_AVERAGE_MULTIPLIER_ASC
+
+  POOL_XYK_AVERAGE_MULTIPLIER_DESC
+
+  POOL_XYK_AVERAGE_PRICE_U_S_D_ASC
+
+  POOL_XYK_AVERAGE_PRICE_U_S_D_DESC
+
+  POOL_XYK_AVERAGE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_AVERAGE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_ID_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_ID_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_BASE_ASSET_ID_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_BASE_ASSET_ID_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_MULTIPLIER_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_MULTIPLIER_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_PRICE_U_S_D_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_PRICE_U_S_D_DESC
+
+  POOL_XYK_STDDEV_SAMPLE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_STDDEV_SAMPLE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_STDDEV_POPULATION_ID_ASC
+
+  POOL_XYK_STDDEV_POPULATION_ID_DESC
+
+  POOL_XYK_STDDEV_POPULATION_BASE_ASSET_ID_ASC
+
+  POOL_XYK_STDDEV_POPULATION_BASE_ASSET_ID_DESC
+
+  POOL_XYK_STDDEV_POPULATION_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_STDDEV_POPULATION_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_STDDEV_POPULATION_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_STDDEV_POPULATION_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_STDDEV_POPULATION_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_STDDEV_POPULATION_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_STDDEV_POPULATION_MULTIPLIER_ASC
+
+  POOL_XYK_STDDEV_POPULATION_MULTIPLIER_DESC
+
+  POOL_XYK_STDDEV_POPULATION_PRICE_U_S_D_ASC
+
+  POOL_XYK_STDDEV_POPULATION_PRICE_U_S_D_DESC
+
+  POOL_XYK_STDDEV_POPULATION_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_STDDEV_POPULATION_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_ID_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_ID_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_BASE_ASSET_ID_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_BASE_ASSET_ID_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_MULTIPLIER_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_MULTIPLIER_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_PRICE_U_S_D_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_PRICE_U_S_D_DESC
+
+  POOL_XYK_VARIANCE_SAMPLE_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_VARIANCE_SAMPLE_STRATEGIC_BONUS_APY_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_ID_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_ID_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_BASE_ASSET_ID_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_BASE_ASSET_ID_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_TARGET_ASSET_ID_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_TARGET_ASSET_ID_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_BASE_ASSET_RESERVES_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_BASE_ASSET_RESERVES_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_TARGET_ASSET_RESERVES_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_TARGET_ASSET_RESERVES_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_MULTIPLIER_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_MULTIPLIER_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_PRICE_U_S_D_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_PRICE_U_S_D_DESC
+
+  POOL_XYK_VARIANCE_POPULATION_STRATEGIC_BONUS_APY_ASC
+
+  POOL_XYK_VARIANCE_POPULATION_STRATEGIC_BONUS_APY_DESC
+}
+
+"""
+A filter to be used against `Asset` object types. All fields are combined with a logical ‘and.’
+"""
+input AssetFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `priceUSD` field.
+  """
+  priceUSD: StringFilter
+
+  """
+  Filter by the object’s `supply` field.
+  """
+  supply: BigFloatFilter
+
+  """
+  Filter by the object’s `liquidity` field.
+  """
+  liquidity: BigFloatFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [AssetFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [AssetFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: AssetFilter
+}
+
+enum assets_distinct_enum {
+  ID
+
+  PRICE_U_S_D
+
+  SUPPLY
+
+  LIQUIDITY
+}
+
+"""
+A connection to a list of `Asset` values, with data from `PoolXYK`.
+"""
+type AssetAssetsByPoolXykTargetAssetIdAndBaseAssetIdManyToManyConnection {
+  """
+  A list of `Asset` objects.
+  """
+  nodes: [Asset]!
+
+  """
+  A list of edges which contains the `Asset`, info from the `PoolXYK`, and the cursor to aid in pagination.
+  """
+  edges: [AssetAssetsByPoolXykTargetAssetIdAndBaseAssetIdManyToManyEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `Asset` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AssetAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `Asset` for these aggregates." groupBy: [AssetsGroupBy!]!, "Conditions on the grouped aggregates." having: AssetsHavingInput): [AssetAggregates!]
+}
+
+"""
+A `Asset` edge in the connection, with data from `PoolXYK`.
+"""
+type AssetAssetsByPoolXykTargetAssetIdAndBaseAssetIdManyToManyEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `Asset` at the end of the edge.
+  """
+  node: Asset
+
+  """
+  Reads and enables pagination through a set of `PoolXYK`.
+  """
+  poolXYKsByBaseAssetId("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `PoolXYK`." orderBy: [PoolXyksOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: PoolXYKFilter, "Fields to be distinct" distinct: [pool_x_y_ks_distinct_enum] = null): PoolXyksConnection!
+}
+
+"""
+A `AssetSnapshot` edge in the connection.
+"""
+type AssetSnapshotsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `AssetSnapshot` at the end of the edge.
+  """
+  node: AssetSnapshot
+}
+
+type AssetSnapshotAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: AssetSnapshotSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: AssetSnapshotDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: AssetSnapshotMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: AssetSnapshotMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: AssetSnapshotAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: AssetSnapshotStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: AssetSnapshotStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: AssetSnapshotVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: AssetSnapshotVariancePopulationAggregates
+}
+
+type AssetSnapshotSumAggregates {
+  """
+  Sum of timestamp across the matching connection
+  """
+  timestamp: BigInt!
+
+  """
+  Sum of liquidity across the matching connection
+  """
+  liquidity: BigFloat!
+
+  """
+  Sum of supply across the matching connection
+  """
+  supply: BigFloat!
+
+  """
+  Sum of mint across the matching connection
+  """
+  mint: BigFloat!
+
+  """
+  Sum of burn across the matching connection
+  """
+  burn: BigFloat!
+}
+
+type AssetSnapshotDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of assetId across the matching connection
+  """
+  assetId: BigInt
+
+  """
+  Distinct count of timestamp across the matching connection
+  """
+  timestamp: BigInt
+
+  """
+  Distinct count of type across the matching connection
+  """
+  type: BigInt
+
+  """
+  Distinct count of priceUSD across the matching connection
+  """
+  priceUSD: BigInt
+
+  """
+  Distinct count of volume across the matching connection
+  """
+  volume: BigInt
+
+  """
+  Distinct count of liquidity across the matching connection
+  """
+  liquidity: BigInt
+
+  """
+  Distinct count of supply across the matching connection
+  """
+  supply: BigInt
+
+  """
+  Distinct count of mint across the matching connection
+  """
+  mint: BigInt
+
+  """
+  Distinct count of burn across the matching connection
+  """
+  burn: BigInt
+}
+
+type AssetSnapshotMinAggregates {
+  """
+  Minimum of timestamp across the matching connection
+  """
+  timestamp: Int
+
+  """
+  Minimum of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Minimum of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Minimum of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Minimum of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotMaxAggregates {
+  """
+  Maximum of timestamp across the matching connection
+  """
+  timestamp: Int
+
+  """
+  Maximum of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Maximum of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Maximum of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Maximum of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotAverageAggregates {
+  """
+  Mean average of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Mean average of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Mean average of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Mean average of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Mean average of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotStddevSampleAggregates {
+  """
+  Sample standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Sample standard deviation of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Sample standard deviation of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Sample standard deviation of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Sample standard deviation of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotStddevPopulationAggregates {
+  """
+  Population standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Population standard deviation of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Population standard deviation of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Population standard deviation of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Population standard deviation of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotVarianceSampleAggregates {
+  """
+  Sample variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Sample variance of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Sample variance of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Sample variance of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Sample variance of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+type AssetSnapshotVariancePopulationAggregates {
+  """
+  Population variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Population variance of liquidity across the matching connection
+  """
+  liquidity: BigFloat
+
+  """
+  Population variance of supply across the matching connection
+  """
+  supply: BigFloat
+
+  """
+  Population variance of mint across the matching connection
+  """
+  mint: BigFloat
+
+  """
+  Population variance of burn across the matching connection
+  """
+  burn: BigFloat
+}
+
+"""
+Grouping methods for `AssetSnapshot` for usage during aggregation.
+"""
+enum AssetSnapshotsGroupBy {
+  ASSET_ID
+
+  TIMESTAMP
+
+  TYPE
+
+  PRICE_U_S_D
+
+  VOLUME
+
+  LIQUIDITY
+
+  SUPPLY
+
+  MINT
+
+  BURN
+}
+
+"""
+Conditions for `AssetSnapshot` aggregates.
+"""
+input AssetSnapshotsHavingInput {
+  AND: [AssetSnapshotsHavingInput!]
+
+  OR: [AssetSnapshotsHavingInput!]
+
+  sum: AssetSnapshotsHavingSumInput
+
+  distinctCount: AssetSnapshotsHavingDistinctCountInput
+
+  min: AssetSnapshotsHavingMinInput
+
+  max: AssetSnapshotsHavingMaxInput
+
+  average: AssetSnapshotsHavingAverageInput
+
+  stddevSample: AssetSnapshotsHavingStddevSampleInput
+
+  stddevPopulation: AssetSnapshotsHavingStddevPopulationInput
+
+  varianceSample: AssetSnapshotsHavingVarianceSampleInput
+
+  variancePopulation: AssetSnapshotsHavingVariancePopulationInput
+}
+
+input AssetSnapshotsHavingSumInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingDistinctCountInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingMinInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingMaxInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingAverageInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingStddevSampleInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingStddevPopulationInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingVarianceSampleInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+input AssetSnapshotsHavingVariancePopulationInput {
+  timestamp: HavingIntFilter
+
+  liquidity: HavingBigfloatFilter
+
+  supply: HavingBigfloatFilter
+
+  mint: HavingBigfloatFilter
+
+  burn: HavingBigfloatFilter
+}
+
+"""
+A connection to a list of `Asset` values.
+"""
+type AssetsConnection {
+  """
+  A list of `Asset` objects.
+  """
+  nodes: [Asset]!
+
+  """
+  A list of edges which contains the `Asset` and cursor to aid in pagination.
+  """
+  edges: [AssetsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `Asset` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AssetAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `Asset` for these aggregates." groupBy: [AssetsGroupBy!]!, "Conditions on the grouped aggregates." having: AssetsHavingInput): [AssetAggregates!]
+}
+
+"""
+A `Asset` edge in the connection.
+"""
+type AssetsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `Asset` at the end of the edge.
+  """
+  node: Asset
+}
+
+"""
+A connection to a list of `HistoryElement` values.
+"""
+type HistoryElementsConnection {
+  """
+  A list of `HistoryElement` objects.
+  """
+  nodes: [HistoryElement]!
+
+  """
+  A list of edges which contains the `HistoryElement` and cursor to aid in pagination.
+  """
+  edges: [HistoryElementsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `HistoryElement` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: HistoryElementAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `HistoryElement` for these aggregates." groupBy: [HistoryElementsGroupBy!]!, "Conditions on the grouped aggregates." having: HistoryElementsHavingInput): [HistoryElementAggregates!]
+}
+
+"""
+A `HistoryElement` edge in the connection.
+"""
+type HistoryElementsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `HistoryElement` at the end of the edge.
+  """
+  node: HistoryElement
+}
+
+type HistoryElementAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: HistoryElementSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: HistoryElementDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: HistoryElementMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: HistoryElementMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: HistoryElementAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: HistoryElementStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: HistoryElementStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: HistoryElementVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: HistoryElementVariancePopulationAggregates
+}
+
+type HistoryElementSumAggregates {
+  """
+  Sum of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat!
+
+  """
+  Sum of timestamp across the matching connection
+  """
+  timestamp: BigInt!
+}
+
+type HistoryElementDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of blockHeight across the matching connection
+  """
+  blockHeight: BigInt
+
+  """
+  Distinct count of blockHash across the matching connection
+  """
+  blockHash: BigInt
+
+  """
+  Distinct count of module across the matching connection
+  """
+  module: BigInt
+
+  """
+  Distinct count of method across the matching connection
+  """
+  method: BigInt
+
+  """
+  Distinct count of address across the matching connection
+  """
+  address: BigInt
+
+  """
+  Distinct count of networkFee across the matching connection
+  """
+  networkFee: BigInt
+
+  """
+  Distinct count of execution across the matching connection
+  """
+  execution: BigInt
+
+  """
+  Distinct count of timestamp across the matching connection
+  """
+  timestamp: BigInt
+
+  """
+  Distinct count of data across the matching connection
+  """
+  data: BigInt
+}
+
+type HistoryElementMinAggregates {
+  """
+  Minimum of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Minimum of timestamp across the matching connection
+  """
+  timestamp: Int
+}
+
+type HistoryElementMaxAggregates {
+  """
+  Maximum of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Maximum of timestamp across the matching connection
+  """
+  timestamp: Int
+}
+
+type HistoryElementAverageAggregates {
+  """
+  Mean average of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Mean average of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+}
+
+type HistoryElementStddevSampleAggregates {
+  """
+  Sample standard deviation of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Sample standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+}
+
+type HistoryElementStddevPopulationAggregates {
+  """
+  Population standard deviation of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Population standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+}
+
+type HistoryElementVarianceSampleAggregates {
+  """
+  Sample variance of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Sample variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+}
+
+type HistoryElementVariancePopulationAggregates {
+  """
+  Population variance of blockHeight across the matching connection
+  """
+  blockHeight: BigFloat
+
+  """
+  Population variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+}
+
+"""
+Grouping methods for `HistoryElement` for usage during aggregation.
+"""
+enum HistoryElementsGroupBy {
+  BLOCK_HEIGHT
+
+  BLOCK_HASH
+
+  MODULE
+
+  METHOD
+
+  ADDRESS
+
+  NETWORK_FEE
+
+  EXECUTION
+
+  TIMESTAMP
+
+  DATA
+}
+
+"""
+Conditions for `HistoryElement` aggregates.
+"""
+input HistoryElementsHavingInput {
+  AND: [HistoryElementsHavingInput!]
+
+  OR: [HistoryElementsHavingInput!]
+
+  sum: HistoryElementsHavingSumInput
+
+  distinctCount: HistoryElementsHavingDistinctCountInput
+
+  min: HistoryElementsHavingMinInput
+
+  max: HistoryElementsHavingMaxInput
+
+  average: HistoryElementsHavingAverageInput
+
+  stddevSample: HistoryElementsHavingStddevSampleInput
+
+  stddevPopulation: HistoryElementsHavingStddevPopulationInput
+
+  varianceSample: HistoryElementsHavingVarianceSampleInput
+
+  variancePopulation: HistoryElementsHavingVariancePopulationInput
+}
+
+input HistoryElementsHavingSumInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingDistinctCountInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingMinInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingMaxInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingAverageInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingStddevSampleInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingStddevPopulationInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingVarianceSampleInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+input HistoryElementsHavingVariancePopulationInput {
+  blockHeight: HavingBigfloatFilter
+
+  timestamp: HavingIntFilter
+}
+
+"""
+Methods to use when ordering `HistoryElement`.
+"""
+enum HistoryElementsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  BLOCK_HEIGHT_ASC
+
+  BLOCK_HEIGHT_DESC
+
+  BLOCK_HASH_ASC
+
+  BLOCK_HASH_DESC
+
+  MODULE_ASC
+
+  MODULE_DESC
+
+  METHOD_ASC
+
+  METHOD_DESC
+
+  ADDRESS_ASC
+
+  ADDRESS_DESC
+
+  NETWORK_FEE_ASC
+
+  NETWORK_FEE_DESC
+
+  EXECUTION_ASC
+
+  EXECUTION_DESC
+
+  TIMESTAMP_ASC
+
+  TIMESTAMP_DESC
+
+  DATA_ASC
+
+  DATA_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_COUNT_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_COUNT_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_SUM_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_SUM_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_SUM_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_SUM_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_DISTINCT_COUNT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_DISTINCT_COUNT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_DISTINCT_COUNT_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_DISTINCT_COUNT_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MIN_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MIN_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MIN_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MIN_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MAX_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MAX_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MAX_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_MAX_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_AVERAGE_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_AVERAGE_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_AVERAGE_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_AVERAGE_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_SAMPLE_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_SAMPLE_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_SAMPLE_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_SAMPLE_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_POPULATION_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_POPULATION_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_POPULATION_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_STDDEV_POPULATION_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_SAMPLE_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_SAMPLE_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_SAMPLE_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_SAMPLE_LATEST_HISTORY_ELEMENT_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_POPULATION_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_POPULATION_ID_DESC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_POPULATION_LATEST_HISTORY_ELEMENT_ID_ASC
+
+  ACCOUNTS_BY_LATEST_HISTORY_ELEMENT_ID_VARIANCE_POPULATION_LATEST_HISTORY_ELEMENT_ID_DESC
+}
+
+"""
+A filter to be used against `HistoryElement` object types. All fields are combined with a logical ‘and.’
+"""
+input HistoryElementFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `blockHeight` field.
+  """
+  blockHeight: BigFloatFilter
+
+  """
+  Filter by the object’s `blockHash` field.
+  """
+  blockHash: StringFilter
+
+  """
+  Filter by the object’s `module` field.
+  """
+  module: StringFilter
+
+  """
+  Filter by the object’s `method` field.
+  """
+  method: StringFilter
+
+  """
+  Filter by the object’s `address` field.
+  """
+  address: StringFilter
+
+  """
+  Filter by the object’s `networkFee` field.
+  """
+  networkFee: StringFilter
+
+  """
+  Filter by the object’s `execution` field.
+  """
+  execution: JSONFilter
+
+  """
+  Filter by the object’s `timestamp` field.
+  """
+  timestamp: IntFilter
+
+  """
+  Filter by the object’s `data` field.
+  """
+  data: JSONFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [HistoryElementFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [HistoryElementFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: HistoryElementFilter
+}
+
+enum history_elements_distinct_enum {
+  ID
+
+  BLOCK_HEIGHT
+
+  BLOCK_HASH
+
+  MODULE
+
+  METHOD
+
+  ADDRESS
+
+  NETWORK_FEE
+
+  EXECUTION
+
+  TIMESTAMP
+
+  DATA
+}
+
+"""
+A connection to a list of `NetworkSnapshot` values.
+"""
+type NetworkSnapshotsConnection {
+  """
+  A list of `NetworkSnapshot` objects.
+  """
+  nodes: [NetworkSnapshot]!
+
+  """
+  A list of edges which contains the `NetworkSnapshot` and cursor to aid in pagination.
+  """
+  edges: [NetworkSnapshotsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `NetworkSnapshot` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: NetworkSnapshotAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `NetworkSnapshot` for these aggregates." groupBy: [NetworkSnapshotsGroupBy!]!, "Conditions on the grouped aggregates." having: NetworkSnapshotsHavingInput): [NetworkSnapshotAggregates!]
+}
+
+type NetworkSnapshot implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  type: SnapshotType!
+
+  timestamp: Int!
+
+  accounts("Fields to be distinct" distinct: [accounts_distinct_enum] = null): Int!
+
+  transactions: Int!
+
+  fees: BigFloat!
+
+  liquidityUSD: String!
+
+  volumeUSD: String!
+
+  bridgeIncomingTransactions: Int!
+
+  bridgeOutgoingTransactions: Int!
+}
+
+"""
+A `NetworkSnapshot` edge in the connection.
+"""
+type NetworkSnapshotsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `NetworkSnapshot` at the end of the edge.
+  """
+  node: NetworkSnapshot
+}
+
+type NetworkSnapshotAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: NetworkSnapshotSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: NetworkSnapshotDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: NetworkSnapshotMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: NetworkSnapshotMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: NetworkSnapshotAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: NetworkSnapshotStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: NetworkSnapshotStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: NetworkSnapshotVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: NetworkSnapshotVariancePopulationAggregates
+}
+
+type NetworkSnapshotSumAggregates {
+  """
+  Sum of timestamp across the matching connection
+  """
+  timestamp: BigInt!
+
+  """
+  Sum of accounts across the matching connection
+  """
+  accounts: BigInt!
+
+  """
+  Sum of transactions across the matching connection
+  """
+  transactions: BigInt!
+
+  """
+  Sum of fees across the matching connection
+  """
+  fees: BigFloat!
+
+  """
+  Sum of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigInt!
+
+  """
+  Sum of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigInt!
+}
+
+type NetworkSnapshotDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of type across the matching connection
+  """
+  type: BigInt
+
+  """
+  Distinct count of timestamp across the matching connection
+  """
+  timestamp: BigInt
+
+  """
+  Distinct count of accounts across the matching connection
+  """
+  accounts: BigInt
+
+  """
+  Distinct count of transactions across the matching connection
+  """
+  transactions: BigInt
+
+  """
+  Distinct count of fees across the matching connection
+  """
+  fees: BigInt
+
+  """
+  Distinct count of liquidityUSD across the matching connection
+  """
+  liquidityUSD: BigInt
+
+  """
+  Distinct count of volumeUSD across the matching connection
+  """
+  volumeUSD: BigInt
+
+  """
+  Distinct count of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigInt
+
+  """
+  Distinct count of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigInt
+}
+
+type NetworkSnapshotMinAggregates {
+  """
+  Minimum of timestamp across the matching connection
+  """
+  timestamp: Int
+
+  """
+  Minimum of accounts across the matching connection
+  """
+  accounts: Int
+
+  """
+  Minimum of transactions across the matching connection
+  """
+  transactions: Int
+
+  """
+  Minimum of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Minimum of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: Int
+
+  """
+  Minimum of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: Int
+}
+
+type NetworkSnapshotMaxAggregates {
+  """
+  Maximum of timestamp across the matching connection
+  """
+  timestamp: Int
+
+  """
+  Maximum of accounts across the matching connection
+  """
+  accounts: Int
+
+  """
+  Maximum of transactions across the matching connection
+  """
+  transactions: Int
+
+  """
+  Maximum of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Maximum of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: Int
+
+  """
+  Maximum of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: Int
+}
+
+type NetworkSnapshotAverageAggregates {
+  """
+  Mean average of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Mean average of accounts across the matching connection
+  """
+  accounts: BigFloat
+
+  """
+  Mean average of transactions across the matching connection
+  """
+  transactions: BigFloat
+
+  """
+  Mean average of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Mean average of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigFloat
+
+  """
+  Mean average of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkSnapshotStddevSampleAggregates {
+  """
+  Sample standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Sample standard deviation of accounts across the matching connection
+  """
+  accounts: BigFloat
+
+  """
+  Sample standard deviation of transactions across the matching connection
+  """
+  transactions: BigFloat
+
+  """
+  Sample standard deviation of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Sample standard deviation of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigFloat
+
+  """
+  Sample standard deviation of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkSnapshotStddevPopulationAggregates {
+  """
+  Population standard deviation of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Population standard deviation of accounts across the matching connection
+  """
+  accounts: BigFloat
+
+  """
+  Population standard deviation of transactions across the matching connection
+  """
+  transactions: BigFloat
+
+  """
+  Population standard deviation of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Population standard deviation of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigFloat
+
+  """
+  Population standard deviation of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkSnapshotVarianceSampleAggregates {
+  """
+  Sample variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Sample variance of accounts across the matching connection
+  """
+  accounts: BigFloat
+
+  """
+  Sample variance of transactions across the matching connection
+  """
+  transactions: BigFloat
+
+  """
+  Sample variance of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Sample variance of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigFloat
+
+  """
+  Sample variance of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkSnapshotVariancePopulationAggregates {
+  """
+  Population variance of timestamp across the matching connection
+  """
+  timestamp: BigFloat
+
+  """
+  Population variance of accounts across the matching connection
+  """
+  accounts: BigFloat
+
+  """
+  Population variance of transactions across the matching connection
+  """
+  transactions: BigFloat
+
+  """
+  Population variance of fees across the matching connection
+  """
+  fees: BigFloat
+
+  """
+  Population variance of bridgeIncomingTransactions across the matching connection
+  """
+  bridgeIncomingTransactions: BigFloat
+
+  """
+  Population variance of bridgeOutgoingTransactions across the matching connection
+  """
+  bridgeOutgoingTransactions: BigFloat
+}
+
+"""
+Grouping methods for `NetworkSnapshot` for usage during aggregation.
+"""
+enum NetworkSnapshotsGroupBy {
+  TYPE
+
+  TIMESTAMP
+
+  ACCOUNTS
+
+  TRANSACTIONS
+
+  FEES
+
+  LIQUIDITY_U_S_D
+
+  VOLUME_U_S_D
+
+  BRIDGE_INCOMING_TRANSACTIONS
+
+  BRIDGE_OUTGOING_TRANSACTIONS
+}
+
+"""
+Conditions for `NetworkSnapshot` aggregates.
+"""
+input NetworkSnapshotsHavingInput {
+  AND: [NetworkSnapshotsHavingInput!]
+
+  OR: [NetworkSnapshotsHavingInput!]
+
+  sum: NetworkSnapshotsHavingSumInput
+
+  distinctCount: NetworkSnapshotsHavingDistinctCountInput
+
+  min: NetworkSnapshotsHavingMinInput
+
+  max: NetworkSnapshotsHavingMaxInput
+
+  average: NetworkSnapshotsHavingAverageInput
+
+  stddevSample: NetworkSnapshotsHavingStddevSampleInput
+
+  stddevPopulation: NetworkSnapshotsHavingStddevPopulationInput
+
+  varianceSample: NetworkSnapshotsHavingVarianceSampleInput
+
+  variancePopulation: NetworkSnapshotsHavingVariancePopulationInput
+}
+
+input NetworkSnapshotsHavingSumInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingDistinctCountInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingMinInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingMaxInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingAverageInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingStddevSampleInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingStddevPopulationInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingVarianceSampleInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkSnapshotsHavingVariancePopulationInput {
+  timestamp: HavingIntFilter
+
+  accounts: HavingIntFilter
+
+  transactions: HavingIntFilter
+
+  fees: HavingBigfloatFilter
+
+  bridgeIncomingTransactions: HavingIntFilter
+
+  bridgeOutgoingTransactions: HavingIntFilter
+}
+
+"""
+Methods to use when ordering `NetworkSnapshot`.
+"""
+enum NetworkSnapshotsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  TYPE_ASC
+
+  TYPE_DESC
+
+  TIMESTAMP_ASC
+
+  TIMESTAMP_DESC
+
+  ACCOUNTS_ASC
+
+  ACCOUNTS_DESC
+
+  TRANSACTIONS_ASC
+
+  TRANSACTIONS_DESC
+
+  FEES_ASC
+
+  FEES_DESC
+
+  LIQUIDITY_U_S_D_ASC
+
+  LIQUIDITY_U_S_D_DESC
+
+  VOLUME_U_S_D_ASC
+
+  VOLUME_U_S_D_DESC
+
+  BRIDGE_INCOMING_TRANSACTIONS_ASC
+
+  BRIDGE_INCOMING_TRANSACTIONS_DESC
+
+  BRIDGE_OUTGOING_TRANSACTIONS_ASC
+
+  BRIDGE_OUTGOING_TRANSACTIONS_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `NetworkSnapshot` object types. All fields are combined with a logical ‘and.’
+"""
+input NetworkSnapshotFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `type` field.
+  """
+  type: SnapshotTypeFilter
+
+  """
+  Filter by the object’s `timestamp` field.
+  """
+  timestamp: IntFilter
+
+  """
+  Filter by the object’s `accounts` field.
+  """
+  accounts: IntFilter
+
+  """
+  Filter by the object’s `transactions` field.
+  """
+  transactions: IntFilter
+
+  """
+  Filter by the object’s `fees` field.
+  """
+  fees: BigFloatFilter
+
+  """
+  Filter by the object’s `liquidityUSD` field.
+  """
+  liquidityUSD: StringFilter
+
+  """
+  Filter by the object’s `volumeUSD` field.
+  """
+  volumeUSD: StringFilter
+
+  """
+  Filter by the object’s `bridgeIncomingTransactions` field.
+  """
+  bridgeIncomingTransactions: IntFilter
+
+  """
+  Filter by the object’s `bridgeOutgoingTransactions` field.
+  """
+  bridgeOutgoingTransactions: IntFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [NetworkSnapshotFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [NetworkSnapshotFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: NetworkSnapshotFilter
+}
+
+enum network_snapshots_distinct_enum {
+  ID
+
+  TYPE
+
+  TIMESTAMP
+
+  ACCOUNTS
+
+  TRANSACTIONS
+
+  FEES
+
+  LIQUIDITY_U_S_D
+
+  VOLUME_U_S_D
+
+  BRIDGE_INCOMING_TRANSACTIONS
+
+  BRIDGE_OUTGOING_TRANSACTIONS
+}
+
+"""
+A connection to a list of `NetworkStat` values.
+"""
+type NetworkStatsConnection {
+  """
+  A list of `NetworkStat` objects.
+  """
+  nodes: [NetworkStat]!
+
+  """
+  A list of edges which contains the `NetworkStat` and cursor to aid in pagination.
+  """
+  edges: [NetworkStatsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `NetworkStat` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: NetworkStatAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `NetworkStat` for these aggregates." groupBy: [NetworkStatsGroupBy!]!, "Conditions on the grouped aggregates." having: NetworkStatsHavingInput): [NetworkStatAggregates!]
+}
+
+type NetworkStat implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  totalFees: BigFloat!
+
+  totalAccounts: Int!
+
+  totalTransactions: Int!
+
+  totalBridgeIncomingTransactions: Int!
+
+  totalBridgeOutgoingTransactions: Int!
+}
+
+"""
+A `NetworkStat` edge in the connection.
+"""
+type NetworkStatsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `NetworkStat` at the end of the edge.
+  """
+  node: NetworkStat
+}
+
+type NetworkStatAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: NetworkStatSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: NetworkStatDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: NetworkStatMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: NetworkStatMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: NetworkStatAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: NetworkStatStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: NetworkStatStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: NetworkStatVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: NetworkStatVariancePopulationAggregates
+}
+
+type NetworkStatSumAggregates {
+  """
+  Sum of totalFees across the matching connection
+  """
+  totalFees: BigFloat!
+
+  """
+  Sum of totalAccounts across the matching connection
+  """
+  totalAccounts: BigInt!
+
+  """
+  Sum of totalTransactions across the matching connection
+  """
+  totalTransactions: BigInt!
+
+  """
+  Sum of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigInt!
+
+  """
+  Sum of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigInt!
+}
+
+type NetworkStatDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of totalFees across the matching connection
+  """
+  totalFees: BigInt
+
+  """
+  Distinct count of totalAccounts across the matching connection
+  """
+  totalAccounts: BigInt
+
+  """
+  Distinct count of totalTransactions across the matching connection
+  """
+  totalTransactions: BigInt
+
+  """
+  Distinct count of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigInt
+
+  """
+  Distinct count of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigInt
+}
+
+type NetworkStatMinAggregates {
+  """
+  Minimum of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Minimum of totalAccounts across the matching connection
+  """
+  totalAccounts: Int
+
+  """
+  Minimum of totalTransactions across the matching connection
+  """
+  totalTransactions: Int
+
+  """
+  Minimum of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: Int
+
+  """
+  Minimum of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: Int
+}
+
+type NetworkStatMaxAggregates {
+  """
+  Maximum of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Maximum of totalAccounts across the matching connection
+  """
+  totalAccounts: Int
+
+  """
+  Maximum of totalTransactions across the matching connection
+  """
+  totalTransactions: Int
+
+  """
+  Maximum of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: Int
+
+  """
+  Maximum of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: Int
+}
+
+type NetworkStatAverageAggregates {
+  """
+  Mean average of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Mean average of totalAccounts across the matching connection
+  """
+  totalAccounts: BigFloat
+
+  """
+  Mean average of totalTransactions across the matching connection
+  """
+  totalTransactions: BigFloat
+
+  """
+  Mean average of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigFloat
+
+  """
+  Mean average of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkStatStddevSampleAggregates {
+  """
+  Sample standard deviation of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Sample standard deviation of totalAccounts across the matching connection
+  """
+  totalAccounts: BigFloat
+
+  """
+  Sample standard deviation of totalTransactions across the matching connection
+  """
+  totalTransactions: BigFloat
+
+  """
+  Sample standard deviation of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigFloat
+
+  """
+  Sample standard deviation of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkStatStddevPopulationAggregates {
+  """
+  Population standard deviation of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Population standard deviation of totalAccounts across the matching connection
+  """
+  totalAccounts: BigFloat
+
+  """
+  Population standard deviation of totalTransactions across the matching connection
+  """
+  totalTransactions: BigFloat
+
+  """
+  Population standard deviation of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigFloat
+
+  """
+  Population standard deviation of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkStatVarianceSampleAggregates {
+  """
+  Sample variance of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Sample variance of totalAccounts across the matching connection
+  """
+  totalAccounts: BigFloat
+
+  """
+  Sample variance of totalTransactions across the matching connection
+  """
+  totalTransactions: BigFloat
+
+  """
+  Sample variance of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigFloat
+
+  """
+  Sample variance of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigFloat
+}
+
+type NetworkStatVariancePopulationAggregates {
+  """
+  Population variance of totalFees across the matching connection
+  """
+  totalFees: BigFloat
+
+  """
+  Population variance of totalAccounts across the matching connection
+  """
+  totalAccounts: BigFloat
+
+  """
+  Population variance of totalTransactions across the matching connection
+  """
+  totalTransactions: BigFloat
+
+  """
+  Population variance of totalBridgeIncomingTransactions across the matching connection
+  """
+  totalBridgeIncomingTransactions: BigFloat
+
+  """
+  Population variance of totalBridgeOutgoingTransactions across the matching connection
+  """
+  totalBridgeOutgoingTransactions: BigFloat
+}
+
+"""
+Grouping methods for `NetworkStat` for usage during aggregation.
+"""
+enum NetworkStatsGroupBy {
+  TOTAL_FEES
+
+  TOTAL_ACCOUNTS
+
+  TOTAL_TRANSACTIONS
+
+  TOTAL_BRIDGE_INCOMING_TRANSACTIONS
+
+  TOTAL_BRIDGE_OUTGOING_TRANSACTIONS
+}
+
+"""
+Conditions for `NetworkStat` aggregates.
+"""
+input NetworkStatsHavingInput {
+  AND: [NetworkStatsHavingInput!]
+
+  OR: [NetworkStatsHavingInput!]
+
+  sum: NetworkStatsHavingSumInput
+
+  distinctCount: NetworkStatsHavingDistinctCountInput
+
+  min: NetworkStatsHavingMinInput
+
+  max: NetworkStatsHavingMaxInput
+
+  average: NetworkStatsHavingAverageInput
+
+  stddevSample: NetworkStatsHavingStddevSampleInput
+
+  stddevPopulation: NetworkStatsHavingStddevPopulationInput
+
+  varianceSample: NetworkStatsHavingVarianceSampleInput
+
+  variancePopulation: NetworkStatsHavingVariancePopulationInput
+}
+
+input NetworkStatsHavingSumInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingDistinctCountInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingMinInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingMaxInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingAverageInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingStddevSampleInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingStddevPopulationInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingVarianceSampleInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+input NetworkStatsHavingVariancePopulationInput {
+  totalFees: HavingBigfloatFilter
+
+  totalAccounts: HavingIntFilter
+
+  totalTransactions: HavingIntFilter
+
+  totalBridgeIncomingTransactions: HavingIntFilter
+
+  totalBridgeOutgoingTransactions: HavingIntFilter
+}
+
+"""
+Methods to use when ordering `NetworkStat`.
+"""
+enum NetworkStatsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  TOTAL_FEES_ASC
+
+  TOTAL_FEES_DESC
+
+  TOTAL_ACCOUNTS_ASC
+
+  TOTAL_ACCOUNTS_DESC
+
+  TOTAL_TRANSACTIONS_ASC
+
+  TOTAL_TRANSACTIONS_DESC
+
+  TOTAL_BRIDGE_INCOMING_TRANSACTIONS_ASC
+
+  TOTAL_BRIDGE_INCOMING_TRANSACTIONS_DESC
+
+  TOTAL_BRIDGE_OUTGOING_TRANSACTIONS_ASC
+
+  TOTAL_BRIDGE_OUTGOING_TRANSACTIONS_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `NetworkStat` object types. All fields are combined with a logical ‘and.’
+"""
+input NetworkStatFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `totalFees` field.
+  """
+  totalFees: BigFloatFilter
+
+  """
+  Filter by the object’s `totalAccounts` field.
+  """
+  totalAccounts: IntFilter
+
+  """
+  Filter by the object’s `totalTransactions` field.
+  """
+  totalTransactions: IntFilter
+
+  """
+  Filter by the object’s `totalBridgeIncomingTransactions` field.
+  """
+  totalBridgeIncomingTransactions: IntFilter
+
+  """
+  Filter by the object’s `totalBridgeOutgoingTransactions` field.
+  """
+  totalBridgeOutgoingTransactions: IntFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [NetworkStatFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [NetworkStatFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: NetworkStatFilter
+}
+
+enum network_stats_distinct_enum {
+  ID
+
+  TOTAL_FEES
+
+  TOTAL_ACCOUNTS
+
+  TOTAL_TRANSACTIONS
+
+  TOTAL_BRIDGE_INCOMING_TRANSACTIONS
+
+  TOTAL_BRIDGE_OUTGOING_TRANSACTIONS
+}
+
+"""
+A connection to a list of `ReferrerReward` values.
+"""
+type ReferrerRewardsConnection {
+  """
+  A list of `ReferrerReward` objects.
+  """
+  nodes: [ReferrerReward]!
+
+  """
+  A list of edges which contains the `ReferrerReward` and cursor to aid in pagination.
+  """
+  edges: [ReferrerRewardsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `ReferrerReward` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: ReferrerRewardAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `ReferrerReward` for these aggregates." groupBy: [ReferrerRewardsGroupBy!]!, "Conditions on the grouped aggregates." having: ReferrerRewardsHavingInput): [ReferrerRewardAggregates!]
+}
+
+type ReferrerReward implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  referral: String!
+
+  referrer: String!
+
+  updated: Int!
+
+  amount: BigFloat!
+}
+
+"""
+A `ReferrerReward` edge in the connection.
+"""
+type ReferrerRewardsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `ReferrerReward` at the end of the edge.
+  """
+  node: ReferrerReward
+}
+
+type ReferrerRewardAggregates {
+  keys: [String!]
+
+  """
+  Sum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  sum: ReferrerRewardSumAggregates
+
+  """
+  Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  distinctCount: ReferrerRewardDistinctCountAggregates
+
+  """
+  Minimum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  min: ReferrerRewardMinAggregates
+
+  """
+  Maximum aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  max: ReferrerRewardMaxAggregates
+
+  """
+  Mean average aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  average: ReferrerRewardAverageAggregates
+
+  """
+  Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevSample: ReferrerRewardStddevSampleAggregates
+
+  """
+  Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  stddevPopulation: ReferrerRewardStddevPopulationAggregates
+
+  """
+  Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  varianceSample: ReferrerRewardVarianceSampleAggregates
+
+  """
+  Population variance aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  variancePopulation: ReferrerRewardVariancePopulationAggregates
+}
+
+type ReferrerRewardSumAggregates {
+  """
+  Sum of updated across the matching connection
+  """
+  updated: BigInt!
+
+  """
+  Sum of amount across the matching connection
+  """
+  amount: BigFloat!
+}
+
+type ReferrerRewardDistinctCountAggregates {
+  """
+  Distinct count of id across the matching connection
+  """
+  id: BigInt
+
+  """
+  Distinct count of referral across the matching connection
+  """
+  referral: BigInt
+
+  """
+  Distinct count of referrer across the matching connection
+  """
+  referrer: BigInt
+
+  """
+  Distinct count of updated across the matching connection
+  """
+  updated: BigInt
+
+  """
+  Distinct count of amount across the matching connection
+  """
+  amount: BigInt
+}
+
+type ReferrerRewardMinAggregates {
+  """
+  Minimum of updated across the matching connection
+  """
+  updated: Int
+
+  """
+  Minimum of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardMaxAggregates {
+  """
+  Maximum of updated across the matching connection
+  """
+  updated: Int
+
+  """
+  Maximum of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardAverageAggregates {
+  """
+  Mean average of updated across the matching connection
+  """
+  updated: BigFloat
+
+  """
+  Mean average of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardStddevSampleAggregates {
+  """
+  Sample standard deviation of updated across the matching connection
+  """
+  updated: BigFloat
+
+  """
+  Sample standard deviation of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardStddevPopulationAggregates {
+  """
+  Population standard deviation of updated across the matching connection
+  """
+  updated: BigFloat
+
+  """
+  Population standard deviation of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardVarianceSampleAggregates {
+  """
+  Sample variance of updated across the matching connection
+  """
+  updated: BigFloat
+
+  """
+  Sample variance of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+type ReferrerRewardVariancePopulationAggregates {
+  """
+  Population variance of updated across the matching connection
+  """
+  updated: BigFloat
+
+  """
+  Population variance of amount across the matching connection
+  """
+  amount: BigFloat
+}
+
+"""
+Grouping methods for `ReferrerReward` for usage during aggregation.
+"""
+enum ReferrerRewardsGroupBy {
+  REFERRAL
+
+  REFERRER
+
+  UPDATED
+
+  AMOUNT
+}
+
+"""
+Conditions for `ReferrerReward` aggregates.
+"""
+input ReferrerRewardsHavingInput {
+  AND: [ReferrerRewardsHavingInput!]
+
+  OR: [ReferrerRewardsHavingInput!]
+
+  sum: ReferrerRewardsHavingSumInput
+
+  distinctCount: ReferrerRewardsHavingDistinctCountInput
+
+  min: ReferrerRewardsHavingMinInput
+
+  max: ReferrerRewardsHavingMaxInput
+
+  average: ReferrerRewardsHavingAverageInput
+
+  stddevSample: ReferrerRewardsHavingStddevSampleInput
+
+  stddevPopulation: ReferrerRewardsHavingStddevPopulationInput
+
+  varianceSample: ReferrerRewardsHavingVarianceSampleInput
+
+  variancePopulation: ReferrerRewardsHavingVariancePopulationInput
+}
+
+input ReferrerRewardsHavingSumInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingDistinctCountInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingMinInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingMaxInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingAverageInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingStddevSampleInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingStddevPopulationInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingVarianceSampleInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+input ReferrerRewardsHavingVariancePopulationInput {
+  updated: HavingIntFilter
+
+  amount: HavingBigfloatFilter
+}
+
+"""
+Methods to use when ordering `ReferrerReward`.
+"""
+enum ReferrerRewardsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  REFERRAL_ASC
+
+  REFERRAL_DESC
+
+  REFERRER_ASC
+
+  REFERRER_DESC
+
+  UPDATED_ASC
+
+  UPDATED_DESC
+
+  AMOUNT_ASC
+
+  AMOUNT_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `ReferrerReward` object types. All fields are combined with a logical ‘and.’
+"""
+input ReferrerRewardFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `referral` field.
+  """
+  referral: StringFilter
+
+  """
+  Filter by the object’s `referrer` field.
+  """
+  referrer: StringFilter
+
+  """
+  Filter by the object’s `updated` field.
+  """
+  updated: IntFilter
+
+  """
+  Filter by the object’s `amount` field.
+  """
+  amount: BigFloatFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [ReferrerRewardFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [ReferrerRewardFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: ReferrerRewardFilter
+}
+
+enum referrer_rewards_distinct_enum {
+  ID
+
+  REFERRAL
+
+  REFERRER
+
+  UPDATED
+
+  AMOUNT
+}
+
+type _Metadata {
+  lastProcessedHeight: Int
+
+  lastProcessedTimestamp: Date
+
+  targetHeight: Int
+
+  chain: String
+
+  specName: String
+
+  genesisHash: String
+
+  startHeight: Int
+
+  indexerHealthy: Boolean
+
+  indexerNodeVersion: String
+
+  queryNodeVersion: String
+
+  rowCountEstimate: [TableEstimate]
+
+  dynamicDatasources: String
+}
+
+"""
+The day, does not include a time.
+"""
+scalar Date
+
+type TableEstimate {
+  table: String
+
+  estimate: Int
+}
+
+"""
+The root subscription type: contains realtime events you can subscribe to with the `subscription` operation.
+"""
+type Subscription {
+  accounts(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  assetSnapshots(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  assets(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  historyElements(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  networkSnapshots(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  networkStats(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  poolXYKs(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+
+  referrerRewards(id: [ID!], mutation: [MutationType!]): SubscriptionPayload
+}
+
+type SubscriptionPayload {
+  id: ID!
+
+  mutation_type: MutationType!
+
+  _entity: JSON
+}
+
+enum MutationType {
+  INSERT
+
+  UPDATE
+
+  DELETE
+}
+
+"""
+A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.
+"""
+type __Schema {
+  description: String
+
+  """
+  A list of all types supported by this server.
+  """
+  types: [__Type!]!
+
+  """
+  The type that query operations will be rooted at.
+  """
+  queryType: __Type!
+
+  """
+  If this server supports mutation, the type that mutation operations will be rooted at.
+  """
+  mutationType: __Type
+
+  """
+  If this server support subscription, the type that subscription operations will be rooted at.
+  """
+  subscriptionType: __Type
+
+  """
+  A list of all directives supported by this server.
+  """
+  directives: [__Directive!]!
+}
+
+"""
+The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+
+Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+"""
+type __Type {
+  kind: __TypeKind!
+
+  name: String
+
+  description: String
+
+  specifiedByUrl: String
+
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  interfaces: [__Type!]
+
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields(includeDeprecated: Boolean = false): [__InputValue!]
+
+  ofType: __Type
+}
+
+"""
+An enum describing what kind of type a given `__Type` is.
+"""
+enum __TypeKind {
+  """
+  Indicates this type is a scalar.
+  """
+  SCALAR
+
+  """
+  Indicates this type is an object. `fields` and `interfaces` are valid fields.
+  """
+  OBJECT
+
+  """
+  Indicates this type is an interface. `fields`, `interfaces`, and `possibleTypes` are valid fields.
+  """
+  INTERFACE
+
+  """
+  Indicates this type is a union. `possibleTypes` is a valid field.
+  """
+  UNION
+
+  """
+  Indicates this type is an enum. `enumValues` is a valid field.
+  """
+  ENUM
+
+  """
+  Indicates this type is an input object. `inputFields` is a valid field.
+  """
+  INPUT_OBJECT
+
+  """
+  Indicates this type is a list. `ofType` is a valid field.
+  """
+  LIST
+
+  """
+  Indicates this type is a non-null. `ofType` is a valid field.
+  """
+  NON_NULL
+}
+
+"""
+Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.
+"""
+type __Field {
+  name: String!
+
+  description: String
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+
+  type: __Type!
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.
+"""
+type __InputValue {
+  name: String!
+
+  description: String
+
+  type: __Type!
+
+  """
+  A GraphQL-formatted string representing the default value for this input value.
+  """
+  defaultValue: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.
+"""
+type __EnumValue {
+  name: String!
+
+  description: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+
+In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
+"""
+type __Directive {
+  name: String!
+
+  description: String
+
+  isRepeatable: Boolean!
+
+  locations: [__DirectiveLocation!]!
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+}
+
+"""
+A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.
+"""
+enum __DirectiveLocation {
+  """
+  Location adjacent to a query operation.
+  """
+  QUERY
+
+  """
+  Location adjacent to a mutation operation.
+  """
+  MUTATION
+
+  """
+  Location adjacent to a subscription operation.
+  """
+  SUBSCRIPTION
+
+  """
+  Location adjacent to a field.
+  """
+  FIELD
+
+  """
+  Location adjacent to a fragment definition.
+  """
+  FRAGMENT_DEFINITION
+
+  """
+  Location adjacent to a fragment spread.
+  """
+  FRAGMENT_SPREAD
+
+  """
+  Location adjacent to an inline fragment.
+  """
+  INLINE_FRAGMENT
+
+  """
+  Location adjacent to a variable definition.
+  """
+  VARIABLE_DEFINITION
+
+  """
+  Location adjacent to a schema definition.
+  """
+  SCHEMA
+
+  """
+  Location adjacent to a scalar definition.
+  """
+  SCALAR
+
+  """
+  Location adjacent to an object type definition.
+  """
+  OBJECT
+
+  """
+  Location adjacent to a field definition.
+  """
+  FIELD_DEFINITION
+
+  """
+  Location adjacent to an argument definition.
+  """
+  ARGUMENT_DEFINITION
+
+  """
+  Location adjacent to an interface definition.
+  """
+  INTERFACE
+
+  """
+  Location adjacent to a union definition.
+  """
+  UNION
+
+  """
+  Location adjacent to an enum definition.
+  """
+  ENUM
+
+  """
+  Location adjacent to an enum value definition.
+  """
+  ENUM_VALUE
+
+  """
+  Location adjacent to an input object type definition.
+  """
+  INPUT_OBJECT
+
+  """
+  Location adjacent to an input object field definition.
+  """
+  INPUT_FIELD_DEFINITION
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include ("Included when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip ("Skipped when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Marks an element of a GraphQL schema as no longer supported.
+"""
+directive @deprecated ("Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https:\/\/commonmark.org\/)." reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy ("The URL that specifies the behaviour of this scalar." url: String!) on SCALAR
+
+schema {
+  query: Query
+  subscription: Subscription
+}
