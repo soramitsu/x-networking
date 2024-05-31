@@ -1,0 +1,1901 @@
+"""
+The root query type which gives access points into the data universe.
+"""
+type Query implements Node {
+  """
+  Exposes the root query type nested one level down. This is helpful for Relay 1
+  which can only query top level fields if they are in a particular form.
+  """
+  query: Query!
+
+  """
+  The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  """
+  nodeId: ID!
+
+  """
+  Fetches an object given its globally unique `ID`.
+  """
+  node("The globally unique `ID`." nodeId: ID!): Node
+
+  """
+  Reads and enables pagination through a set of `AccumulatedReward`.
+  """
+  accumulatedRewards("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `AccumulatedReward`." orderBy: [AccumulatedRewardsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AccumulatedRewardFilter): AccumulatedRewardsConnection
+
+  """
+  Reads and enables pagination through a set of `AccumulatedStake`.
+  """
+  accumulatedStakes("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `AccumulatedStake`." orderBy: [AccumulatedStakesOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: AccumulatedStakeFilter): AccumulatedStakesConnection
+
+  """
+  Reads and enables pagination through a set of `EraValidatorInfo`.
+  """
+  eraValidatorInfos("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `EraValidatorInfo`." orderBy: [EraValidatorInfosOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: EraValidatorInfoFilter): EraValidatorInfosConnection
+
+  """
+  Reads and enables pagination through a set of `ErrorEvent`.
+  """
+  errorEvents("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `ErrorEvent`." orderBy: [ErrorEventsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: ErrorEventFilter): ErrorEventsConnection
+
+  """
+  Reads and enables pagination through a set of `HistoryElement`.
+  """
+  historyElements("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `HistoryElement`." orderBy: [HistoryElementsOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: HistoryElementFilter): HistoryElementsConnection
+
+  """
+  Reads and enables pagination through a set of `StakeChange`.
+  """
+  stakeChanges("Only read the first `n` values of the set." first: Int, "Only read the last `n` values of the set." last: Int, "Skip the first `n` values from our `after` cursor, an alternative to cursor\nbased pagination. May not be used with `last`." offset: Int, "Read all values in the set before (above) this cursor." before: Cursor, "Read all values in the set after (below) this cursor." after: Cursor, "The method to use when ordering `StakeChange`." orderBy: [StakeChangesOrderBy!] = [PRIMARY_KEY_ASC], "A filter to be used in determining which values should be returned by the collection." filter: StakeChangeFilter): StakeChangesConnection
+
+  accumulatedReward(id: String!): AccumulatedReward
+
+  accumulatedStake(id: String!): AccumulatedStake
+
+  eraValidatorInfo(id: String!): EraValidatorInfo
+
+  errorEvent(id: String!): ErrorEvent
+
+  historyElement(id: String!): HistoryElement
+
+  stakeChange(id: String!): StakeChange
+
+  """
+  Reads a single `AccumulatedReward` using its globally unique `ID`.
+  """
+  accumulatedRewardByNodeId("The globally unique `ID` to be used in selecting a single `AccumulatedReward`." nodeId: ID!): AccumulatedReward
+
+  """
+  Reads a single `AccumulatedStake` using its globally unique `ID`.
+  """
+  accumulatedStakeByNodeId("The globally unique `ID` to be used in selecting a single `AccumulatedStake`." nodeId: ID!): AccumulatedStake
+
+  """
+  Reads a single `EraValidatorInfo` using its globally unique `ID`.
+  """
+  eraValidatorInfoByNodeId("The globally unique `ID` to be used in selecting a single `EraValidatorInfo`." nodeId: ID!): EraValidatorInfo
+
+  """
+  Reads a single `ErrorEvent` using its globally unique `ID`.
+  """
+  errorEventByNodeId("The globally unique `ID` to be used in selecting a single `ErrorEvent`." nodeId: ID!): ErrorEvent
+
+  """
+  Reads a single `HistoryElement` using its globally unique `ID`.
+  """
+  historyElementByNodeId("The globally unique `ID` to be used in selecting a single `HistoryElement`." nodeId: ID!): HistoryElement
+
+  """
+  Reads a single `StakeChange` using its globally unique `ID`.
+  """
+  stakeChangeByNodeId("The globally unique `ID` to be used in selecting a single `StakeChange`." nodeId: ID!): StakeChange
+
+  _metadata: _Metadata
+}
+
+"""
+An object with a globally unique `ID`.
+"""
+interface Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+}
+
+"""
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+"""
+scalar ID
+
+"""
+A connection to a list of `AccumulatedReward` values.
+"""
+type AccumulatedRewardsConnection {
+  """
+  A list of `AccumulatedReward` objects.
+  """
+  nodes: [AccumulatedReward]!
+
+  """
+  A list of edges which contains the `AccumulatedReward` and cursor to aid in pagination.
+  """
+  edges: [AccumulatedRewardsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AccumulatedReward` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AccumulatedRewardAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `AccumulatedReward` for these aggregates." groupBy: [AccumulatedRewardsGroupBy!]!, "Conditions on the grouped aggregates." having: AccumulatedRewardsHavingInput): [AccumulatedRewardAggregates!]
+}
+
+type AccumulatedReward implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  amount: BigFloat!
+}
+
+"""
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+"""
+scalar String
+
+"""
+A floating point number that requires more precision than IEEE 754 binary 64
+"""
+scalar BigFloat
+
+"""
+A `AccumulatedReward` edge in the connection.
+"""
+type AccumulatedRewardsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `AccumulatedReward` at the end of the edge.
+  """
+  node: AccumulatedReward
+}
+
+"""
+A location in a connection that can be used for resuming pagination.
+"""
+scalar Cursor
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: Cursor
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: Cursor
+}
+
+"""
+The `Boolean` scalar type represents `true` or `false`.
+"""
+scalar Boolean
+
+"""
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+"""
+scalar Int
+
+type AccumulatedRewardAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `AccumulatedReward` for usage during aggregation.
+"""
+enum AccumulatedRewardsGroupBy {
+  AMOUNT
+}
+
+"""
+Conditions for `AccumulatedReward` aggregates.
+"""
+input AccumulatedRewardsHavingInput {
+  AND: [AccumulatedRewardsHavingInput!]
+
+  OR: [AccumulatedRewardsHavingInput!]
+}
+
+"""
+Methods to use when ordering `AccumulatedReward`.
+"""
+enum AccumulatedRewardsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  AMOUNT_ASC
+
+  AMOUNT_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `AccumulatedReward` object types. All fields are combined with a logical ‘and.’
+"""
+input AccumulatedRewardFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `amount` field.
+  """
+  amount: BigFloatFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [AccumulatedRewardFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [AccumulatedRewardFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: AccumulatedRewardFilter
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: String
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: String
+
+  """
+  Included in the specified list.
+  """
+  in: [String!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [String!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: String
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: String
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: String
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: String
+
+  """
+  Contains the specified string (case-sensitive).
+  """
+  includes: String
+
+  """
+  Does not contain the specified string (case-sensitive).
+  """
+  notIncludes: String
+
+  """
+  Contains the specified string (case-insensitive).
+  """
+  includesInsensitive: String
+
+  """
+  Does not contain the specified string (case-insensitive).
+  """
+  notIncludesInsensitive: String
+
+  """
+  Starts with the specified string (case-sensitive).
+  """
+  startsWith: String
+
+  """
+  Does not start with the specified string (case-sensitive).
+  """
+  notStartsWith: String
+
+  """
+  Starts with the specified string (case-insensitive).
+  """
+  startsWithInsensitive: String
+
+  """
+  Does not start with the specified string (case-insensitive).
+  """
+  notStartsWithInsensitive: String
+
+  """
+  Ends with the specified string (case-sensitive).
+  """
+  endsWith: String
+
+  """
+  Does not end with the specified string (case-sensitive).
+  """
+  notEndsWith: String
+
+  """
+  Ends with the specified string (case-insensitive).
+  """
+  endsWithInsensitive: String
+
+  """
+  Does not end with the specified string (case-insensitive).
+  """
+  notEndsWithInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """
+  Equal to the specified value (case-insensitive).
+  """
+  equalToInsensitive: String
+
+  """
+  Not equal to the specified value (case-insensitive).
+  """
+  notEqualToInsensitive: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """
+  Included in the specified list (case-insensitive).
+  """
+  inInsensitive: [String!]
+
+  """
+  Not included in the specified list (case-insensitive).
+  """
+  notInInsensitive: [String!]
+
+  """
+  Less than the specified value (case-insensitive).
+  """
+  lessThanInsensitive: String
+
+  """
+  Less than or equal to the specified value (case-insensitive).
+  """
+  lessThanOrEqualToInsensitive: String
+
+  """
+  Greater than the specified value (case-insensitive).
+  """
+  greaterThanInsensitive: String
+
+  """
+  Greater than or equal to the specified value (case-insensitive).
+  """
+  greaterThanOrEqualToInsensitive: String
+}
+
+"""
+A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’
+"""
+input BigFloatFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: BigFloat
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: BigFloat
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: BigFloat
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: BigFloat
+
+  """
+  Included in the specified list.
+  """
+  in: [BigFloat!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [BigFloat!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: BigFloat
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: BigFloat
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: BigFloat
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: BigFloat
+}
+
+"""
+A connection to a list of `AccumulatedStake` values.
+"""
+type AccumulatedStakesConnection {
+  """
+  A list of `AccumulatedStake` objects.
+  """
+  nodes: [AccumulatedStake]!
+
+  """
+  A list of edges which contains the `AccumulatedStake` and cursor to aid in pagination.
+  """
+  edges: [AccumulatedStakesEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `AccumulatedStake` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: AccumulatedStakeAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `AccumulatedStake` for these aggregates." groupBy: [AccumulatedStakesGroupBy!]!, "Conditions on the grouped aggregates." having: AccumulatedStakesHavingInput): [AccumulatedStakeAggregates!]
+}
+
+type AccumulatedStake implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  amount: BigFloat!
+}
+
+"""
+A `AccumulatedStake` edge in the connection.
+"""
+type AccumulatedStakesEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `AccumulatedStake` at the end of the edge.
+  """
+  node: AccumulatedStake
+}
+
+type AccumulatedStakeAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `AccumulatedStake` for usage during aggregation.
+"""
+enum AccumulatedStakesGroupBy {
+  AMOUNT
+}
+
+"""
+Conditions for `AccumulatedStake` aggregates.
+"""
+input AccumulatedStakesHavingInput {
+  AND: [AccumulatedStakesHavingInput!]
+
+  OR: [AccumulatedStakesHavingInput!]
+}
+
+"""
+Methods to use when ordering `AccumulatedStake`.
+"""
+enum AccumulatedStakesOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  AMOUNT_ASC
+
+  AMOUNT_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `AccumulatedStake` object types. All fields are combined with a logical ‘and.’
+"""
+input AccumulatedStakeFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `amount` field.
+  """
+  amount: BigFloatFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [AccumulatedStakeFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [AccumulatedStakeFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: AccumulatedStakeFilter
+}
+
+"""
+A connection to a list of `EraValidatorInfo` values.
+"""
+type EraValidatorInfosConnection {
+  """
+  A list of `EraValidatorInfo` objects.
+  """
+  nodes: [EraValidatorInfo]!
+
+  """
+  A list of edges which contains the `EraValidatorInfo` and cursor to aid in pagination.
+  """
+  edges: [EraValidatorInfosEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `EraValidatorInfo` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: EraValidatorInfoAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `EraValidatorInfo` for these aggregates." groupBy: [EraValidatorInfosGroupBy!]!, "Conditions on the grouped aggregates." having: EraValidatorInfosHavingInput): [EraValidatorInfoAggregates!]
+}
+
+type EraValidatorInfo implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  address: String!
+
+  era: Int!
+
+  total: BigFloat!
+
+  own: BigFloat!
+
+  others: JSON!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A `EraValidatorInfo` edge in the connection.
+"""
+type EraValidatorInfosEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `EraValidatorInfo` at the end of the edge.
+  """
+  node: EraValidatorInfo
+}
+
+type EraValidatorInfoAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `EraValidatorInfo` for usage during aggregation.
+"""
+enum EraValidatorInfosGroupBy {
+  ADDRESS
+
+  ERA
+
+  TOTAL
+
+  OWN
+
+  OTHERS
+}
+
+"""
+Conditions for `EraValidatorInfo` aggregates.
+"""
+input EraValidatorInfosHavingInput {
+  AND: [EraValidatorInfosHavingInput!]
+
+  OR: [EraValidatorInfosHavingInput!]
+}
+
+"""
+Methods to use when ordering `EraValidatorInfo`.
+"""
+enum EraValidatorInfosOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  ADDRESS_ASC
+
+  ADDRESS_DESC
+
+  ERA_ASC
+
+  ERA_DESC
+
+  TOTAL_ASC
+
+  TOTAL_DESC
+
+  OWN_ASC
+
+  OWN_DESC
+
+  OTHERS_ASC
+
+  OTHERS_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `EraValidatorInfo` object types. All fields are combined with a logical ‘and.’
+"""
+input EraValidatorInfoFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `address` field.
+  """
+  address: StringFilter
+
+  """
+  Filter by the object’s `era` field.
+  """
+  era: IntFilter
+
+  """
+  Filter by the object’s `total` field.
+  """
+  total: BigFloatFilter
+
+  """
+  Filter by the object’s `own` field.
+  """
+  own: BigFloatFilter
+
+  """
+  Filter by the object’s `others` field.
+  """
+  others: JSONFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [EraValidatorInfoFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [EraValidatorInfoFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: EraValidatorInfoFilter
+}
+
+"""
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: Int
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: Int
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: Int
+
+  """
+  Included in the specified list.
+  """
+  in: [Int!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [Int!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: Int
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: Int
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: Int
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: Int
+}
+
+"""
+A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+"""
+input JSONFilter {
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """
+  Equal to the specified value.
+  """
+  equalTo: JSON
+
+  """
+  Not equal to the specified value.
+  """
+  notEqualTo: JSON
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: JSON
+
+  """
+  Equal to the specified value, treating null like an ordinary value.
+  """
+  notDistinctFrom: JSON
+
+  """
+  Included in the specified list.
+  """
+  in: [JSON!]
+
+  """
+  Not included in the specified list.
+  """
+  notIn: [JSON!]
+
+  """
+  Less than the specified value.
+  """
+  lessThan: JSON
+
+  """
+  Less than or equal to the specified value.
+  """
+  lessThanOrEqualTo: JSON
+
+  """
+  Greater than the specified value.
+  """
+  greaterThan: JSON
+
+  """
+  Greater than or equal to the specified value.
+  """
+  greaterThanOrEqualTo: JSON
+
+  """
+  Contains the specified JSON.
+  """
+  contains: JSON
+
+  """
+  Contains the specified key.
+  """
+  containsKey: String
+
+  """
+  Contains all of the specified keys.
+  """
+  containsAllKeys: [String!]
+
+  """
+  Contains any of the specified keys.
+  """
+  containsAnyKeys: [String!]
+
+  """
+  Contained by the specified JSON.
+  """
+  containedBy: JSON
+}
+
+"""
+A connection to a list of `ErrorEvent` values.
+"""
+type ErrorEventsConnection {
+  """
+  A list of `ErrorEvent` objects.
+  """
+  nodes: [ErrorEvent]!
+
+  """
+  A list of edges which contains the `ErrorEvent` and cursor to aid in pagination.
+  """
+  edges: [ErrorEventsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `ErrorEvent` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: ErrorEventAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `ErrorEvent` for these aggregates." groupBy: [ErrorEventsGroupBy!]!, "Conditions on the grouped aggregates." having: ErrorEventsHavingInput): [ErrorEventAggregates!]
+}
+
+type ErrorEvent implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  description: String!
+}
+
+"""
+A `ErrorEvent` edge in the connection.
+"""
+type ErrorEventsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `ErrorEvent` at the end of the edge.
+  """
+  node: ErrorEvent
+}
+
+type ErrorEventAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `ErrorEvent` for usage during aggregation.
+"""
+enum ErrorEventsGroupBy {
+  DESCRIPTION
+}
+
+"""
+Conditions for `ErrorEvent` aggregates.
+"""
+input ErrorEventsHavingInput {
+  AND: [ErrorEventsHavingInput!]
+
+  OR: [ErrorEventsHavingInput!]
+}
+
+"""
+Methods to use when ordering `ErrorEvent`.
+"""
+enum ErrorEventsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  DESCRIPTION_ASC
+
+  DESCRIPTION_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `ErrorEvent` object types. All fields are combined with a logical ‘and.’
+"""
+input ErrorEventFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `description` field.
+  """
+  description: StringFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [ErrorEventFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [ErrorEventFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: ErrorEventFilter
+}
+
+"""
+A connection to a list of `HistoryElement` values.
+"""
+type HistoryElementsConnection {
+  """
+  A list of `HistoryElement` objects.
+  """
+  nodes: [HistoryElement]!
+
+  """
+  A list of edges which contains the `HistoryElement` and cursor to aid in pagination.
+  """
+  edges: [HistoryElementsEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `HistoryElement` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: HistoryElementAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `HistoryElement` for these aggregates." groupBy: [HistoryElementsGroupBy!]!, "Conditions on the grouped aggregates." having: HistoryElementsHavingInput): [HistoryElementAggregates!]
+}
+
+type HistoryElement implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  blockNumber: Int!
+
+  extrinsicIdx: Int
+
+  extrinsicHash: String
+
+  timestamp: BigFloat!
+
+  address: String!
+
+  reward: JSON
+
+  extrinsic: JSON
+
+  transfer: JSON
+}
+
+"""
+A `HistoryElement` edge in the connection.
+"""
+type HistoryElementsEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `HistoryElement` at the end of the edge.
+  """
+  node: HistoryElement
+}
+
+type HistoryElementAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `HistoryElement` for usage during aggregation.
+"""
+enum HistoryElementsGroupBy {
+  BLOCK_NUMBER
+
+  EXTRINSIC_IDX
+
+  EXTRINSIC_HASH
+
+  TIMESTAMP
+
+  ADDRESS
+
+  REWARD
+
+  EXTRINSIC
+
+  TRANSFER
+}
+
+"""
+Conditions for `HistoryElement` aggregates.
+"""
+input HistoryElementsHavingInput {
+  AND: [HistoryElementsHavingInput!]
+
+  OR: [HistoryElementsHavingInput!]
+}
+
+"""
+Methods to use when ordering `HistoryElement`.
+"""
+enum HistoryElementsOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  BLOCK_NUMBER_ASC
+
+  BLOCK_NUMBER_DESC
+
+  EXTRINSIC_IDX_ASC
+
+  EXTRINSIC_IDX_DESC
+
+  EXTRINSIC_HASH_ASC
+
+  EXTRINSIC_HASH_DESC
+
+  TIMESTAMP_ASC
+
+  TIMESTAMP_DESC
+
+  ADDRESS_ASC
+
+  ADDRESS_DESC
+
+  REWARD_ASC
+
+  REWARD_DESC
+
+  EXTRINSIC_ASC
+
+  EXTRINSIC_DESC
+
+  TRANSFER_ASC
+
+  TRANSFER_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `HistoryElement` object types. All fields are combined with a logical ‘and.’
+"""
+input HistoryElementFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `blockNumber` field.
+  """
+  blockNumber: IntFilter
+
+  """
+  Filter by the object’s `extrinsicIdx` field.
+  """
+  extrinsicIdx: IntFilter
+
+  """
+  Filter by the object’s `extrinsicHash` field.
+  """
+  extrinsicHash: StringFilter
+
+  """
+  Filter by the object’s `timestamp` field.
+  """
+  timestamp: BigFloatFilter
+
+  """
+  Filter by the object’s `address` field.
+  """
+  address: StringFilter
+
+  """
+  Filter by the object’s `reward` field.
+  """
+  reward: JSONFilter
+
+  """
+  Filter by the object’s `extrinsic` field.
+  """
+  extrinsic: JSONFilter
+
+  """
+  Filter by the object’s `transfer` field.
+  """
+  transfer: JSONFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [HistoryElementFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [HistoryElementFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: HistoryElementFilter
+}
+
+"""
+A connection to a list of `StakeChange` values.
+"""
+type StakeChangesConnection {
+  """
+  A list of `StakeChange` objects.
+  """
+  nodes: [StakeChange]!
+
+  """
+  A list of edges which contains the `StakeChange` and cursor to aid in pagination.
+  """
+  edges: [StakeChangesEdge!]!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `StakeChange` you could get from the connection.
+  """
+  totalCount: Int!
+
+  """
+  Aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  aggregates: StakeChangeAggregates
+
+  """
+  Grouped aggregates across the matching connection (ignoring before/after/first/last/offset)
+  """
+  groupedAggregates("The method to use when grouping `StakeChange` for these aggregates." groupBy: [StakeChangesGroupBy!]!, "Conditions on the grouped aggregates." having: StakeChangesHavingInput): [StakeChangeAggregates!]
+}
+
+type StakeChange implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  id: String!
+
+  blockNumber: Int!
+
+  extrinsicHash: String
+
+  eventIdx: Int!
+
+  timestamp: BigFloat!
+
+  address: String!
+
+  amount: BigFloat!
+
+  accumulatedAmount: BigFloat!
+
+  type: String!
+}
+
+"""
+A `StakeChange` edge in the connection.
+"""
+type StakeChangesEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
+
+  """
+  The `StakeChange` at the end of the edge.
+  """
+  node: StakeChange
+}
+
+type StakeChangeAggregates {
+  keys: [String!]
+}
+
+"""
+Grouping methods for `StakeChange` for usage during aggregation.
+"""
+enum StakeChangesGroupBy {
+  BLOCK_NUMBER
+
+  EXTRINSIC_HASH
+
+  EVENT_IDX
+
+  TIMESTAMP
+
+  ADDRESS
+
+  AMOUNT
+
+  ACCUMULATED_AMOUNT
+
+  TYPE
+}
+
+"""
+Conditions for `StakeChange` aggregates.
+"""
+input StakeChangesHavingInput {
+  AND: [StakeChangesHavingInput!]
+
+  OR: [StakeChangesHavingInput!]
+}
+
+"""
+Methods to use when ordering `StakeChange`.
+"""
+enum StakeChangesOrderBy {
+  NATURAL
+
+  ID_ASC
+
+  ID_DESC
+
+  BLOCK_NUMBER_ASC
+
+  BLOCK_NUMBER_DESC
+
+  EXTRINSIC_HASH_ASC
+
+  EXTRINSIC_HASH_DESC
+
+  EVENT_IDX_ASC
+
+  EVENT_IDX_DESC
+
+  TIMESTAMP_ASC
+
+  TIMESTAMP_DESC
+
+  ADDRESS_ASC
+
+  ADDRESS_DESC
+
+  AMOUNT_ASC
+
+  AMOUNT_DESC
+
+  ACCUMULATED_AMOUNT_ASC
+
+  ACCUMULATED_AMOUNT_DESC
+
+  TYPE_ASC
+
+  TYPE_DESC
+
+  PRIMARY_KEY_ASC
+
+  PRIMARY_KEY_DESC
+}
+
+"""
+A filter to be used against `StakeChange` object types. All fields are combined with a logical ‘and.’
+"""
+input StakeChangeFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: StringFilter
+
+  """
+  Filter by the object’s `blockNumber` field.
+  """
+  blockNumber: IntFilter
+
+  """
+  Filter by the object’s `extrinsicHash` field.
+  """
+  extrinsicHash: StringFilter
+
+  """
+  Filter by the object’s `eventIdx` field.
+  """
+  eventIdx: IntFilter
+
+  """
+  Filter by the object’s `timestamp` field.
+  """
+  timestamp: BigFloatFilter
+
+  """
+  Filter by the object’s `address` field.
+  """
+  address: StringFilter
+
+  """
+  Filter by the object’s `amount` field.
+  """
+  amount: BigFloatFilter
+
+  """
+  Filter by the object’s `accumulatedAmount` field.
+  """
+  accumulatedAmount: BigFloatFilter
+
+  """
+  Filter by the object’s `type` field.
+  """
+  type: StringFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [StakeChangeFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [StakeChangeFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: StakeChangeFilter
+}
+
+type _Metadata {
+  lastProcessedHeight: Int
+
+  lastProcessedTimestamp: Date
+
+  targetHeight: Int
+
+  chain: String
+
+  specName: String
+
+  genesisHash: String
+
+  indexerHealthy: Boolean
+
+  indexerNodeVersion: String
+
+  queryNodeVersion: String
+
+  rowCountEstimate: [TableEstimate]
+}
+
+"""
+The day, does not include a time.
+"""
+scalar Date
+
+type TableEstimate {
+  table: String
+
+  estimate: Int
+}
+
+"""
+A GraphQL Schema defines the capabilities of a GraphQL server. It exposes all available types and directives on the server, as well as the entry points for query, mutation, and subscription operations.
+"""
+type __Schema {
+  description: String
+
+  """
+  A list of all types supported by this server.
+  """
+  types: [__Type!]!
+
+  """
+  The type that query operations will be rooted at.
+  """
+  queryType: __Type!
+
+  """
+  If this server supports mutation, the type that mutation operations will be rooted at.
+  """
+  mutationType: __Type
+
+  """
+  If this server support subscription, the type that subscription operations will be rooted at.
+  """
+  subscriptionType: __Type
+
+  """
+  A list of all directives supported by this server.
+  """
+  directives: [__Directive!]!
+}
+
+"""
+The fundamental unit of any GraphQL Schema is the type. There are many kinds of types in GraphQL as represented by the `__TypeKind` enum.
+
+Depending on the kind of a type, certain fields describe information about that type. Scalar types provide no information beyond a name, description and optional `specifiedByUrl`, while Enum types provide their values. Object and Interface types provide the fields they describe. Abstract types, Union and Interface, provide the Object types possible at runtime. List and NonNull types compose other types.
+"""
+type __Type {
+  kind: __TypeKind!
+
+  name: String
+
+  description: String
+
+  specifiedByUrl: String
+
+  fields(includeDeprecated: Boolean = false): [__Field!]
+
+  interfaces: [__Type!]
+
+  possibleTypes: [__Type!]
+
+  enumValues(includeDeprecated: Boolean = false): [__EnumValue!]
+
+  inputFields(includeDeprecated: Boolean = false): [__InputValue!]
+
+  ofType: __Type
+}
+
+"""
+An enum describing what kind of type a given `__Type` is.
+"""
+enum __TypeKind {
+  """
+  Indicates this type is a scalar.
+  """
+  SCALAR
+
+  """
+  Indicates this type is an object. `fields` and `interfaces` are valid fields.
+  """
+  OBJECT
+
+  """
+  Indicates this type is an interface. `fields`, `interfaces`, and `possibleTypes` are valid fields.
+  """
+  INTERFACE
+
+  """
+  Indicates this type is a union. `possibleTypes` is a valid field.
+  """
+  UNION
+
+  """
+  Indicates this type is an enum. `enumValues` is a valid field.
+  """
+  ENUM
+
+  """
+  Indicates this type is an input object. `inputFields` is a valid field.
+  """
+  INPUT_OBJECT
+
+  """
+  Indicates this type is a list. `ofType` is a valid field.
+  """
+  LIST
+
+  """
+  Indicates this type is a non-null. `ofType` is a valid field.
+  """
+  NON_NULL
+}
+
+"""
+Object and Interface types are described by a list of Fields, each of which has a name, potentially a list of arguments, and a return type.
+"""
+type __Field {
+  name: String!
+
+  description: String
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+
+  type: __Type!
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+Arguments provided to Fields or Directives and the input fields of an InputObject are represented as Input Values which describe their type and optionally a default value.
+"""
+type __InputValue {
+  name: String!
+
+  description: String
+
+  type: __Type!
+
+  """
+  A GraphQL-formatted string representing the default value for this input value.
+  """
+  defaultValue: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+One possible value for a given Enum. Enum values are unique values, not a placeholder for a string or numeric value. However an Enum value is returned in a JSON response as a string.
+"""
+type __EnumValue {
+  name: String!
+
+  description: String
+
+  isDeprecated: Boolean!
+
+  deprecationReason: String
+}
+
+"""
+A Directive provides a way to describe alternate runtime execution and type validation behavior in a GraphQL document.
+
+In some cases, you need to provide options to alter GraphQL's execution behavior in ways field arguments will not suffice, such as conditionally including or skipping a field. Directives provide this by describing additional information to the executor.
+"""
+type __Directive {
+  name: String!
+
+  description: String
+
+  isRepeatable: Boolean!
+
+  locations: [__DirectiveLocation!]!
+
+  args(includeDeprecated: Boolean = false): [__InputValue!]!
+}
+
+"""
+A Directive can be adjacent to many parts of the GraphQL language, a __DirectiveLocation describes one such possible adjacencies.
+"""
+enum __DirectiveLocation {
+  """
+  Location adjacent to a query operation.
+  """
+  QUERY
+
+  """
+  Location adjacent to a mutation operation.
+  """
+  MUTATION
+
+  """
+  Location adjacent to a subscription operation.
+  """
+  SUBSCRIPTION
+
+  """
+  Location adjacent to a field.
+  """
+  FIELD
+
+  """
+  Location adjacent to a fragment definition.
+  """
+  FRAGMENT_DEFINITION
+
+  """
+  Location adjacent to a fragment spread.
+  """
+  FRAGMENT_SPREAD
+
+  """
+  Location adjacent to an inline fragment.
+  """
+  INLINE_FRAGMENT
+
+  """
+  Location adjacent to a variable definition.
+  """
+  VARIABLE_DEFINITION
+
+  """
+  Location adjacent to a schema definition.
+  """
+  SCHEMA
+
+  """
+  Location adjacent to a scalar definition.
+  """
+  SCALAR
+
+  """
+  Location adjacent to an object type definition.
+  """
+  OBJECT
+
+  """
+  Location adjacent to a field definition.
+  """
+  FIELD_DEFINITION
+
+  """
+  Location adjacent to an argument definition.
+  """
+  ARGUMENT_DEFINITION
+
+  """
+  Location adjacent to an interface definition.
+  """
+  INTERFACE
+
+  """
+  Location adjacent to a union definition.
+  """
+  UNION
+
+  """
+  Location adjacent to an enum definition.
+  """
+  ENUM
+
+  """
+  Location adjacent to an enum value definition.
+  """
+  ENUM_VALUE
+
+  """
+  Location adjacent to an input object type definition.
+  """
+  INPUT_OBJECT
+
+  """
+  Location adjacent to an input object field definition.
+  """
+  INPUT_FIELD_DEFINITION
+}
+
+"""
+Directs the executor to include this field or fragment only when the `if` argument is true.
+"""
+directive @include ("Included when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Directs the executor to skip this field or fragment when the `if` argument is true.
+"""
+directive @skip ("Skipped when true." if: Boolean!) on FIELD|FRAGMENT_SPREAD|INLINE_FRAGMENT
+
+"""
+Marks an element of a GraphQL schema as no longer supported.
+"""
+directive @deprecated ("Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax, as specified by [CommonMark](https:\/\/commonmark.org\/)." reason: String = "No longer supported") on FIELD_DEFINITION|ARGUMENT_DEFINITION|INPUT_FIELD_DEFINITION|ENUM_VALUE
+
+"""
+Exposes a URL that specifies the behaviour of this scalar.
+"""
+directive @specifiedBy ("The URL that specifies the behaviour of this scalar." url: String!) on SCALAR
+
+schema {
+  query: Query
+}

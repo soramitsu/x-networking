@@ -1,0 +1,19 @@
+query GetFiatData(
+    $pageCount: Int!,
+    $cursor: Cursor!
+) {
+    entities:
+        assets(
+            first: $pageCount
+            after: $cursor
+        ) {
+            nodes {
+                id
+                priceUSD
+            }
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+        }
+}
