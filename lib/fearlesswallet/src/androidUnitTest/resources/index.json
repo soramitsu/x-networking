@@ -1,0 +1,38 @@
+{
+  "2.0.6": [
+    {
+      "chain": "chains/main.json",
+      "hash": "qwe",
+      "id": "123"
+    },
+    {
+      "chain": "chains/slave.json",
+      "hash": "asd",
+      "id": "234"
+    },
+    {
+      "chain": "chains/third.json",
+      "hash": "zxc",
+      "id": "345"
+    }
+  ],
+  "2.0.0": [
+    {
+      "chain": "chains/main.json",
+      "hash": "qwe",
+      "id": "123"
+    },
+    {
+      "chain": "chains/slave.json",
+      "hash": "asd",
+      "id": "234"
+    }
+  ],
+  "1.7.5": [
+    {
+      "chain": "chains/oldd.json",
+      "hash": "mnb",
+      "id": "876"
+    }
+  ]
+}

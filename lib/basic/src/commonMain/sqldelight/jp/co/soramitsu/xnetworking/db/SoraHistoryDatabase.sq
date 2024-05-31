@@ -1,0 +1,84 @@
+CREATE TABLE Extrinsics (
+    txHash TEXT NOT NULL PRIMARY KEY,
+    signAddress TEXT NOT NULL,
+    blockHash TEXT,
+    module TEXT NOT NULL,
+    method TEXT NOT NULL,
+    networkFee TEXT NOT NULL,
+    timestamp INTEGER NOT NULL DEFAULT 0,
+    success INTEGER AS Boolean NOT NULL DEFAULT 0,
+    batch INTEGER AS Boolean NOT NULL DEFAULT 0,
+    parentHash TEXT,
+    networkName TEXT NOT NULL DEFAULT ""
+);
+
+CREATE TABLE ExtrinsicParam (
+    extrinsicHash TEXT NOT NULL,
+    paramName TEXT NOT NULL,
+    paramValue TEXT NOT NULL,
+    PRIMARY KEY (extrinsicHash, paramName),
+    FOREIGN KEY(extrinsicHash) REFERENCES Extrinsics(txHash) ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+CREATE TABLE SignerInfo (
+    signAddress TEXT NOT NULL PRIMARY KEY,
+    topTime INTEGER NOT NULL DEFAULT 0,
+    oldTime INTEGER NOT NULL DEFAULT 0,
+    oldCursor TEXT,
+    endReached INTEGER AS Boolean NOT NULL DEFAULT 0,
+    networkName TEXT NOT NULL DEFAULT ""
+);
+
+insertExtrinsic:
+INSERT OR REPLACE INTO Extrinsics(txHash, signAddress, networkName, blockHash, module, method, networkFee, timestamp, success, batch, parentHash)
+VALUES(?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?);
+
+insertExtrinsicParam:
+INSERT OR REPLACE INTO ExtrinsicParam(extrinsicHash, paramName, paramValue)
+VALUES (?, ?, ?);
+
+selectExtrinsicsPaged:
+SELECT Extrinsics.*
+FROM Extrinsics WHERE signAddress = :address AND networkName = :network AND parentHash ISNULL ORDER BY timestamp DESC LIMIT :limit OFFSET :offset;
+
+selectExtrinsicsNested:
+SELECT Extrinsics.*
+FROM Extrinsics WHERE parentHash = ?;
+
+selectExtrinsic:
+SELECT Extrinsics.*
+FROM Extrinsics WHERE txHash = :hash AND signAddress = :address AND networkName = :network;
+
+selectExtrinsicParams:
+SELECT ExtrinsicParam.*
+FROM ExtrinsicParam WHERE extrinsicHash = ?;
+
+selectTransfersPeers:
+SELECT DISTINCT ExtrinsicParam.paramValue
+FROM ExtrinsicParam INNER JOIN Extrinsics ON ExtrinsicParam.extrinsicHash = Extrinsics.txHash
+WHERE (paramName = "to" OR paramName = "from") AND Extrinsics.networkName = :network
+AND paramValue LIKE '%' || :query || "%";
+
+selectSignerInfo:
+SELECT SignerInfo.*
+FROM SignerInfo WHERE signAddress = :address AND networkName = :network;
+
+insertSignerInfo:
+INSERT OR REPLACE INTO SignerInfo(signAddress, networkName, topTime, oldTime, oldCursor, endReached)
+VALUES (?, ?, ?, ?, ?, ?);
+
+insertSignerInfoFull:
+INSERT OR REPLACE INTO SignerInfo(signAddress, networkName, topTime, oldTime, oldCursor, endReached)
+VALUES ?;
+
+removeAllExtrinsics:
+DELETE FROM Extrinsics;
+
+removeExtrinsics:
+DELETE FROM Extrinsics WHERE signAddress = :address AND networkName = :network;
+
+removeAllSignerInfo:
+DELETE FROM SignerInfo;
+
+removeSignerInfo:
+DELETE FROM SignerInfo WHERE signAddress = :address AND networkName = :network;
