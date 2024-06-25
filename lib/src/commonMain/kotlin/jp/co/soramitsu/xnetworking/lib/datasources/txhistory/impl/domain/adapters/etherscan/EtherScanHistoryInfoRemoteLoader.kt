@@ -10,7 +10,6 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistor
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class EtherScanHistoryInfoRemoteLoader(
-    private val apiKeys: Map<String, String>,
     private val configDAO: ConfigDAO,
     private val restClient: RestClient
 ): HistoryInfoRemoteLoader() {
@@ -22,7 +21,7 @@ class EtherScanHistoryInfoRemoteLoader(
         chainInfo: ChainInfo,
         filters: Set<TxFilter>
     ): TxHistoryInfo {
-        require(chainInfo is ChainInfo.WithEthereumType) {
+        require(chainInfo is ChainInfo.Ethereum) {
             "EtherScan blockExplorer can not be used with non-ethereum chains."
         }
 
@@ -31,18 +30,14 @@ class EtherScanHistoryInfoRemoteLoader(
                 "normal" -> NormalEtherScanRequest(
                     url = configDAO.historyUrl(chainInfo.chainId),
                     address = signAddress,
-                    apiKey = requireNotNull(
-                        apiKeys[chainInfo.chainId]
-                    ) { "Api key for etherScan chain with id - ${chainInfo.chainId} - is not set." }
+                    apiKey = chainInfo.apiKey
                 )
 
                 "erc20", "bep20" -> ErcBepEtherScanRequest(
                     url = configDAO.historyUrl(chainInfo.chainId),
                     contractAddress = chainInfo.contractAddress,
                     address = signAddress,
-                    apiKey = requireNotNull(
-                        apiKeys[chainInfo.chainId]
-                    ) { "Api key for etherScan chain with id - ${chainInfo.chainId} - is not set." }
+                    apiKey = chainInfo.apiKey
                 )
 
                 else -> error("Unknown AssetType for EtherScan BlockExplorer")

@@ -23,21 +23,15 @@ import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 class HistoryInfoRemoteLoaderFacade(
     private val configDAO: ConfigDAO,
     private val apolloClientStore: ApolloClientStore,
-    private val restClient: RestClient,
-    private val etherScanApiKeys: Map<String, String>,
-    private val oklinkApiKeys: Map<String, String>
+    private val restClient: RestClient
 ): HistoryInfoRemoteLoader() {
     constructor(
         configDAO: ConfigDAO,
         restClient: RestClient,
-        etherScanApiKeys: Map<String, String>,
-        oklinkApiKeys: Map<String, String>
     ): this(
         configDAO = configDAO,
         apolloClientStore = ApolloClientStoreImpl(),
-        restClient = restClient,
-        etherScanApiKeys = etherScanApiKeys,
-        oklinkApiKeys = oklinkApiKeys
+        restClient = restClient
     )
 
     private data class Args(
@@ -47,13 +41,13 @@ class HistoryInfoRemoteLoaderFacade(
 
     private val cachingFactory = CachingFactory<Args, HistoryInfoRemoteLoader> {
         if (externalApiType === ExternalApiType.EtherScan)
-            return@CachingFactory EtherScanHistoryInfoRemoteLoader(etherScanApiKeys, configDAO, restClient)
+            return@CachingFactory EtherScanHistoryInfoRemoteLoader(configDAO, restClient)
 
         if (externalApiType === ExternalApiType.GiantSquid)
             return@CachingFactory GiantSquidHistoryInfoRemoteLoader(configDAO, restClient)
 
         if (externalApiType === ExternalApiType.OkLink)
-            return@CachingFactory OkLinkHistoryInfoRemoteLoader(oklinkApiKeys, configDAO, restClient)
+            return@CachingFactory OkLinkHistoryInfoRemoteLoader(configDAO, restClient)
 
         if (externalApiType === ExternalApiType.Reef)
             return@CachingFactory ReefHistoryInfoRemoteLoader(configDAO, restClient)

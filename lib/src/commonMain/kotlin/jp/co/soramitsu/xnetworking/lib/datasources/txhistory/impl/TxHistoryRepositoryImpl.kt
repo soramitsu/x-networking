@@ -32,17 +32,13 @@ class TxHistoryRepositoryImpl(
         databaseDriverFactory: ExpectActualDBDriverFactory,
         configDAO: ConfigDAO,
         restClient: RestClient,
-        etherScanApiKeys: Map<String, String>,
-        oklinkApiKeys: Map<String, String>,
         historyItemsFilter: HistoryItemsFilter,
     ): this(
         databaseDriverFactory = databaseDriverFactory,
         historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
             configDAO = configDAO,
             apolloClientStore = ApolloClientStoreImpl(),
-            restClient = restClient,
-            etherScanApiKeys = etherScanApiKeys,
-            oklinkApiKeys = oklinkApiKeys
+            restClient = restClient
         ),
         historyItemsFilter = historyItemsFilter
     )
@@ -52,17 +48,13 @@ class TxHistoryRepositoryImpl(
         configDAO: ConfigDAO,
         apolloClientStore: ApolloClientStore,
         restClient: RestClient,
-        etherScanApiKeys: Map<String, String>,
-        oklinkApiKeys: Map<String, String>,
         historyItemsFilter: HistoryItemsFilter,
     ): this(
         databaseDriverFactory = databaseDriverFactory,
         historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
             configDAO = configDAO,
             apolloClientStore = apolloClientStore,
-            restClient = restClient,
-            etherScanApiKeys = etherScanApiKeys,
-            oklinkApiKeys = oklinkApiKeys
+            restClient = restClient
         ),
         historyItemsFilter = historyItemsFilter
     )

@@ -328,24 +328,7 @@ class SuperWalletExternalApiDAOImplTest {
             JsonObject(
                 content = mapOf(
                     "chainId" to JsonPrimitive(chainId),
-                    "tokens" to JsonObject(
-                        content = mapOf(
-                            "tokens" to JsonArray(
-                                content = listOf(
-                                    JsonObject(
-                                        content = mapOf(
-                                            "isUtility" to JsonPrimitive(true),
-                                            "tokenProperties" to JsonObject(
-                                                content = mapOf(
-                                                    "staking" to JsonPrimitive("parachain")
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        )
-                    )
+                    "staking" to JsonPrimitive("parachain")
                 )
             )
 

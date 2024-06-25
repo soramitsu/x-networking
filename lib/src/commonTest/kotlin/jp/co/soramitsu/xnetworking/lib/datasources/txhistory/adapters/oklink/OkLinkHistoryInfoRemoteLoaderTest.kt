@@ -35,7 +35,6 @@ class OkLinkHistoryInfoRemoteLoaderTest {
         const val pageCount = 1
         const val signAddress = ""
 
-        val apiKeys = mapOf(chainId to "")
         val filters = emptySet<TxFilter>()
     }
 
@@ -47,7 +46,6 @@ class OkLinkHistoryInfoRemoteLoaderTest {
 
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
         OkLinkHistoryInfoRemoteLoader(
-            apiKeys = apiKeys,
             configDAO = configDAO,
             restClient = restClient
         )
@@ -60,7 +58,7 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 OkLinkRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     symbol = symbol
                 )
             // Test Data End
@@ -103,7 +101,7 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 OkLinkRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     symbol = symbol
                 )
             // Test Data End
@@ -121,9 +119,10 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     pageCount = pageCount,
                     cursor = cursor,
                     signAddress = signAddress,
-                    chainInfo = ChainInfo.WithAssetSymbol(
+                    chainInfo = ChainInfo.OkLink(
                         chainId = chainId,
-                        symbol = symbol
+                        symbol = symbol,
+                        apiKey = ""
                     ),
                     filters = filters
                 )
@@ -145,7 +144,7 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 OkLinkRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     symbol = symbol
                 )
 
@@ -176,9 +175,10 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     pageCount = pageCount,
                     cursor = cursor,
                     signAddress = signAddress,
-                    chainInfo = ChainInfo.WithAssetSymbol(
+                    chainInfo = ChainInfo.OkLink(
                         chainId = chainId,
-                        symbol = symbol
+                        symbol = symbol,
+                        apiKey = ""
                     ),
                     filters = filters
                 )
@@ -200,7 +200,7 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 OkLinkRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     symbol = symbol
                 )
 
@@ -236,9 +236,10 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithAssetSymbol(
+                chainInfo = ChainInfo.OkLink(
                     chainId = chainId,
-                    symbol = symbol
+                    symbol = symbol,
+                    apiKey = ""
                 ),
                 filters = filters
             )
@@ -261,7 +262,7 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 OkLinkRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     symbol = symbol
                 )
 
@@ -385,9 +386,10 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithAssetSymbol(
+                chainInfo = ChainInfo.OkLink(
                     chainId = chainId,
-                    symbol = symbol
+                    symbol = symbol,
+                    apiKey = ""
                 ),
                 filters = filters
             )

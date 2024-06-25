@@ -35,7 +35,6 @@ class EtherScanHistoryInfoRemoteLoaderTest {
         const val pageCount = 0
         const val signAddress = ""
 
-        val apiKeys = mapOf(chainId to "")
         val filters = emptySet<TxFilter>()
     }
 
@@ -47,7 +46,6 @@ class EtherScanHistoryInfoRemoteLoaderTest {
 
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
         EtherScanHistoryInfoRemoteLoader(
-            apiKeys = apiKeys,
             configDAO = configDAO,
             restClient = restClient
         )
@@ -60,14 +58,14 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 NormalEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!
+                    apiKey = ""
                 )
 
             val etherScanErcBepRequestToMock =
                 ErcBepEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     contractAddress = contractAddress
                 )
             // Test Data End
@@ -116,14 +114,14 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 NormalEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!
+                    apiKey = ""
                 )
 
             val etherScanErcBepRequestToMock =
                 ErcBepEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     contractAddress = contractAddress
                 )
             // Test Data End
@@ -141,10 +139,11 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                     pageCount = pageCount,
                     cursor = cursor,
                     signAddress = signAddress,
-                    chainInfo = ChainInfo.WithEthereumType(
+                    chainInfo = ChainInfo.Ethereum(
                         chainId = chainId,
                         contractAddress = contractAddress,
-                        ethereumType = ethereumType
+                        ethereumType = ethereumType,
+                        apiKey = ""
                     ),
                     filters = filters
                 )
@@ -174,14 +173,14 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 NormalEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!
+                    apiKey = ""
                 )
 
             val etherScanErcBepRequestToMock =
                 ErcBepEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     contractAddress = contractAddress
                 )
             // Test Data End
@@ -199,10 +198,11 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                     pageCount = pageCount,
                     cursor = cursor,
                     signAddress = signAddress,
-                    chainInfo = ChainInfo.WithEthereumType(
+                    chainInfo = ChainInfo.Ethereum(
                         chainId = chainId,
                         contractAddress = contractAddress,
-                        ethereumType = ethereumType
+                        ethereumType = ethereumType,
+                        apiKey = ""
                     ),
                     filters = filters
                 )
@@ -232,14 +232,14 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 NormalEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!
+                    apiKey = ""
                 )
 
             val etherScanErcBepRequestToMock =
                 ErcBepEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     contractAddress = contractAddress
                 )
 
@@ -340,10 +340,11 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithEthereumType(
+                chainInfo = ChainInfo.Ethereum(
                     chainId = chainId,
                     contractAddress = contractAddress,
-                    ethereumType = ethereumType
+                    ethereumType = ethereumType,
+                    apiKey = ""
                 ),
                 filters = filters
             )
@@ -374,14 +375,14 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 NormalEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!
+                    apiKey = ""
                 )
 
             val etherScanErcBepRequestToMock =
                 ErcBepEtherScanRequest(
                     url = requestUrl,
                     address = signAddress,
-                    apiKey = apiKeys[chainId]!!,
+                    apiKey = "",
                     contractAddress = contractAddress
                 )
 
@@ -482,10 +483,11 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithEthereumType(
+                chainInfo = ChainInfo.Ethereum(
                     chainId = chainId,
                     contractAddress = contractAddress,
-                    ethereumType = ethereumType
+                    ethereumType = ethereumType,
+                    apiKey = ""
                 ),
                 filters = filters
             )

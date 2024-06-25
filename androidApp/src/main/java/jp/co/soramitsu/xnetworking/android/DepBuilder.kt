@@ -41,13 +41,7 @@ object DepBuilder {
 
     val historyRemoteLoaderFacade: HistoryInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
         configDAO = configDAO,
-        restClient = restClient,
-        etherScanApiKeys = mapOf(
-            ChainInfoConstants.EtherScan.chainInfo.chainId to "paste your EtherScan key"
-        ),
-        oklinkApiKeys = mapOf(
-            ChainInfoConstants.OkLink.chainInfo.chainId to "paste your OkLink key"
-        )
+        restClient = restClient
     )
 
     val blockExplorerRepository: BlockExplorerRepository = BlockExplorerRepositoryImpl(

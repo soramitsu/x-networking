@@ -8,15 +8,23 @@ sealed class ChainInfo {
         override val chainId: String
     ): ChainInfo()
 
-    class WithEthereumType(
+    class Ethereum(
+        override val chainId: String,
+        val contractAddress: String,
+        val ethereumType: String?,
+        val apiKey: String
+    ): ChainInfo()
+
+    class OkLink(
+        override val chainId: String,
+        val symbol: String,
+        val apiKey: String
+    ): ChainInfo()
+
+    class Zeta(
         override val chainId: String,
         val contractAddress: String,
         val ethereumType: String?
-    ): ChainInfo()
-
-    class WithAssetSymbol(
-        override val chainId: String,
-        val symbol: String
     ): ChainInfo()
 
 }
