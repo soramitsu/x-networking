@@ -15,13 +15,57 @@ import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientExcepti
 import jp.co.soramitsu.xnetworking.db.Extrinsics
 import jp.co.soramitsu.xnetworking.db.SignerInfo
 import jp.co.soramitsu.xnetworking.db.SoraHistoryDatabase
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.HistoryInfoRemoteLoaderFacade
+import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class TxHistoryRepositoryImpl(
     private val databaseDriverFactory: ExpectActualDBDriverFactory,
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader,
     private val historyItemsFilter: HistoryItemsFilter
 ): TxHistoryRepository(), HistoryItemsFilter by historyItemsFilter {
+
+    constructor(
+        databaseDriverFactory: ExpectActualDBDriverFactory,
+        configDAO: ConfigDAO,
+        restClient: RestClient,
+        etherScanApiKeys: Map<String, String>,
+        oklinkApiKeys: Map<String, String>,
+        historyItemsFilter: HistoryItemsFilter,
+    ): this(
+        databaseDriverFactory = databaseDriverFactory,
+        historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
+            configDAO = configDAO,
+            apolloClientStore = ApolloClientStoreImpl(),
+            restClient = restClient,
+            etherScanApiKeys = etherScanApiKeys,
+            oklinkApiKeys = oklinkApiKeys
+        ),
+        historyItemsFilter = historyItemsFilter
+    )
+
+    constructor(
+        databaseDriverFactory: ExpectActualDBDriverFactory,
+        configDAO: ConfigDAO,
+        apolloClientStore: ApolloClientStore,
+        restClient: RestClient,
+        etherScanApiKeys: Map<String, String>,
+        oklinkApiKeys: Map<String, String>,
+        historyItemsFilter: HistoryItemsFilter,
+    ): this(
+        databaseDriverFactory = databaseDriverFactory,
+        historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
+            configDAO = configDAO,
+            apolloClientStore = apolloClientStore,
+            restClient = restClient,
+            etherScanApiKeys = etherScanApiKeys,
+            oklinkApiKeys = oklinkApiKeys
+        ),
+        historyItemsFilter = historyItemsFilter
+    )
 
     private val soraHistoryDBImpl = SoraHistoryDBImpl(
         soraHistoryDatabase = SoraHistoryDatabase(

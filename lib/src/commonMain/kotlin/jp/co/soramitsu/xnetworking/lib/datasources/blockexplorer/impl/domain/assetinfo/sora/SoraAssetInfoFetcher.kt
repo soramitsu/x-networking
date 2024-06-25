@@ -25,7 +25,7 @@ class SoraAssetInfoFetcher(
 
         while (true) {
             val response = apolloClientStore.query(
-                configDAO.stakingUrl(chainId),
+                configDAO.historyUrl(chainId),
                 GetAssetsInfoQuery(
                     pageCount = 100,
                     cursor = cursor,

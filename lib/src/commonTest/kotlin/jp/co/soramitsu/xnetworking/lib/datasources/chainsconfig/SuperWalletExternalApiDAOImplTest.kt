@@ -6,7 +6,7 @@ import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
@@ -26,11 +26,11 @@ class SuperWalletExternalApiDAOImplTest {
     }
 
     @Mock
-    private val configFetcher = mock(classOf<ConfigFetcher>())
+    private val configParser = mock(classOf<ConfigParser>())
 
     private val configDAO: ConfigDAO =
         SuperWalletConfigDAOImpl(
-            configFetcher = configFetcher
+            configParser = configParser
         )
 
     @Test
@@ -53,7 +53,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -63,7 +63,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
     }
 
@@ -86,12 +86,12 @@ class SuperWalletExternalApiDAOImplTest {
                 )
             )
 
-        val expectedResult = ExternalApiType.SORA
+        val expectedResult = ExternalApiType.Sora
         // Test Data End
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -99,7 +99,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }
@@ -125,7 +125,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -135,7 +135,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
     }
 
@@ -163,7 +163,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -171,7 +171,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }
@@ -197,7 +197,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -207,7 +207,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
     }
 
@@ -230,12 +230,12 @@ class SuperWalletExternalApiDAOImplTest {
                 )
             )
 
-        val expectedResult = ExternalApiType.SORA
+        val expectedResult = ExternalApiType.Sora
         // Test Data End
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -243,7 +243,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }
@@ -269,7 +269,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -279,7 +279,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
     }
 
@@ -307,7 +307,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -315,7 +315,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }
@@ -354,7 +354,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -362,7 +362,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }
@@ -399,7 +399,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Mock Preparation Start
         coEvery {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.returns(configResponseToReturn)
         // Mock Preparation End
 
@@ -407,7 +407,7 @@ class SuperWalletExternalApiDAOImplTest {
 
         // Verification & Assertion
         coVerify {
-            configFetcher.fetch(chainId)
+            configParser.getChainObjectById(chainId)
         }.wasInvoked(1)
 
         assertTrue { result === expectedResult }

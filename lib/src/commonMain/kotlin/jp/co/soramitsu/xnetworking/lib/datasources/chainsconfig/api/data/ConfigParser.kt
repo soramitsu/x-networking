@@ -11,11 +11,12 @@ import kotlin.coroutines.cancellation.CancellationException
  *
  * It is a publicly available for reason: to make mocking process easier
  */
-abstract class ConfigFetcher {
+abstract class ConfigParser {
     @Throws(
+        IllegalArgumentException::class,
         RestClientException::class,
         CancellationException::class
     )
-    abstract suspend fun fetch(chainId: String): JsonObject
+    abstract suspend fun getChainObjectById(chainId: String): JsonObject
 }
 

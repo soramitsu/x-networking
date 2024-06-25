@@ -12,6 +12,16 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Unbo
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.UnbondingFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.ApyFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.assetinfo.AssetInfoFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.FiatFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.referralreward.ReferralRewardFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.unbonding.UnbondingFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.ValidatorsFetcherFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class BlockExplorerRepositoryImpl(
     private val apyFetcher: ApyFetcher,
@@ -21,6 +31,47 @@ class BlockExplorerRepositoryImpl(
     private val unbondingFetcher: UnbondingFetcher,
     private val validatorsFetcher: ValidatorsFetcher
 ): BlockExplorerRepository() {
+
+    constructor(
+        configDAO: ConfigDAO,
+        restClient: RestClient,
+    ): this(
+        configDAO = configDAO,
+        restClient = restClient,
+        apolloClientStore = ApolloClientStoreImpl()
+    )
+
+    constructor(
+        configDAO: ConfigDAO,
+        restClient: RestClient,
+        apolloClientStore: ApolloClientStore
+    ): this(
+        apyFetcher = ApyFetcherFacade(
+            apolloClientStore = apolloClientStore,
+            restClient = restClient,
+            configDAO = configDAO
+        ),
+        assetInfoFetcher = AssetInfoFetcherFacade(
+            configDAO = configDAO,
+            apolloClientStore = apolloClientStore
+        ),
+        fiatFetcher = FiatFetcherFacade(
+            apolloClientStore = apolloClientStore,
+            configDAO = configDAO
+        ),
+        referralRewardFetcher = ReferralRewardFetcherFacade(
+            configDAO = configDAO,
+            apolloClientStore = apolloClientStore
+        ),
+        unbondingFetcher = UnbondingFetcherFacade(
+            configDAO = configDAO,
+            restClient = restClient
+        ),
+        validatorsFetcher = ValidatorsFetcherFacade(
+            configDAO = configDAO,
+            restClient = restClient,
+        )
+    )
 
     override suspend fun getApy(
         chainId: String,

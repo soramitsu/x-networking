@@ -21,7 +21,7 @@ class SoraApyFetcher(
 
         while (true) {
             val response = apolloClientStore.query(
-                configDAO.stakingUrl(chainId),
+                configDAO.historyUrl(chainId),
                 GetSbApyInfoQuery(
                     pageCount = 100,
                     cursor = cursor

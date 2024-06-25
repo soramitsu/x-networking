@@ -21,7 +21,7 @@ class SubSquidApyFetcher(
 
         check(
             configDAO.staking(chainId) === StakingOption.PARACHAIN
-        ) { "Fetching of Apy from block explorer is only allowed in networks with paraChain type of staking" }
+        ) { "Fetching of Apy from block explorer is only allowed in networks with relayChain type of staking" }
 
         val stakers = restClient.post(
             request = SubSquidApyRequest(

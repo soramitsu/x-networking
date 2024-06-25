@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl
 
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
@@ -11,21 +11,21 @@ import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
 import jp.co.soramitsu.xnetworking.lib.engines.utils.objectOrNull
 
 class SuperWalletConfigDAOImpl(
-    private val configFetcher: ConfigFetcher
+    private val configParser: ConfigParser
 ): ConfigDAO() {
 
     override suspend fun historyType(chainId: String): ExternalApiType {
-        val historyType = configFetcher.fetch(chainId)
+        val historyType = configParser.getChainObjectById(chainId)
             .objectOrNull("externalApi")
             .objectOrNull("history")
             .fieldOrNull("type")
 
-        return enumValueOfNullable<ExternalApiType>(historyType)
+        return ExternalApiType.valueOf(historyType)
             ?: throw ExternalApiDAOException.NullType(chainId)
     }
 
     override suspend fun historyUrl(chainId: String): String {
-        val historyUrl = configFetcher.fetch(chainId)
+        val historyUrl = configParser.getChainObjectById(chainId)
             .objectOrNull("externalApi")
             .objectOrNull("history")
             .fieldOrNull("url")
@@ -34,17 +34,17 @@ class SuperWalletConfigDAOImpl(
     }
 
     override suspend fun stakingType(chainId: String): ExternalApiType {
-        val stakingType = configFetcher.fetch(chainId)
+        val stakingType = configParser.getChainObjectById(chainId)
             .objectOrNull("externalApi")
             .objectOrNull("staking")
             .fieldOrNull("type")
 
-        return enumValueOfNullable<ExternalApiType>(stakingType)
+        return ExternalApiType.valueOf(stakingType)
             ?: throw ExternalApiDAOException.NullType(chainId)
     }
 
     override suspend fun stakingUrl(chainId: String): String {
-        val historyUrl = configFetcher.fetch(chainId)
+        val historyUrl = configParser.getChainObjectById(chainId)
             .objectOrNull("externalApi")
             .objectOrNull("staking")
             .fieldOrNull("url")
@@ -53,13 +53,10 @@ class SuperWalletConfigDAOImpl(
     }
 
     override suspend fun staking(chainId: String): StakingOption? {
-        val staking = configFetcher.fetch(chainId)
-            .objectOrNull("tokens")
-            .arrayOrNull("tokens")
-            ?.firstOrNull { it.fieldOrNull("isUtility") == "true" }
-            .objectOrNull("tokenProperties")
+        val staking = configParser.getChainObjectById(chainId)
+            .fieldOrNull("staking")
 
-        return enumValueOfNullable<StakingOption>(staking.fieldOrNull("staking"))
+        return enumValueOfNullable<StakingOption>(staking)
     }
 
 }
