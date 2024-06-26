@@ -52,7 +52,7 @@ class SoraFiatFetcherTest {
 
             // Mock Preparation Start
             coEvery {
-                configDAO.stakingUrl(
+                configDAO.historyUrl(
                     chainId = chainId
                 )
             }.throws(ExternalApiDAOException.NullUrl(chainId))
@@ -109,7 +109,7 @@ class SoraFiatFetcherTest {
 
             // Mock Preparation Start
             coEvery {
-                configDAO.stakingUrl(
+                configDAO.historyUrl(
                     chainId = chainId
                 )
             }.returns(requestUrl)

@@ -1,7 +1,7 @@
 plugins {
     //trick: for the same plugin versions in all sub-modules
-    id("com.android.application").version("8.4.1").apply(false)
-    id("com.android.library").version("8.4.1").apply(false)
+    id("com.android.application").version("8.5.0").apply(false)
+    id("com.android.library").version("8.5.0").apply(false)
     id("com.squareup.sqldelight").version("1.5.5").apply(false)
     kotlin("android").version("1.9.24").apply(false)
     kotlin("multiplatform").version("1.9.24").apply(false)

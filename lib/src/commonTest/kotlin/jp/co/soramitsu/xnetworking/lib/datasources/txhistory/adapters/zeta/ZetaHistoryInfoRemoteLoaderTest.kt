@@ -135,7 +135,7 @@ class ZetaHistoryInfoRemoteLoaderTest {
                     pageCount = pageCount,
                     cursor = cursor,
                     signAddress = signAddress,
-                    chainInfo = ChainInfo.WithEthereumType(
+                    chainInfo = ChainInfo.Zeta(
                         chainId = chainId,
                         contractAddress = contractAddress,
                         ethereumType = ethereumType
@@ -255,7 +255,7 @@ class ZetaHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithEthereumType(
+                chainInfo = ChainInfo.Zeta(
                     chainId = chainId,
                     contractAddress = contractAddress,
                     ethereumType = ethereumType
@@ -376,7 +376,7 @@ class ZetaHistoryInfoRemoteLoaderTest {
                 pageCount = pageCount,
                 cursor = cursor,
                 signAddress = signAddress,
-                chainInfo = ChainInfo.WithEthereumType(
+                chainInfo = ChainInfo.Zeta(
                     chainId = chainId,
                     contractAddress = contractAddress,
                     ethereumType = ethereumType

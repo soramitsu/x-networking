@@ -52,7 +52,7 @@ class SoraApyFetcherTest {
 
             // Mock Preparation Start
             coEvery {
-                configDAO.stakingUrl(
+                configDAO.historyUrl(
                     chainId = chainId
                 )
             }.throws(ExternalApiDAOException.NullUrl(chainId))

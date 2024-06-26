@@ -5,13 +5,13 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInf
 enum class ChainInfoConstants(val chainInfo: ChainInfo) {
 
     EtherScan(
-        chainInfo = ChainInfo.WithEthereumType("1", "", ""),
+        chainInfo = ChainInfo.Ethereum("1", "", "", "Paste Your Api Key"),
     ),
     GiantSquid(
         chainInfo = ChainInfo.Simple("48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a")
     ),
     OkLink(
-        chainInfo = ChainInfo.WithAssetSymbol("195", "okb")
+        chainInfo = ChainInfo.OkLink("195", "okb", "Paste Your Api Key")
     ),
     Reef(
         chainInfo = ChainInfo.Simple("7834781d38e4798d548e34ec947d19deea29df148a7bf32484b7b24dacf8d4b7")
@@ -26,7 +26,7 @@ enum class ChainInfoConstants(val chainInfo: ChainInfo) {
         chainInfo = ChainInfo.Simple("cd4d732201ebe5d6b014edda071c4203e16867305332301dc8d092044b28e554")
     ),
     Zeta(
-        chainInfo = ChainInfo.WithEthereumType("7001", "", "")
+        chainInfo = ChainInfo.Zeta("7001", "", "")
     )
 
 }

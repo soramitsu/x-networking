@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data
 
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
 import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
 import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
@@ -9,15 +9,15 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 
-class InMemorySavingConfigFetcherImpl(
+class RemoteConfigParserImpl(
     private val restClient: RestClient,
     private val chainsRequestUrl: String
-): ConfigFetcher() {
+): ConfigParser() {
 
     private val cachedValueReadWriteMutex: Mutex = Mutex()
     private var cachedValue: Map<String, JsonObject>? = null
 
-    override suspend fun fetch(chainId: String): JsonObject {
+    override suspend fun getChainObjectById(chainId: String): JsonObject {
         // Pattern: double-checked locking for singletons
         if (cachedValue == null) {
             cachedValueReadWriteMutex.withLock {

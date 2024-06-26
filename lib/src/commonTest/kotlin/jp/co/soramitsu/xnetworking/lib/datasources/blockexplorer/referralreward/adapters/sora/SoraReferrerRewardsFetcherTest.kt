@@ -55,7 +55,7 @@ class SoraReferrerRewardsFetcherTest {
 
             // Mock Preparation Start
             coEvery {
-                configDAO.stakingUrl(
+                configDAO.historyUrl(
                     chainId = chainId
                 )
             }.throws(ExternalApiDAOException.NullUrl(chainId))
@@ -114,7 +114,7 @@ class SoraReferrerRewardsFetcherTest {
 
             // Mock Preparation Start
             coEvery {
-                configDAO.stakingUrl(
+                configDAO.historyUrl(
                     chainId = chainId
                 )
             }.returns(requestUrl)

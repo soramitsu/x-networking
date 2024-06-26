@@ -6,8 +6,8 @@ import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigFetcher
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data.InMemorySavingConfigFetcherImpl
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data.RemoteConfigParserImpl
 import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import kotlinx.coroutines.test.runTest
@@ -28,8 +28,8 @@ class InMemorySavingConfigFetcherImplTest {
     private val restClient = mock(classOf<RestClient>())
 
 
-    private val configFetcher: ConfigFetcher =
-        InMemorySavingConfigFetcherImpl(
+    private val configParser: ConfigParser =
+        RemoteConfigParserImpl(
             restClient = restClient,
             chainsRequestUrl = requestUrl
         )
@@ -64,8 +64,8 @@ class InMemorySavingConfigFetcherImplTest {
         // Mocks Preparation End
 
         // Double running should be checked accordingly in verify block
-        configFetcher.fetch(chainId)
-        val result = configFetcher.fetch(chainId)
+        configParser.getChainObjectById(chainId)
+        val result = configParser.getChainObjectById(chainId)
 
         // Verification & Assertion
         // Verify that implementation is caching, and network request was performed once

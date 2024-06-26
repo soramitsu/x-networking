@@ -20,7 +20,7 @@ class SoraFiatFetcher(
 
         while (true) {
             val response = apolloClientStore.query(
-                configDAO.stakingUrl(chainId),
+                configDAO.historyUrl(chainId),
                 GetFiatDataQuery(
                     pageCount = 100,
                     cursor = cursor

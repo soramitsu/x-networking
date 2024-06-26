@@ -10,7 +10,6 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistor
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class OkLinkHistoryInfoRemoteLoader(
-    private val apiKeys: Map<String, String>,
     private val configDAO: ConfigDAO,
     private val restClient: RestClient
 ): HistoryInfoRemoteLoader() {
@@ -22,14 +21,14 @@ class OkLinkHistoryInfoRemoteLoader(
         chainInfo: ChainInfo,
         filters: Set<TxFilter>
     ): TxHistoryInfo {
-        require(chainInfo is ChainInfo.WithAssetSymbol)
+        require(chainInfo is ChainInfo.OkLink)
 
         val response = restClient.get(
             request = OkLinkRequest(
                 url = configDAO.historyUrl(chainInfo.chainId),
                 address = signAddress,
                 symbol = chainInfo.symbol,
-                apiKey = checkNotNull(apiKeys[chainInfo.chainId]),
+                apiKey = chainInfo.apiKey,
             )
         )
 

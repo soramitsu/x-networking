@@ -21,8 +21,8 @@ class ZetaHistoryInfoRemoteLoader(
         chainInfo: ChainInfo,
         filters: Set<TxFilter>
     ): TxHistoryInfo {
-        require(chainInfo is ChainInfo.WithEthereumType) {
-            "Zeta blockExplorer can not be used with non-ethereum chains."
+        require(chainInfo is ChainInfo.Zeta) {
+            "Zeta blockExplorer can not be used with non-zeta chains."
         }
 
         val response = restClient.get(

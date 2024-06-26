@@ -21,7 +21,7 @@ class SoraReferralRewardsFetcher(
 
         while (true) {
             val response = apolloClientStore.query(
-                configDAO.stakingUrl(chainId),
+                configDAO.historyUrl(chainId),
                 GetReferrerRewardsQuery(
                     pageCount = 100,
                     cursor = cursor,
