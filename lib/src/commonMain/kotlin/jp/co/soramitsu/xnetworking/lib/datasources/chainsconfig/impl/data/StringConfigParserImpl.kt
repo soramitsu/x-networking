@@ -17,18 +17,21 @@ class StringConfigParserImpl(
 
     private var string: String? = null
 
+    private var hasStringChanged: Boolean = false
+
     suspend fun replaceStringJson(value: String) {
         cachedValueReadWriteMutex.withLock {
             cachedValue = null
             string = value
+            hasStringChanged = true
         }
     }
 
     override suspend fun getChainObjectById(chainId: String): JsonObject {
         // Pattern: double-checked locking for singletons
-        if (cachedValue == null) {
+        if (cachedValue == null || hasStringChanged) {
             cachedValueReadWriteMutex.withLock {
-                if (cachedValue == null)
+                if (cachedValue == null || hasStringChanged) {
                     cachedValue = string?.let { value ->
                         json.decodeFromString(
                             string = value,
@@ -40,6 +43,9 @@ class StringConfigParserImpl(
                             element.fieldOrNull("chainId").orEmpty() to element
                         }.toMap()
                     }
+
+                    hasStringChanged = false
+                }
             }
         }
         return requireNotNull(

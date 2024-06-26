@@ -15,24 +15,30 @@ class JsonConfigParserImpl : ConfigParser() {
 
     private var jsonElement: JsonElement? = null
 
+    private var hasContentChanged: Boolean = false
+
     suspend fun replaceJson(json: JsonElement) {
         cachedValueReadWriteMutex.withLock {
             cachedValue = null
             jsonElement = json
+            hasContentChanged = true
         }
     }
 
     override suspend fun getChainObjectById(chainId: String): JsonObject {
         // Pattern: double-checked locking for singletons
-        if (cachedValue == null) {
+        if (cachedValue == null || hasContentChanged) {
             cachedValueReadWriteMutex.withLock {
-                if (cachedValue == null)
+                if (cachedValue == null || hasContentChanged) {
                     cachedValue = jsonElement?.jsonArray?.mapNotNull { element ->
                         if (element !is JsonObject)
                             return@mapNotNull null
 
                         element.fieldOrNull("chainId").orEmpty() to element
                     }?.toMap()
+
+                    hasContentChanged = false
+                }
             }
         }
         return requireNotNull(
