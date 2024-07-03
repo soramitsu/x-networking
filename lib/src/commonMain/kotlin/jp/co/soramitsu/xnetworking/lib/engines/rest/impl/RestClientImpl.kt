@@ -95,14 +95,8 @@ class RestClientImpl(
                     block.invoke()
                 }
             )
-        } catch (e: ResponseException) {
-            val code: Int = when (e) {
-                is RedirectResponseException -> 3
-                is ClientRequestException -> 4
-                is ServerResponseException -> 5
-                else -> 0
-            }
-            throw RestClientException.WithCode(code, e.message.orEmpty(), e.cause)
+        } catch (e: RestClientException.WithCode) {
+            throw e
         } catch (e: SerializationException) {
             throw RestClientException.WhileSerialization(e.message.orEmpty(), e.cause)
         } catch (e: Throwable) {
