@@ -16,9 +16,17 @@ abstract class RestClient {
         request: AbstractRestServerRequest.WithBody<T>
     ): T
 
+    abstract suspend fun postReturnString(
+        request: AbstractRestServerRequest.WithBody<String>
+    ): String
+
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
     abstract suspend fun <T> get(
         request: AbstractRestServerRequest<T>
     ): T
+
+    abstract suspend fun getReturnString(
+        request: AbstractRestServerRequest<String>
+    ): String
 }
