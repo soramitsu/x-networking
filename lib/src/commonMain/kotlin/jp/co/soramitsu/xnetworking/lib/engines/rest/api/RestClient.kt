@@ -12,13 +12,13 @@ abstract class RestClient {
 
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
-    abstract suspend fun <T> post(
+    abstract suspend fun <T: Any> post(
         request: AbstractRestServerRequest.WithBody<T>
     ): T
 
     @OptIn(ExperimentalObjCRefinement::class)
     @HiddenFromObjC
-    abstract suspend fun <T> get(
+    abstract suspend fun <T: Any> get(
         request: AbstractRestServerRequest<T>
     ): T
 }

@@ -5,8 +5,9 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Transient
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
+import kotlin.reflect.KClass
 
-abstract class AbstractRestServerRequest<T> {
+abstract class AbstractRestServerRequest<T: Any> {
 
     open val bearerToken: String? = null
 
@@ -25,8 +26,14 @@ abstract class AbstractRestServerRequest<T> {
     @Transient
     abstract val responseDeserializer: DeserializationStrategy<T>
 
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
+    @Transient
+    abstract val responseClazz: KClass<T>
+
     /**
      * Specific Implementation of equals that ignores @param #responseDeserializer
+     * and @param #responseClazz
      */
     override fun equals(other: Any?): Boolean {
         if (other !is AbstractRestServerRequest<*>)
@@ -65,7 +72,7 @@ abstract class AbstractRestServerRequest<T> {
         return super.hashCode()
     }
 
-    abstract class WithBody<Response>: AbstractRestServerRequest<Response>() {
+    abstract class WithBody<Response: Any>: AbstractRestServerRequest<Response>() {
 
         abstract val requestContentType: RestClient.ContentType
         
