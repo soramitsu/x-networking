@@ -5,6 +5,7 @@ import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServe
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.builtins.serializer
 import kotlin.experimental.ExperimentalObjCName
+import kotlin.reflect.KClass
 
 
 @OptIn(ExperimentalObjCName::class)
@@ -12,9 +13,10 @@ import kotlin.experimental.ExperimentalObjCName
 class JsonGetRequestIOS(
     override val url: String,
     override val headers: Map<String, String>? = null,
-    override val queryParams: Map<String, String>? = null,
+    override val queryParams: Map<String, String>? = null
 ): AbstractRestServerRequest<String>() {
     override val responseDeserializer: DeserializationStrategy<String> = String.serializer()
+    override val responseClazz: KClass<String> = String::class
 }
 
 @OptIn(ExperimentalObjCName::class)
@@ -25,4 +27,5 @@ class JsonPostRequestIOS(
 ): AbstractRestServerRequest.WithBody<String>() {
     override val requestContentType: RestClient.ContentType = RestClient.ContentType.JSON
     override val responseDeserializer: DeserializationStrategy<String> = String.serializer()
+    override val responseClazz: KClass<String> = String::class
 }

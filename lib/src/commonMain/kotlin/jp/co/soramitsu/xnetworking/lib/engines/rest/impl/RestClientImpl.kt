@@ -1,9 +1,5 @@
 package jp.co.soramitsu.xnetworking.lib.engines.rest.impl
 
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
-import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.accept
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -24,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationException
+import kotlin.reflect.KClass
 
 class RestClientImpl(
     private val restClientConfig: AbstractRestClientConfig
@@ -31,8 +28,11 @@ class RestClientImpl(
 
     private val client by httpClientBuilder { restClientConfig }
 
-    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T =
-        requestCatchingAndDeserialize(request.responseDeserializer) {
+    override suspend fun <T: Any> post(request: AbstractRestServerRequest.WithBody<T>): T =
+        requestCatchingAndDeserialize(
+            deserializer = request.responseDeserializer,
+            clazz = request.responseClazz
+        ) {
             client.post(request.url) {
                 if (request.requestContentType === ContentType.JSON)
                     contentType(io.ktor.http.ContentType.Application.Json)
@@ -58,8 +58,11 @@ class RestClientImpl(
             }.bodyAsText()
         }
 
-    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T =
-        requestCatchingAndDeserialize(request.responseDeserializer) {
+    override suspend fun <T: Any> get(request: AbstractRestServerRequest<T>): T =
+        requestCatchingAndDeserialize(
+            deserializer = request.responseDeserializer,
+            clazz = request.responseClazz
+        ) {
             client.get(request.url) {
                 request.bearerToken.apply {
                     if (!this.isNullOrBlank())
@@ -84,16 +87,22 @@ class RestClientImpl(
             }.bodyAsText()
         }
 
-    private suspend fun <T> requestCatchingAndDeserialize(
+    private suspend fun <T: Any> requestCatchingAndDeserialize(
         deserializer: DeserializationStrategy<T>,
+        clazz: KClass<T>,
         block: suspend () -> String
     ) = withContext(Dispatchers.Default) {
         try {
+            val value = withContext(Dispatchers.CommonIO) { block.invoke() }
+
+            if (clazz == String::class) {
+                @Suppress("UNCHECKED_CAST")
+                return@withContext value as T
+            }
+
             restClientConfig.getOrCreateJsonConfig().decodeFromString(
                 deserializer = deserializer,
-                string = withContext(Dispatchers.CommonIO) {
-                    block.invoke()
-                }
+                string = value
             )
         } catch (e: RestClientException.WithCode) {
             throw e

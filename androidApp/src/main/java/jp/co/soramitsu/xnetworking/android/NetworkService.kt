@@ -1,12 +1,10 @@
 package jp.co.soramitsu.appxnetworking
 
-import androidx.constraintlayout.solver.state.State.Chain
 import jp.co.soramitsu.xnetworking.android.ChainInfoConstants
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.BlockExplorerRepository
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
-import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
-import kotlinx.serialization.DeserializationStrategy
+import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -18,12 +16,16 @@ class NetworkService(
 ) {
 
     suspend fun getRequest() = restClient.get(
-        SimpleJSONGetRequestHolder(url = "https://www.github.com")
+        request = JsonGetRequest(
+            url = "https://www.github.com",
+            responseDeserializer = ListSerializer(AssetRemote.serializer())
+        )
     )
 
     suspend fun getAssets() = restClient.get(
-        SimpleJSONGetRequestHolder(
-            url = "https://raw.githubusercontent.com/soramitsu/fearless-utils/android/v2/chains/assets.json"
+        request = JsonGetRequest(
+            url = "https://raw.githubusercontent.com/soramitsu/fearless-utils/android/v2/chains/assets.json",
+            responseDeserializer = ListSerializer(AssetRemote.serializer())
         )
     )
 
@@ -81,11 +83,6 @@ class NetworkService(
 //        return soraConfigBuilder.getConfig()
 //    }
 }
-
-private data class SimpleJSONGetRequestHolder(
-    override val url: String,
-    override val responseDeserializer: DeserializationStrategy<List<AssetRemote>> = ListSerializer(AssetRemote.serializer())
-): AbstractRestServerRequest<List<AssetRemote>>()
 
 @Serializable
 data class AssetRemote(
