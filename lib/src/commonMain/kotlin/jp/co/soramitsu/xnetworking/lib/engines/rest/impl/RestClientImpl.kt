@@ -1,9 +1,5 @@
 package jp.co.soramitsu.xnetworking.lib.engines.rest.impl
 
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.RedirectResponseException
-import io.ktor.client.plugins.ResponseException
-import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.request.accept
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -27,64 +23,80 @@ import kotlinx.serialization.SerializationException
 
 class RestClientImpl(
     private val restClientConfig: AbstractRestClientConfig
-): RestClient() {
+) : RestClient() {
 
     private val client by httpClientBuilder { restClientConfig }
 
-    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T =
-        requestCatchingAndDeserialize(request.responseDeserializer) {
-            client.post(request.url) {
-                if (request.requestContentType === ContentType.JSON)
-                    contentType(io.ktor.http.ContentType.Application.Json)
+    override suspend fun <T> post(
+        request: AbstractRestServerRequest.WithBody<T>
+    ): T = tryRequestAndDeserialize(request.responseDeserializer) {
+        internalPost(request)
+    }
 
-                if (request.responseContentType === ContentType.JSON)
-                    accept(io.ktor.http.ContentType.Application.Json)
+    override suspend fun postReturnString(
+        request: AbstractRestServerRequest.WithBody<String>
+    ): String = internalPost(request)
 
-                request.headers?.filterNot { (key, value) ->
-                    key.isBlank() || value.isBlank()
-                }?.forEach { (key, value) -> header(key, value) }
+    override suspend fun <T> get(
+        request: AbstractRestServerRequest<T>
+    ): T = tryRequestAndDeserialize(request.responseDeserializer) {
+        internalGet(request)
+    }
 
-                request.bearerToken.apply {
-                    if (!this.isNullOrBlank())
-                        bearerAuth(this)
-                }
+    override suspend fun getReturnString(
+        request: AbstractRestServerRequest<String>
+    ): String = internalGet(request)
 
-                request.userAgent.apply {
-                    if (!this.isNullOrBlank())
-                        userAgent(this)
-                }
+    private suspend fun <T> internalPost(request: AbstractRestServerRequest.WithBody<T>): String =
+        client.post(request.url) {
+            if (request.requestContentType === ContentType.JSON)
+                contentType(io.ktor.http.ContentType.Application.Json)
 
-                setBody(request.body)
-            }.bodyAsText()
-        }
+            if (request.responseContentType === ContentType.JSON)
+                accept(io.ktor.http.ContentType.Application.Json)
 
-    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T =
-        requestCatchingAndDeserialize(request.responseDeserializer) {
-            client.get(request.url) {
-                request.bearerToken.apply {
-                    if (!this.isNullOrBlank())
-                        bearerAuth(this)
-                }
+            request.headers?.filterNot { (key, value) ->
+                key.isBlank() || value.isBlank()
+            }?.forEach { (key, value) -> header(key, value) }
 
-                request.headers?.filterNot { (key, value) ->
-                    key.isBlank() || value.isBlank()
-                }?.forEach { (key, value) -> header(key, value) }
+            request.bearerToken.apply {
+                if (!this.isNullOrBlank())
+                    bearerAuth(this)
+            }
 
-                request.userAgent.apply {
-                    if (!this.isNullOrBlank())
-                        userAgent(this)
-                }
+            request.userAgent.apply {
+                if (!this.isNullOrBlank())
+                    userAgent(this)
+            }
 
-                if (request.responseContentType === ContentType.JSON)
-                    accept(io.ktor.http.ContentType.Application.Json)
+            setBody(request.body)
+        }.bodyAsText()
 
-                request.queryParams?.forEach { (queryName, queryValue) ->
-                    parameter(queryName, queryValue)
-                }
-            }.bodyAsText()
-        }
+    private suspend fun <T> internalGet(request: AbstractRestServerRequest<T>): String =
+        client.get(request.url) {
+            request.bearerToken.apply {
+                if (!this.isNullOrBlank())
+                    bearerAuth(this)
+            }
 
-    private suspend fun <T> requestCatchingAndDeserialize(
+            request.headers?.filterNot { (key, value) ->
+                key.isBlank() || value.isBlank()
+            }?.forEach { (key, value) -> header(key, value) }
+
+            request.userAgent.apply {
+                if (!this.isNullOrBlank())
+                    userAgent(this)
+            }
+
+            if (request.responseContentType === ContentType.JSON)
+                accept(io.ktor.http.ContentType.Application.Json)
+
+            request.queryParams?.forEach { (queryName, queryValue) ->
+                parameter(queryName, queryValue)
+            }
+        }.bodyAsText()
+
+    private suspend fun <T> tryRequestAndDeserialize(
         deserializer: DeserializationStrategy<T>,
         block: suspend () -> String
     ) = withContext(Dispatchers.Default) {
@@ -95,12 +107,8 @@ class RestClientImpl(
                     block.invoke()
                 }
             )
-        } catch (e: RestClientException.WithCode) {
-            throw e
         } catch (e: SerializationException) {
             throw RestClientException.WhileSerialization(e.message.orEmpty(), e.cause)
-        } catch (e: Throwable) {
-            throw RestClientException.SimpleException(e.message.orEmpty(), e.cause)
         }
     }
 
