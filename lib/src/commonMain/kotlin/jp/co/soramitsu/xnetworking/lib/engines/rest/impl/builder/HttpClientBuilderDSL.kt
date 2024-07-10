@@ -50,6 +50,18 @@ private class HttpClientBuilder(config: AbstractRestClientConfig) : ReadOnlyProp
                 this.socketTimeoutMillis = config.getSocketTimeoutMillis()
             }
 
+            /*
+                When installing HttpCallValidator, we must silence all the default validators
+                set by Ktor internally; thus, expectSuccess is set to False
+
+                On the other hand, if it is set to True, all the responses
+                that have status code >= 300 will be handled by default validators,
+                prior to our custom one, and they will throw default exceptions
+                before we will be able to process them and parse them to our own liking
+             */
+            expectSuccess = false
+
+            // Installing custom HttpCallValidator
             install(HttpCallValidator) {
                 validateResponse { response: HttpResponse ->
                     val statusCode = response.status.value
