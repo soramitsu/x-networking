@@ -26,9 +26,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
@@ -142,25 +145,31 @@ private fun MainScreen() {
                 Text(text = "btn3")
             },
         )
-//        Spacer(modifier = Modifier.size(8.dp))
-//        Button(
-//            onClick = {
-//                GlobalScope.launch {
-//                    Log.e("foxxx", "r start btn 4")
-//                    try {
-////                        val url = "https://raw.githubusercontent.com/arvifox/arvifoxandroid/develop/felete/mwr/chains.json"
-//                        val url = "http://www.arvifox.com/soramitsu/chains.json"
-//                        val r = DepBuilder.soraNetworkClient.createJsonRequest<List<ChainDto>>(url)
-//                        Log.e("foxxx", "r = $r")
-//                    } catch (t: Throwable) {
-//                        Log.e("foxxx", "t = ${t.localizedMessage}")
-//                    }
-//                }
-//            },
-//            content = {
-//                Text(text = "btn4")
-//            },
-//        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(
+            onClick = {
+                GlobalScope.launch {
+                    Log.e("foxxx", "r start btn 4")
+                    try {
+                        val url = "http://www.arvifox.com/api/error.php"
+                        val r = DepBuilder.restClient.getReturnString(
+                            request = object : AbstractRestServerRequest<String>() {
+                                override val url: String
+                                    get() = url
+                                override val responseDeserializer: DeserializationStrategy<String>
+                                    get() = String.serializer()
+                            }
+                        )
+                        Log.e("foxxx", "r = $r")
+                    } catch (t: Throwable) {
+                        Log.e("foxxx", "t = ${t.localizedMessage}")
+                    }
+                }
+            },
+            content = {
+                Text(text = "btn4")
+            },
+        )
     }
 }
 

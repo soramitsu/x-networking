@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 
 object DepBuilder {
 
-    private val restClient: RestClient = RestClientImpl(
+    val restClient: RestClient = RestClientImpl(
         restClientConfig = object : AbstractRestClientConfig() {
             override fun isLoggingEnabled(): Boolean = true
 

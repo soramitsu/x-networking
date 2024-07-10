@@ -1,7 +1,5 @@
-package jp.co.soramitsu.appxnetworking
+package jp.co.soramitsu.xnetworking.android
 
-import androidx.constraintlayout.solver.state.State.Chain
-import jp.co.soramitsu.xnetworking.android.ChainInfoConstants
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.BlockExplorerRepository
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
@@ -28,7 +26,10 @@ class NetworkService(
     )
 
     suspend fun getAssetsInfo(): List<AssetInfo> {
-        val timeStampAsLong = TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS) - 24 * 60 * 60
+        val timeStampAsLong = TimeUnit.SECONDS.convert(
+            System.currentTimeMillis(),
+            TimeUnit.MILLISECONDS
+        ) - 24 * 60 * 60
 
         return blockExplorerRepository.getAssetsInfo(
             chainId = ChainInfoConstants.Sora.chainInfo.chainId,
@@ -84,8 +85,10 @@ class NetworkService(
 
 private data class SimpleJSONGetRequestHolder(
     override val url: String,
-    override val responseDeserializer: DeserializationStrategy<List<AssetRemote>> = ListSerializer(AssetRemote.serializer())
-): AbstractRestServerRequest<List<AssetRemote>>()
+    override val responseDeserializer: DeserializationStrategy<List<AssetRemote>> = ListSerializer(
+        AssetRemote.serializer()
+    )
+) : AbstractRestServerRequest<List<AssetRemote>>()
 
 @Serializable
 data class AssetRemote(
