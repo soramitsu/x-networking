@@ -6,11 +6,11 @@ import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.Exter
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.sora.SoraFiatFetcher
 import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class FiatFetcherFacade(
     private val configDAO: ConfigDAO,
-    private val apolloClientStore: ApolloClientStore
+    private val restClient: RestClient
 ): FiatFetcher() {
     private data class Args(
         val externalApiType: ExternalApiType
@@ -18,7 +18,7 @@ class FiatFetcherFacade(
 
     private val cachingFactory = CachingFactory<Args, FiatFetcher> {
         if (externalApiType === ExternalApiType.Sora)
-            return@CachingFactory SoraFiatFetcher(apolloClientStore, configDAO)
+            return@CachingFactory SoraFiatFetcher(restClient, configDAO)
 
         error("Remote Fiat Loader could not have been found.")
     }

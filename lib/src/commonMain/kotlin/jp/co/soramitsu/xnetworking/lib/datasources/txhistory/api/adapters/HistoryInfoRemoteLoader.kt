@@ -1,6 +1,5 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters
 
-import com.apollographql.apollo3.exception.ApolloException
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
@@ -11,7 +10,6 @@ import kotlin.coroutines.cancellation.CancellationException
 abstract class HistoryInfoRemoteLoader {
 
     @Throws(
-        ApolloException::class,
         RestClientException::class,
         CancellationException::class,
         ExternalApiDAOException::class,

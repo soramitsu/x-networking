@@ -8,13 +8,11 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquid.SubSquidApyFetcher
 import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class ApyFetcherFacade(
     private val configDAO: ConfigDAO,
-    private val restClient: RestClient,
-    private val apolloClientStore: ApolloClientStore
+    private val restClient: RestClient
 ): ApyFetcher() {
     private data class Args(
         val externalApiType: ExternalApiType
@@ -22,7 +20,7 @@ class ApyFetcherFacade(
 
     private val cachingFactory = CachingFactory<Args, ApyFetcher> {
         if (externalApiType === ExternalApiType.Sora)
-            return@CachingFactory SoraApyFetcher(apolloClientStore, configDAO)
+            return@CachingFactory SoraApyFetcher(restClient, configDAO)
 
         if (externalApiType === ExternalApiType.SubSquid)
             return@CachingFactory SubSquidApyFetcher(configDAO, restClient)

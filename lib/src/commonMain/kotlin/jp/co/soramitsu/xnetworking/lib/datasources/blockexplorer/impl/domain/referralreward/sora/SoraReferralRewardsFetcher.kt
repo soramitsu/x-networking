@@ -1,13 +1,13 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.referralreward.sora
 
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ReferralRewardFetcher
-import jp.co.soramitsu.xnetworking.sorawallet.GetReferrerRewardsQuery
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.wrapToGraphQLString
 
 class SoraReferralRewardsFetcher(
-    private val apolloClientStore: ApolloClientStore,
+    private val restClient: RestClient,
     private val configDAO: ConfigDAO
 ): ReferralRewardFetcher() {
 
@@ -20,21 +20,21 @@ class SoraReferralRewardsFetcher(
         var cursor = ""
 
         while (true) {
-            val response = apolloClientStore.query(
-                configDAO.historyUrl(chainId),
-                GetReferrerRewardsQuery(
+            val response = restClient.post(
+                request = SoraReferralRewardsRequest(
+                    url = configDAO.historyUrl(chainId),
                     pageCount = 100,
-                    cursor = cursor,
-                    address = address
+                    cursor = cursor.wrapToGraphQLString(),
+                    address = address.wrapToGraphQLString()
                 )
-            ).entities ?: return emptyList()
+            ).data.entities
 
             response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapReferrerRewardsResponse())
+                node.mapReferrerRewardsResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
-                hasNextPage to endCursor
+                (hasNextPage ?: false) to endCursor
             }
 
             if (!hasNextPage || endCursor == null)
@@ -46,10 +46,11 @@ class SoraReferralRewardsFetcher(
         return result
     }
 
-    private fun GetReferrerRewardsQuery.Node.mapReferrerRewardsResponse() =
-        ReferralReward(
-            referral = referral,
+    private fun SoraReferralRewardsResponse.Entities.Node.mapReferrerRewardsResponse(): ReferralReward? {
+        return ReferralReward(
+            referral = referral ?: return null,
             amount = amount.toString()
         )
+    }
 
 }

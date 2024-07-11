@@ -1,16 +1,15 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.assetinfo.sora
 
-import com.apollographql.apollo3.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.AssetInfoFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
-import jp.co.soramitsu.xnetworking.sorawallet.GetAssetsInfoQuery
+import jp.co.soramitsu.xnetworking.lib.engines.utils.wrapToGraphQLString
 
 class SoraAssetInfoFetcher(
-    private val apolloClientStore: ApolloClientStore,
+    private val restClient: RestClient,
     private val configDAO: ConfigDAO
 ): AssetInfoFetcher() {
 
@@ -24,22 +23,22 @@ class SoraAssetInfoFetcher(
         var cursor = ""
 
         while (true) {
-            val response = apolloClientStore.query(
-                configDAO.historyUrl(chainId),
-                GetAssetsInfoQuery(
+            val response = restClient.post(
+                request = SoraAssetInfoRequest(
+                    url = configDAO.historyUrl(chainId),
                     pageCount = 100,
-                    cursor = cursor,
-                    tokenIds = Optional.present(tokenIds),
+                    cursor = cursor.wrapToGraphQLString(),
+                    tokenIds = tokenIds.map(String::wrapToGraphQLString),
                     timestamp = timeStamp
                 )
-            ).entities ?: return emptyList()
+            ).data.entities
 
             response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapToAssetsInfoResponse())
+                node.mapToAssetsInfoResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
-                hasNextPage to endCursor
+                (hasNextPage ?: false) to endCursor
             }
 
             if (!hasNextPage || endCursor == null)
@@ -51,11 +50,12 @@ class SoraAssetInfoFetcher(
         return result
     }
 
-    private fun GetAssetsInfoQuery.Node.mapToAssetsInfoResponse() =
-        AssetInfo(
-            id = id,
-            liquidity = liquidity,
-            previousPrice = hourSnapshots.nodes.lastOrNull()?.priceUSD.fieldOrNull("open")?.toDoubleNan()
+    private fun SoraAssetInfoResponse.Entities.Node.mapToAssetsInfoResponse(): AssetInfo? {
+        return AssetInfo(
+            id = id ?: return null,
+            liquidity = liquidity ?: return null,
+            previousPrice = hourSnapshots?.nodes?.lastOrNull()?.priceUSD.fieldOrNull("open")?.toDoubleNan() ?: return null
         )
+    }
 
 }

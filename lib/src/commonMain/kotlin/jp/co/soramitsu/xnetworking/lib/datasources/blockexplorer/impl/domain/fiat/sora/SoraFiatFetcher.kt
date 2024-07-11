@@ -1,13 +1,13 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.sora
 
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
-import jp.co.soramitsu.xnetworking.sorawallet.GetFiatDataQuery
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.wrapToGraphQLString
 
 class SoraFiatFetcher(
-    private val apolloClientStore: ApolloClientStore,
+    private val restClient: RestClient,
     private val configDAO: ConfigDAO
 ): FiatFetcher() {
 
@@ -19,20 +19,20 @@ class SoraFiatFetcher(
         var cursor = ""
 
         while (true) {
-            val response = apolloClientStore.query(
-                configDAO.historyUrl(chainId),
-                GetFiatDataQuery(
+            val response = restClient.post(
+                request = SoraFiatRequest(
+                    url = configDAO.historyUrl(chainId),
                     pageCount = 100,
-                    cursor = cursor
+                    cursor = cursor.wrapToGraphQLString()
                 )
-            ).entities ?: return emptyList()
+            ).data.entities
 
             response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapToFiatDataResponse())
+                node.mapToFiatDataResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
-                hasNextPage to endCursor
+                (hasNextPage ?: false) to endCursor
             }
 
             if (!hasNextPage || endCursor == null)
@@ -44,10 +44,11 @@ class SoraFiatFetcher(
         return result
     }
 
-    private fun GetFiatDataQuery.Node.mapToFiatDataResponse() =
-        Fiat(
-            id = id,
-            priceUSD = priceUSD
+    private fun SoraFiatResponse.Entities.Node.mapToFiatDataResponse(): Fiat? {
+        return Fiat(
+            id = id ?: return null,
+            priceUSD = priceUSD ?: return null
         )
+    }
 
 }

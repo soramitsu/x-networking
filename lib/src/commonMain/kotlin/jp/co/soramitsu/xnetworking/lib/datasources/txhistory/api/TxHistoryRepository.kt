@@ -1,6 +1,5 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api
 
-import com.apollographql.apollo3.exception.ApolloException
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
@@ -42,7 +41,6 @@ abstract class TxHistoryRepository {
     ): TxHistoryInfo
 
     @Throws(
-        ApolloException::class,
         RestClientException::class,
         CancellationException::class,
         ExternalApiDAOException::class,

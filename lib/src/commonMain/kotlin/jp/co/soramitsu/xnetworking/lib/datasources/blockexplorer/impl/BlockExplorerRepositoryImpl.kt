@@ -19,8 +19,6 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.ref
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.unbonding.UnbondingFetcherFacade
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.ValidatorsFetcherFacade
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class BlockExplorerRepositoryImpl(
@@ -36,32 +34,21 @@ class BlockExplorerRepositoryImpl(
         configDAO: ConfigDAO,
         restClient: RestClient,
     ): this(
-        configDAO = configDAO,
-        restClient = restClient,
-        apolloClientStore = ApolloClientStoreImpl()
-    )
-
-    constructor(
-        configDAO: ConfigDAO,
-        restClient: RestClient,
-        apolloClientStore: ApolloClientStore
-    ): this(
         apyFetcher = ApyFetcherFacade(
-            apolloClientStore = apolloClientStore,
             restClient = restClient,
             configDAO = configDAO
         ),
         assetInfoFetcher = AssetInfoFetcherFacade(
-            configDAO = configDAO,
-            apolloClientStore = apolloClientStore
+            restClient = restClient,
+            configDAO = configDAO
         ),
         fiatFetcher = FiatFetcherFacade(
-            apolloClientStore = apolloClientStore,
+            restClient = restClient,
             configDAO = configDAO
         ),
         referralRewardFetcher = ReferralRewardFetcherFacade(
             configDAO = configDAO,
-            apolloClientStore = apolloClientStore
+            restClient = restClient
         ),
         unbondingFetcher = UnbondingFetcherFacade(
             configDAO = configDAO,

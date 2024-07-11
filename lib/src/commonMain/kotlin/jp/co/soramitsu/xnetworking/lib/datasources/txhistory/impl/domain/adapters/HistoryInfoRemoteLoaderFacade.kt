@@ -15,24 +15,13 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subquery.SubQueryHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subsquid.SubSquidHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.zeta.ZetaHistoryInfoRemoteLoader
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 
 class HistoryInfoRemoteLoaderFacade(
     private val configDAO: ConfigDAO,
-    private val apolloClientStore: ApolloClientStore,
     private val restClient: RestClient
 ): HistoryInfoRemoteLoader() {
-    constructor(
-        configDAO: ConfigDAO,
-        restClient: RestClient,
-    ): this(
-        configDAO = configDAO,
-        apolloClientStore = ApolloClientStoreImpl(),
-        restClient = restClient
-    )
 
     private data class Args(
         val externalApiType: ExternalApiType,
@@ -56,7 +45,7 @@ class HistoryInfoRemoteLoaderFacade(
             if ("subsquid." in externalApiUrl) {
                 return@CachingFactory SoraSubSquidHistoryInfoRemoteLoader(configDAO, restClient)
             } else {
-                return@CachingFactory SoraSubQueryHistoryInfoRemoteLoader(apolloClientStore, configDAO)
+                return@CachingFactory SoraSubQueryHistoryInfoRemoteLoader(restClient, configDAO)
             }
         }
 

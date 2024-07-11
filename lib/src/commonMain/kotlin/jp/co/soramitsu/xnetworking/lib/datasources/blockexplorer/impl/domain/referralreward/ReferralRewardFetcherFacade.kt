@@ -5,12 +5,12 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Refe
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.referralreward.sora.SoraReferralRewardsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 
 class ReferralRewardFetcherFacade(
     private val configDAO: ConfigDAO,
-    private val apolloClientStore: ApolloClientStore
+    private val restClient: RestClient
 ): ReferralRewardFetcher() {
     private data class Args(
         val externalApiType: ExternalApiType
@@ -19,7 +19,7 @@ class ReferralRewardFetcherFacade(
     private val cachingFactory = CachingFactory<Args, ReferralRewardFetcher> {
         if (externalApiType === ExternalApiType.Sora)
             return@CachingFactory SoraReferralRewardsFetcher(
-                apolloClientStore = apolloClientStore,
+                restClient = restClient,
                 configDAO = configDAO
             )
 

@@ -10,7 +10,6 @@ plugins {
     kotlin("plugin.serialization")
 
     id("com.squareup.sqldelight")
-    id("com.apollographql.apollo3")
 
     id("com.google.devtools.ksp")
 
@@ -51,7 +50,6 @@ publishing {
 }
 
 val coroutineVersion: String by project
-val apolloGraphQLVersion: String by project
 val ktorVersion: String by project
 val sqlDelightVersion: String by project
 
@@ -101,7 +99,6 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api("com.apollographql.apollo3:apollo-runtime:$apolloGraphQLVersion")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
@@ -199,42 +196,6 @@ android {
             withSourcesJar()
             withJavadocJar()
         }
-    }
-}
-
-apollo {
-    service("fearlesswallet") {
-        packageName.set("jp.co.soramitsu.xnetworking.fearlesswallet")
-        schemaFiles.setFrom(file("../schema/fearless_westend_schema.graphqls"))
-        srcDir(file("${project.projectDir}/src/commonMain/qraphql/queries/txhistory/fearless"))
-        outputDir.set(File("${project.buildDir}/generated/apollo/fearless", "schemas"))
-        generateDataBuilders.set(true)
-
-        mapScalarToKotlinString("Cursor")
-        mapScalarToKotlinString("BigFloat")
-
-        mapScalar(
-            "JSON",
-            "kotlinx.serialization.json.JsonElement",
-            "jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.adapters.JSONAdapter()"
-        )
-    }
-
-    service("sorawallet") {
-        packageName.set("jp.co.soramitsu.xnetworking.sorawallet")
-        schemaFiles.setFrom(file("../schema/sora_schema.graphqls"))
-        srcDir(files("${project.projectDir}/src/commonMain/qraphql/queries/blockexplorer", "${project.projectDir}/src/commonMain/qraphql/queries/txhistory/sora"))
-        outputDir.set(File("${project.buildDir}/generated/apollo/sora", "schemas"))
-        generateDataBuilders.set(true)
-
-        mapScalarToKotlinString("Cursor")
-        mapScalarToKotlinString("BigFloat")
-
-        mapScalar(
-            "JSON",
-            "kotlinx.serialization.json.JsonElement",
-            "jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.adapters.JSONAdapter()"
-        )
     }
 }
 

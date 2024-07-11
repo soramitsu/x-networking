@@ -3,11 +3,11 @@ package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.ap
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetSbApyInfoQuery
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.wrapToGraphQLString
 
 class SoraApyFetcher(
-    private val apolloClientStore: ApolloClientStore,
+    private val restClient: RestClient,
     private val configDAO: ConfigDAO
 ): ApyFetcher() {
 
@@ -20,15 +20,18 @@ class SoraApyFetcher(
         var cursor = ""
 
         while (true) {
-            val response = apolloClientStore.query(
-                configDAO.historyUrl(chainId),
-                GetSbApyInfoQuery(
+            val response = restClient.post(
+                request = SoraApyRequest(
+                    url = configDAO.historyUrl(chainId),
                     pageCount = 100,
-                    cursor = cursor
+                    cursor = cursor.wrapToGraphQLString()
                 )
-            ).entities ?: return emptyList()
+            ).data.entities
 
             response.nodes.filterNotNull().forEach { node ->
+                if (node.id == null || node.strategicBonusApy == null)
+                    return@forEach
+
                 Apy(
                     id = node.id,
                     value = node.strategicBonusApy

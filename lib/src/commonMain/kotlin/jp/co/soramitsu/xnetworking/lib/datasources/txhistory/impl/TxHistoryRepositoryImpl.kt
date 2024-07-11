@@ -18,8 +18,6 @@ import jp.co.soramitsu.xnetworking.db.SoraHistoryDatabase
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.HistoryInfoRemoteLoaderFacade
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class TxHistoryRepositoryImpl(
@@ -37,23 +35,6 @@ class TxHistoryRepositoryImpl(
         databaseDriverFactory = databaseDriverFactory,
         historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
             configDAO = configDAO,
-            apolloClientStore = ApolloClientStoreImpl(),
-            restClient = restClient
-        ),
-        historyItemsFilter = historyItemsFilter
-    )
-
-    constructor(
-        databaseDriverFactory: ExpectActualDBDriverFactory,
-        configDAO: ConfigDAO,
-        apolloClientStore: ApolloClientStore,
-        restClient: RestClient,
-        historyItemsFilter: HistoryItemsFilter,
-    ): this(
-        databaseDriverFactory = databaseDriverFactory,
-        historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
-            configDAO = configDAO,
-            apolloClientStore = apolloClientStore,
             restClient = restClient
         ),
         historyItemsFilter = historyItemsFilter

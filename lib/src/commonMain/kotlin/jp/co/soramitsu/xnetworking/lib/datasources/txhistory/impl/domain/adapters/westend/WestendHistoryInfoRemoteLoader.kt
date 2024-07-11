@@ -1,20 +1,18 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.westend
 
-import com.apollographql.apollo3.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.fearlesswallet.GetFearlessHistoryElementsQuery
-import jp.co.soramitsu.xnetworking.fearlesswallet.type.HistoryElementsOrderBy
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
+import jp.co.soramitsu.xnetworking.lib.engines.utils.wrapToGraphQLString
 
 class WestendHistoryInfoRemoteLoader(
-    private val apolloClientStore: ApolloClientStore,
+    private val restClient: RestClient,
     private val configDAO: ConfigDAO
 ): HistoryInfoRemoteLoader() {
 
@@ -33,32 +31,28 @@ class WestendHistoryInfoRemoteLoader(
             )
         }
 
-        val response = checkNotNull(
-            apolloClientStore.query(
-                serverUrl = configDAO.historyUrl(chainInfo.chainId),
-                query = GetFearlessHistoryElementsQuery(
-                    pageCount = pageCount,
-                    cursor = cursor.orEmpty(),
-                    address = signAddress,
-                    orderBy = Optional.present(listOf(HistoryElementsOrderBy.TIMESTAMP_DESC)),
-                )
-            ).historyElements
-        ) { "GetHistoryElementsQuery response is null" }
+        val response = restClient.post(
+            request = WestendRequest(
+                url = configDAO.historyUrl(chainInfo.chainId),
+                pageCount = pageCount,
+                cursor = cursor?.wrapToGraphQLString(),
+                address = signAddress.wrapToGraphQLString()
+            )
+        ).data.historyElements
 
         // Unparsing JSON scalar and normally typed contents
         val items = mutableListOf<TxHistoryItem>()
 
         val responseItems = response.nodes.asSequence()
-            .filterNotNull()
 
         if (TxFilter.REWARD in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "reward",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp.toString(),
                     networkFee = "0",
                     success = true,
                     nestedData = null,
@@ -87,13 +81,13 @@ class WestendHistoryInfoRemoteLoader(
         }
 
         if (TxFilter.TRANSFER in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "transfer",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp.toString(),
                     networkFee = it.transfer.fieldOrNull("fee").orEmpty(),
                     success = it.transfer.fieldOrNull("success")?.toBooleanStrictOrNull() ?: false,
                     nestedData = null,
@@ -126,13 +120,13 @@ class WestendHistoryInfoRemoteLoader(
         }
 
         if (TxFilter.EXTRINSIC in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "extrinsic",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp.toString(),
                     networkFee = it.extrinsic.fieldOrNull("fee").orEmpty(),
                     success = it.extrinsic.fieldOrNull("success")?.toBooleanStrictOrNull() ?: false,
                     nestedData = null,
@@ -158,7 +152,7 @@ class WestendHistoryInfoRemoteLoader(
 
         return TxHistoryInfo(
             endCursor = response.pageInfo.endCursor,
-            endReached = !response.pageInfo.hasNextPage,
+            endReached = !(response.pageInfo.hasNextPage ?: false),
             items = items
         )
     }
