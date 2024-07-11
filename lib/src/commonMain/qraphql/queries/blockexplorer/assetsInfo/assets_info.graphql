@@ -19,8 +19,8 @@ query GetAssetsInfo(
             }
         ) {
             nodes {
-                id
-                liquidity
+                id @catch(to: NULL)
+                liquidity @catch(to: NULL)
                 hourSnapshots:
                     data(
                         orderBy: TIMESTAMP_DESC
@@ -40,7 +40,7 @@ query GetAssetsInfo(
                         }
                     ) {
                         nodes {
-                            priceUSD
+                            priceUSD @catch(to: NULL)
                         }
                     }
             }

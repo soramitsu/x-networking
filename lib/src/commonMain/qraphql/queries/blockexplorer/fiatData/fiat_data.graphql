@@ -8,8 +8,8 @@ query GetFiatData(
             after: $cursor
         ) {
             nodes {
-                id
-                priceUSD
+                id @catch(to: NULL)
+                priceUSD @catch(to: NULL)
             }
             pageInfo {
                 hasNextPage

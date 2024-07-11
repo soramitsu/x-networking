@@ -17,12 +17,12 @@ query GetFearlessHistoryElements(
             hasNextPage
         }
         nodes {
-            id
-            timestamp
-            address
-            reward
-            transfer
-            extrinsic
+            id @catch(to: NULL)
+            timestamp @catch(to: NULL)
+            address @catch(to: NULL)
+            reward @catch(to: NULL)
+            transfer @catch(to: NULL)
+            extrinsic @catch(to: NULL)
         }
     }
 }

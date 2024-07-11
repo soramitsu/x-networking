@@ -7,7 +7,7 @@ plugins {
     kotlin("multiplatform").version("1.9.24").apply(false)
     kotlin("plugin.serialization").version("1.9.24").apply(false)
     id("org.sonarqube") version "5.0.0.4638"
-    id("com.apollographql.apollo3").version("3.8.2").apply(false)
+    id("com.apollographql.apollo") version "4.0.0-rc.1"
     id("com.google.devtools.ksp").version("1.9.24-1.0.20").apply(false)
     id("org.jetbrains.kotlinx.kover").version("0.7.6").apply(false)
 }
@@ -16,6 +16,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
     afterEvaluate {
         tasks.register("testClasses") {}

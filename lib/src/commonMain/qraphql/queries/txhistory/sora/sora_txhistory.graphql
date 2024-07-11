@@ -11,15 +11,15 @@ query GetSoraHistoryElements(
         filter: $filter
     ) {
         nodes {
-            id
-            blockHash
-            module
-            method
-            address
-            networkFee
-            execution
-            timestamp
-            data
+            id @catch(to: NULL)
+            blockHash @catch(to: NULL)
+            module @catch(to: NULL)
+            method @catch(to: NULL)
+            address @catch(to: NULL)
+            networkFee @catch(to: NULL)
+            execution @catch(to: NULL)
+            timestamp @catch(to: NULL)
+            data @catch(to: NULL)
         }
         pageInfo {
             endCursor

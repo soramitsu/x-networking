@@ -5,8 +5,8 @@ query GetSbApyInfo($pageCount: Int!, $cursor: Cursor!) {
             before: $cursor
         ) {
             nodes {
-                id
-                strategicBonusApy
+                id @catch(to: NULL)
+                strategicBonusApy @catch(to: NULL)
             }
             pageInfo {
                 endCursor

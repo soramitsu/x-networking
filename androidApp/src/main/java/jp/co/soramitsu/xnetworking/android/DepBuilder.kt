@@ -48,4 +48,6 @@ object DepBuilder {
         configDAO = configDAO,
         restClient = restClient
     )
+
+    // fun neededForSingingCommits(
 }

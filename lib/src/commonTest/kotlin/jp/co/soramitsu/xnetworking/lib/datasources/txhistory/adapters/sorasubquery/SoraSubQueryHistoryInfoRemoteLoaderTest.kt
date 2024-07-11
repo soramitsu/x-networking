@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.sorasubquery
 
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.api.Optional
 import io.mockative.Mock
 import io.mockative.classOf
 import io.mockative.coEvery

@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.westend
 
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
@@ -52,13 +52,13 @@ class WestendHistoryInfoRemoteLoader(
             .filterNotNull()
 
         if (TxFilter.REWARD in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "reward",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp ?: return@mapNotNull null,
                     networkFee = "0",
                     success = true,
                     nestedData = null,
@@ -87,13 +87,13 @@ class WestendHistoryInfoRemoteLoader(
         }
 
         if (TxFilter.TRANSFER in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "transfer",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp ?: return@mapNotNull null,
                     networkFee = it.transfer.fieldOrNull("fee").orEmpty(),
                     success = it.transfer.fieldOrNull("success")?.toBooleanStrictOrNull() ?: false,
                     nestedData = null,
@@ -126,13 +126,13 @@ class WestendHistoryInfoRemoteLoader(
         }
 
         if (TxFilter.EXTRINSIC in filters) {
-            responseItems.map {
+            responseItems.mapNotNull {
                 TxHistoryItem(
-                    id = it.id,
+                    id = it.id ?: return@mapNotNull null,
                     blockHash = "",
                     module = "extrinsic",
                     method = "",
-                    timestamp = it.timestamp,
+                    timestamp = it.timestamp ?: return@mapNotNull null,
                     networkFee = it.extrinsic.fieldOrNull("fee").orEmpty(),
                     success = it.extrinsic.fieldOrNull("success")?.toBooleanStrictOrNull() ?: false,
                     nestedData = null,
