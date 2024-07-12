@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters
 
-import com.apollographql.apollo3.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloException
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 import kotlin.coroutines.cancellation.CancellationException

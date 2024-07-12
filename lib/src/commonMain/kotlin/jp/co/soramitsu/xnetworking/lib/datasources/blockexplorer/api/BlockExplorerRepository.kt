@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api
 
-import com.apollographql.apollo3.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloException
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward

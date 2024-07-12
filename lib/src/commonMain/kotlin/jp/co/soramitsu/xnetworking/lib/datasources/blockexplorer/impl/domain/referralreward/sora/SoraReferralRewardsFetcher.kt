@@ -30,7 +30,7 @@ class SoraReferralRewardsFetcher(
             ).entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapReferrerRewardsResponse())
+                node.mapReferrerRewardsResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
@@ -46,10 +46,11 @@ class SoraReferralRewardsFetcher(
         return result
     }
 
-    private fun GetReferrerRewardsQuery.Node.mapReferrerRewardsResponse() =
-        ReferralReward(
-            referral = referral,
-            amount = amount.toString()
+    private fun GetReferrerRewardsQuery.Node.mapReferrerRewardsResponse(): ReferralReward? {
+        return ReferralReward(
+            referral = referral ?: return null,
+            amount = amount ?: return null
         )
+    }
 
 }

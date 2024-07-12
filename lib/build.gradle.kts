@@ -10,7 +10,7 @@ plugins {
     kotlin("plugin.serialization")
 
     id("com.squareup.sqldelight")
-    id("com.apollographql.apollo3")
+    id("com.apollographql.apollo")
 
     id("com.google.devtools.ksp")
 
@@ -101,7 +101,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api("com.apollographql.apollo3:apollo-runtime:$apolloGraphQLVersion")
+                api("com.apollographql.apollo:apollo-runtime:$apolloGraphQLVersion")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
                 implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")

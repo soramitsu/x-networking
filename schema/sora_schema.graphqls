@@ -6338,3 +6338,12 @@ schema {
   query: Query
   subscription: Subscription
 }
+
+extend schema @link(
+  url: "https://specs.apollo.dev/nullability/v0.4",
+  # Note: other directives are needed later on and added here for convenience
+  import: ["@semanticNonNull", "@semanticNonNullField", "@catch", "CatchTo", "@catchByDefault"]
+)
+
+# Coerce errors to null by default.
+extend schema @catchByDefault(to: NULL)

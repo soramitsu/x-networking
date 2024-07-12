@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.engines.apollo.api
 
-import com.apollographql.apollo3.api.Query
+import com.apollographql.apollo.api.Query
 
 abstract class ApolloClientStore() {
 

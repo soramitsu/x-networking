@@ -28,7 +28,7 @@ class SoraFiatFetcher(
             ).entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapToFiatDataResponse())
+                node.mapToFiatDataResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
@@ -44,10 +44,11 @@ class SoraFiatFetcher(
         return result
     }
 
-    private fun GetFiatDataQuery.Node.mapToFiatDataResponse() =
-        Fiat(
-            id = id,
-            priceUSD = priceUSD
+    private fun GetFiatDataQuery.Node.mapToFiatDataResponse(): Fiat? {
+        return Fiat(
+            id = id ?: return null,
+            priceUSD = priceUSD ?: return null
         )
+    }
 
 }

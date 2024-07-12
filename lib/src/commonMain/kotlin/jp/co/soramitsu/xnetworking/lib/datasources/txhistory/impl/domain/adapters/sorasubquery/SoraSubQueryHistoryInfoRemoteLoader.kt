@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.sorasubquery
 
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
@@ -57,7 +57,7 @@ class SoraSubQueryHistoryInfoRemoteLoader(
 
         // Unparsing JSON scalar and normally typed contents
         val items =
-            response.nodes.filterNotNull().map {
+            response.nodes.filterNotNull().mapNotNull {
                 val wasOperationSuccessful = it.execution.fieldOrNull("success").toBoolean()
 
                 val txHistoryItemParams = it.data.asJsonObjectNullable?.map { mapItem ->
@@ -85,12 +85,12 @@ class SoraSubQueryHistoryInfoRemoteLoader(
                     }
 
                 TxHistoryItem(
-                    id = it.id,
-                    blockHash = it.blockHash,
-                    module = it.module,
-                    method = it.method,
+                    id = it.id ?: return@mapNotNull null,
+                    blockHash = it.blockHash ?: return@mapNotNull null,
+                    module = it.module ?: return@mapNotNull null,
+                    method = it.method ?: return@mapNotNull null,
                     timestamp = it.timestamp.toString(),
-                    networkFee = it.networkFee,
+                    networkFee = it.networkFee ?: return@mapNotNull null,
                     success = wasOperationSuccessful,
                     data = txHistoryItemParams,
                     nestedData = nestedData,

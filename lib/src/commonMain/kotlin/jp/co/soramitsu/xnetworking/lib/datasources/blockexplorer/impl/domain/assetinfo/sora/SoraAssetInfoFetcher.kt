@@ -1,6 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.assetinfo.sora
 
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.AssetInfoFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
@@ -34,8 +34,8 @@ class SoraAssetInfoFetcher(
                 )
             ).entities ?: return emptyList()
 
-            response.nodes.filterNotNull().forEach { node ->
-                result.add(node.mapToAssetsInfoResponse())
+            response.nodes?.filterNotNull()?.forEach { node ->
+                node.mapToAssetsInfoResponse()?.let { result.add(it) }
             }
 
             val (hasNextPage, endCursor) = response.pageInfo.run {
@@ -51,11 +51,11 @@ class SoraAssetInfoFetcher(
         return result
     }
 
-    private fun GetAssetsInfoQuery.Node.mapToAssetsInfoResponse() =
-        AssetInfo(
-            id = id,
-            liquidity = liquidity,
+    private fun GetAssetsInfoQuery.Node.mapToAssetsInfoResponse(): AssetInfo? {
+        return AssetInfo(
+            id = id ?: return null,
+            liquidity = liquidity ?: return null,
             previousPrice = hourSnapshots.nodes.lastOrNull()?.priceUSD.fieldOrNull("open")?.toDoubleNan()
         )
-
+    }
 }

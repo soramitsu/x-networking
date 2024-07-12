@@ -29,6 +29,9 @@ class SoraApyFetcher(
             ).entities ?: return emptyList()
 
             response.nodes.filterNotNull().forEach { node ->
+                if (node.id == null || node.strategicBonusApy == null)
+                    return@forEach
+
                 Apy(
                     id = node.id,
                     value = node.strategicBonusApy

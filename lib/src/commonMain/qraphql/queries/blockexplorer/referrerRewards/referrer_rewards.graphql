@@ -8,8 +8,8 @@ query GetReferrerRewards($pageCount: Int!, $cursor: Cursor!, $address: String!) 
             }
         ) {
             nodes {
-                referral
-                amount
+                referral @catch(to: NULL)
+                amount @catch(to: NULL)
             }
             pageInfo {
                 endCursor
