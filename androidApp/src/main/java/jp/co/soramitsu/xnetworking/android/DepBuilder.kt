@@ -35,7 +35,7 @@ object DepBuilder {
     private val configDAO: ConfigDAO = SuperWalletConfigDAOImpl(
         configParser = RemoteConfigParserImpl(
             restClient = restClient,
-            chainsRequestUrl = "https://raw.githubusercontent.com/soramitsu/shared-features-utils/develop-free/chains/v9/chains_dev.json"
+            chainsRequestUrl = "https://config.polkaswap2.io/stage/xn.json"
         )
     )
 

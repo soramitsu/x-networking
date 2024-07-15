@@ -62,7 +62,7 @@ private fun MainScreen() {
         Button(
             onClick = {
                 GlobalScope.launch {
-                    val drs = assetsInfo.open("drop.txt").bufferedReader().use { it.readText() }.let {
+                    val drs = assetsInfo.open("qweqwe.txt").bufferedReader().use { it.readText() }.let {
                         Json.decodeFromString<List<String>>(it)
                     }
                     try {
@@ -135,6 +135,7 @@ private fun MainScreen() {
 //                        val r = DepBuilder.blockExplorerRepository.getFiat(ChainAssetConstants.Sora.chainId)
                         val r = DepBuilder.blockExplorerRepository.getApy(ChainInfoConstants.Sora.chainInfo.chainId)
 //                        val r = DepBuilder.blockExplorerRepository.getReferrerRewards(ChainAssetConstants.Sora.chainId, "")
+                        Log.e("foxxx", "r s = ${r.size}")
                         Log.e("foxxx", "r = $r")
                     } catch (t: Throwable) {
                         Log.e("foxxx", "t = ${t.localizedMessage}")

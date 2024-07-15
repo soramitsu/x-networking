@@ -45,7 +45,6 @@ class SoraApyFetcherTest {
 
             val soraApyRequest =
                 GetSbApyInfoQuery(
-                    pageCount = pageCount,
                     cursor = cursor
                 )
             // Test Data End
