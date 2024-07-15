@@ -66,16 +66,18 @@ private fun MainScreen() {
                         Json.decodeFromString<List<String>>(it)
                     }
                     try {
-                        Log.e("foxxx", "r start btn 1")
+                        Log.e("srmts", "r start btn 1 size=${drs.size}")
                         val r = DepBuilder.blockExplorerRepository.getAssetsInfo(
                             ChainInfoConstants.Sora.chainInfo.chainId,
                             drs,
                             (TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS) - 24 * 60 * 60).toInt()
-                        )
-                        Log.e("foxxx", "r = ${r.size}")
-                        Log.e("foxxx", "r = ${r}")
+                        ).sortedByDescending {
+                            it.liquidity.toBigInteger()
+                        }
+                        Log.e("srmts", "r = ${r.size}")
+                        Log.e("srmts", "r = ${r}")
                     } catch (t: Throwable) {
-                        Log.e("foxxx", "t= ${t.localizedMessage}")
+                        Log.e("srmts", "t= ${t.localizedMessage}")
                     }
                 }
             },
@@ -100,7 +102,7 @@ private fun MainScreen() {
                 modifier = Modifier.weight(1f),
                 onClick = {
                     GlobalScope.launch {
-                        Log.e("foxxx", "r start btn 2")
+                        Log.e("srmts", "r start btn 2")
                         try {
                             val r = DepBuilder.historyRemoteLoaderFacade.loadHistoryInfo(
                                 pageCount = 1,
@@ -110,13 +112,13 @@ private fun MainScreen() {
                                 filters = setOf(TxFilter.TRANSFER)
                             )
                             Log.e(
-                                "foxxx",
+                                "srmts",
                                 "r = ${r.items}"
                             )
                             res = "${r.endReached}; ${page}; ${r.items.size}"
                         } catch (t: Throwable) {
                             res = t.localizedMessage ?: "Throwable"
-                            Log.e("foxxx", "t= ${t.localizedMessage}")
+                            Log.e("srmts", "t= ${t.localizedMessage}")
                         }
                     }
                 },
@@ -130,15 +132,15 @@ private fun MainScreen() {
         Button(
             onClick = {
                 GlobalScope.launch {
-                    Log.e("foxxx", "r start btn 3")
+                    Log.e("srmts", "r start btn 3")
                     try {
 //                        val r = DepBuilder.blockExplorerRepository.getFiat(ChainAssetConstants.Sora.chainId)
                         val r = DepBuilder.blockExplorerRepository.getApy(ChainInfoConstants.Sora.chainInfo.chainId)
 //                        val r = DepBuilder.blockExplorerRepository.getReferrerRewards(ChainAssetConstants.Sora.chainId, "")
-                        Log.e("foxxx", "r s = ${r.size}")
-                        Log.e("foxxx", "r = $r")
+                        Log.e("srmts", "r s = ${r.size}")
+                        Log.e("srmts", "r = $r")
                     } catch (t: Throwable) {
-                        Log.e("foxxx", "t = ${t.localizedMessage}")
+                        Log.e("srmts", "t = ${t.localizedMessage}")
                     }
                 }
             },
@@ -150,7 +152,7 @@ private fun MainScreen() {
         Button(
             onClick = {
                 GlobalScope.launch {
-                    Log.e("foxxx", "r start btn 4")
+                    Log.e("srmts", "r start btn 4")
                     try {
                         val url = "http://www.arvifox.com/api/error.php"
                         val r = DepBuilder.restClient.getReturnString(
@@ -161,9 +163,9 @@ private fun MainScreen() {
                                     get() = String.serializer()
                             }
                         )
-                        Log.e("foxxx", "r = $r")
+                        Log.e("srmts", "r = $r")
                     } catch (t: Throwable) {
-                        Log.e("foxxx", "t = ${t.localizedMessage}")
+                        Log.e("srmts", "t = ${t.localizedMessage}")
                     }
                 }
             },

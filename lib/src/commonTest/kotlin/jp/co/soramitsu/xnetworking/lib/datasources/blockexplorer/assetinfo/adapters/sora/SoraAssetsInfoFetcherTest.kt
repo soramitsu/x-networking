@@ -51,10 +51,8 @@ class SoraAssetsInfoFetcherTest {
             // Test Data Start
             val assetInfoRequestToMock =
                 GetAssetsInfoQuery(
-                    pageCount = pageCount,
                     cursor = cursor,
                     tokenIds = Optional.present(tokenIds),
-                    timestamp = timeStamp
                 )
             // Test Data End
 
@@ -89,37 +87,27 @@ class SoraAssetsInfoFetcherTest {
             // Test Data Start
             val assetInfoRequestToMock =
                 GetAssetsInfoQuery(
-                    pageCount = pageCount,
                     cursor = cursor,
                     tokenIds = Optional.present(tokenIds),
-                    timestamp = timeStamp
                 )
 
             val assetsInfoResponseToReturn =
                 GetAssetsInfoQuery.Data(
-                    entities = GetAssetsInfoQuery.Entities(
-                        nodes = listOf(
-                            GetAssetsInfoQuery.Node(
-                                id = "id_123",
-                                liquidity = "liquidity_123",
-                                hourSnapshots = GetAssetsInfoQuery.HourSnapshots(
-                                    nodes = listOf(
-                                        GetAssetsInfoQuery.Node1(
-                                            priceUSD = JsonObject(
-                                                content = mapOf(
-                                                    "open" to JsonPrimitive("123")
-                                                )
-                                            )
-                                        )
-                                    )
-                                )
-                            )
-                        ),
+                    data = GetAssetsInfoQuery.Data1(
                         pageInfo = GetAssetsInfoQuery.PageInfo(
                             hasNextPage = false,
                             endCursor = null
-                        )
-                    )
+                        ),
+                        edges = listOf(
+                            GetAssetsInfoQuery.Edge(
+                                GetAssetsInfoQuery.Node(
+                                    id = "id_123",
+                                    liquidity = "liquidity_123",
+                                    priceChangeDay = "123.0",
+                                )
+                            )
+                        ),
+                    ),
                 )
 
             val expectedResult = listOf(
