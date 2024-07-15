@@ -9,37 +9,36 @@ import jp.co.soramitsu.xnetworking.sorawallet.GetSbApyInfoQuery
 class SoraApyFetcher(
     private val apolloClientStore: ApolloClientStore,
     private val configDAO: ConfigDAO
-): ApyFetcher() {
+) : ApyFetcher() {
 
     override suspend fun fetch(
         chainId: String,
         selectedCandidates: List<String>?
     ): List<Apy> {
         val result = mutableListOf<Apy>()
-
         var cursor = ""
 
         while (true) {
             val response = apolloClientStore.query(
                 configDAO.historyUrl(chainId),
                 GetSbApyInfoQuery(
-                    pageCount = 100,
                     cursor = cursor
                 )
-            ).entities ?: return emptyList()
+            ).data ?: return emptyList()
 
-            response.nodes.filterNotNull().forEach { node ->
-                if (node.id == null || node.strategicBonusApy == null)
+            response.edges.forEach { edge ->
+                if (edge.node?.id == null || edge.node.strategicBonusApy == null)
                     return@forEach
-
-                Apy(
-                    id = node.id,
-                    value = node.strategicBonusApy
-                ).apply { result += this }
+                result.add(
+                    Apy(
+                        id = edge.node.id,
+                        value = edge.node.strategicBonusApy,
+                    )
+                )
             }
 
+            if (response.pageInfo.hasNextPage.not()) break
             val endCursor = response.pageInfo.endCursor ?: break
-
             cursor = endCursor
         }
 

@@ -1,15 +1,19 @@
-query GetSbApyInfo($pageCount: Int!, $cursor: Cursor!) {
-    entities:
+query GetSbApyInfo($cursor: Cursor!) {
+    data:
         poolXYKs(
-            first: $pageCount
-            before: $cursor
+            first: 100
+            after: $cursor
+            filter: { strategicBonusApy: { greaterThan: "0" } }
         ) {
-            nodes {
-                id @catch(to: NULL)
-                strategicBonusApy @catch(to: NULL)
-            }
             pageInfo {
                 endCursor
+                hasNextPage
+            }
+            edges {
+                node {
+                    id @catch(to: NULL)
+                    strategicBonusApy @catch(to: NULL)
+                }
             }
         }
 }
