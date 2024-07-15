@@ -2,17 +2,16 @@ package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.as
 
 import com.apollographql.apollo.api.Optional
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.AssetInfoFetcher
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
 import jp.co.soramitsu.xnetworking.sorawallet.GetAssetsInfoQuery
 
 class SoraAssetInfoFetcher(
     private val apolloClientStore: ApolloClientStore,
     private val configDAO: ConfigDAO
-): AssetInfoFetcher() {
+) : AssetInfoFetcher() {
 
     override suspend fun fetch(
         chainId: String,
@@ -20,42 +19,35 @@ class SoraAssetInfoFetcher(
         timeStamp: Int
     ): List<AssetInfo> {
         val result = mutableListOf<AssetInfo>()
-
         var cursor = ""
 
         while (true) {
             val response = apolloClientStore.query(
                 configDAO.historyUrl(chainId),
                 GetAssetsInfoQuery(
-                    pageCount = 100,
                     cursor = cursor,
                     tokenIds = Optional.present(tokenIds),
-                    timestamp = timeStamp
                 )
-            ).entities ?: return emptyList()
+            ).data ?: return emptyList()
 
-            response.nodes?.filterNotNull()?.forEach { node ->
-                node.mapToAssetsInfoResponse()?.let { result.add(it) }
-            }
+            result.addAll(response.edges.mapNotNull { edge ->
+                if (edge.node?.id != null && edge.node.liquidity != null) {
+                    AssetInfo(
+                        edge.node.id,
+                        edge.node.liquidity,
+                        edge.node.priceChangeDay?.toDoubleNan(),
+                    )
+                } else {
+                    null
+                }
+            })
 
-            val (hasNextPage, endCursor) = response.pageInfo.run {
-                hasNextPage to endCursor
-            }
-
-            if (!hasNextPage || endCursor == null)
+            if (response.pageInfo.hasNextPage.not() || response.pageInfo.endCursor == null)
                 break
 
-            cursor = endCursor
+            cursor = response.pageInfo.endCursor
         }
 
         return result
-    }
-
-    private fun GetAssetsInfoQuery.Node.mapToAssetsInfoResponse(): AssetInfo? {
-        return AssetInfo(
-            id = id ?: return null,
-            liquidity = liquidity ?: return null,
-            previousPrice = hourSnapshots.nodes.lastOrNull()?.priceUSD.fieldOrNull("open")?.toDoubleNan()
-        )
     }
 }

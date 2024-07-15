@@ -663,6 +663,8 @@ type Asset implements Node {
 
   supply: BigFloat!
 
+  priceChangeDay: BigFloat!
+
   liquidity: BigFloat!
 
   """

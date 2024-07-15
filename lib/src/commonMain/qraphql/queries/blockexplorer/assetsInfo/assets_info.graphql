@@ -1,12 +1,9 @@
 query GetAssetsInfo(
-    $pageCount: Int!,
     $cursor: Cursor!,
     $tokenIds: [String!]
-    $timestamp: Int!
 ) {
-    entities:
+    data:
         assets(
-            first: $pageCount
             after: $cursor
             filter: {
                 and: [
@@ -18,31 +15,12 @@ query GetAssetsInfo(
                 ]
             }
         ) {
-            nodes {
-                id @catch(to: NULL)
-                liquidity @catch(to: NULL)
-                hourSnapshots:
-                    data(
-                        orderBy: TIMESTAMP_DESC
-                        filter: {
-                            and: [
-                                {
-                                    timestamp: {
-                                        greaterThanOrEqualTo: $timestamp
-                                    }
-                                }
-                                {
-                                    type: {
-                                        equalTo: HOUR
-                                    }
-                                }
-                            ]
-                        }
-                    ) {
-                        nodes {
-                            priceUSD @catch(to: NULL)
-                        }
-                    }
+            edges {
+                node {
+                    id @catch(to: NULL)
+                    liquidity @catch(to: NULL)
+                    priceChangeDay @catch(to: NULL)
+               }
             }
             pageInfo {
                 hasNextPage
