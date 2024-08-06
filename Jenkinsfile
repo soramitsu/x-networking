@@ -27,5 +27,5 @@ def ios_pipeline = new org.ios.AppPipeline(
     gradleCmd: "kmmBridgePublish"
 )
 
-pipeline.runPipeline()
+// pipeline.runPipeline()
 ios_pipeline.runPipeline('x-networking')
