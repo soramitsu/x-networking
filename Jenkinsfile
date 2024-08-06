@@ -1,4 +1,4 @@
-@Library('jenkins-library') _
+@Library('jenkins-library@feature/DOPS-3339/x-networking') _
 
 def jobParams = [
   booleanParam(defaultValue: true, description: 'push to the dev profile', name: 'prDeployment')
@@ -10,11 +10,22 @@ def pipeline = new org.android.ShareFeature(
   agentImage: "build-tools/android-build-box:jdk17",
   buildCmd: 'clean build',
   testCmd: 'test --info',
-  publishCmd: ':lib:publishAndroidReleasePublicationToScnRepoRepository kmmBridgePublish',
+  publishCmd: ':lib:publishAndroidReleasePublicationToScnRepoRepository',
   sonarProjectKey: "sora:x-networking",
   sonarProjectName: "x-networking",
   dojoProductType: "sora-mobile",
   jobParams: jobParams
 )
 
+def ios_pipeline = new org.ios.AppPipeline(
+    steps: this,
+    appEnable: false,
+    appTests: false,
+    disableUpdatePods: true,
+    disableInstallPods: true,
+    label: "mac-sora",
+    gradleCmd: "kmmBridgePublish"
+)
+
 pipeline.runPipeline()
+ios_pipeline.runPipeline('x-networking')
