@@ -1,5 +1,9 @@
 @Library('jenkins-library') _
 
+def jobParams = [
+  booleanParam(defaultValue: false, description: 'push to the dev profile', name: 'prDeployment')
+]
+
 def pipeline = new org.android.ShareFeature(
   steps: this,
   test: true,
@@ -9,7 +13,8 @@ def pipeline = new org.android.ShareFeature(
   publishCmd: ':lib:basic:publishAndroidReleasePublicationToScnRepoRepository :lib:sorawallet:publishAndroidReleasePublicationToScnRepoRepository :lib:fearlesswallet:publishAndroidReleasePublicationToScnRepoRepository',
   sonarProjectKey: "sora:x-networking",
   sonarProjectName: "x-networking",
-  dojoProductType: "sora-mobile"
+  dojoProductType: "sora-mobile",
+  jobParams: jobParams
 )
 
 pipeline.runPipeline()
