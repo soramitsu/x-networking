@@ -48,6 +48,13 @@ publishing {
     }
 }
 
+/**
+ * Use ./gradlew spmDevBuild to publish iOS binaries locally,
+ * and generate corresponding Package.swift file
+ *
+ * Use ./gradlew kmmBridgePublish to publish iOS binaries as zip file remotely,
+ * and generate corresponding Package.swift file
+ */
 kmmbridge {
     frameworkName = "lib"
     manualVersions()
