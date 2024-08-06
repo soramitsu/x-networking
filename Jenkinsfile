@@ -24,7 +24,7 @@ def ios_pipeline = new org.ios.AppPipeline(
     disableUpdatePods: true,
     disableInstallPods: true,
     label: "mac-sora",
-    gradleCmd: "kmmBridgePublish"
+    gradleCmd: ":lib:kmmBridgePublish"
 )
 
 // pipeline.runPipeline()
