@@ -59,7 +59,7 @@ kmmbridge {
     frameworkName = "lib"
     manualVersions()
     mavenPublishArtifacts(
-        repository = "scnRepoIOS",
+        repository = "scnRepo",
         publication = "releaseIOS",
         artifactSuffix = "IOS" // this is exactly Suffix, not artifact's full name
     )
