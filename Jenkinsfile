@@ -1,10 +1,10 @@
 @Library('jenkins-library@feature/DOPS-3339/x-networking') _
 
 def jobParams = [
-  booleanParam(defaultValue: true, description: 'push to the dev profile', name: 'prDeployment')
+  booleanParam(defaultValue: false, description: 'push to the dev profile', name: 'prDeployment')
 ]
 
-def pipeline = new org.android.ShareFeature(
+def android_pipeline = new org.android.ShareFeature(
   steps: this,
   test: true,
   agentImage: "build-tools/android-build-box:jdk17",
@@ -24,8 +24,8 @@ def ios_pipeline = new org.ios.AppPipeline(
     disableUpdatePods: true,
     disableInstallPods: true,
     label: "mac-sora",
-    gradleCmd: ":lib:kmmBridgePublish"
+    gradleCmd: "kmmBridgePublish"
 )
 
-// pipeline.runPipeline()
+android_pipeline.runPipeline()
 ios_pipeline.runPipeline('x-networking')
