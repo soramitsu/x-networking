@@ -1,7 +1,7 @@
 @Library('jenkins-library') _
 
 def jobParams = [
-  booleanParam(defaultValue: false, description: 'push to the dev profile', name: 'prDeployment')
+  booleanParam(defaultValue: true, description: 'push to the dev profile', name: 'prDeployment')
 ]
 
 def pipeline = new org.android.ShareFeature(
