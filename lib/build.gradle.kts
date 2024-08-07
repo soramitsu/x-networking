@@ -15,6 +15,8 @@ plugins {
     id("com.google.devtools.ksp")
 
     id("org.jetbrains.kotlinx.kover")
+
+    id("co.touchlab.kmmbridge") version "0.5.5"
 }
 
 val libVersion: String by project
@@ -43,11 +45,29 @@ publishing {
                 password = if (hasProperty("NEXUS_PASSWORD")) (property("NEXUS_PASSWORD") as String) else System.getenv()["NEXUS_PASSWORD"]
             }
         }
-        maven {
-            name = "scnRepoLocal"
-            url = uri("${project.buildDir}/scnrepo")
-        }
     }
+}
+
+/**
+ * Use ./gradlew spmDevBuild to publish iOS binaries locally,
+ * and generate corresponding Package.swift file
+ *
+ * Use ./gradlew kmmBridgePublish to publish iOS binaries as zip file remotely,
+ * and generate corresponding Package.swift file
+ */
+kmmbridge {
+    frameworkName = "lib"
+    manualVersions()
+    mavenPublishArtifacts(
+        repository = "scnRepo",
+        publication = "releaseIOS",
+        artifactSuffix = "IOS" // this is exactly Suffix, not artifact's full name
+    )
+    spm(
+        /* spmDirectory = "Location of Package.Swift", if not specified, Package.Swift fill will located at the project's root, that's most convinient for iOS team */
+        /* useCustomPackageFile = false, if specified true, Package.swift file for IOS can become corrupt */
+        swiftToolVersion = "5.6" // contact with iOS team before changing this value
+    ) { iOS { v("14") } }
 }
 
 val coroutineVersion: String by project
@@ -56,8 +76,13 @@ val ktorVersion: String by project
 val sqlDelightVersion: String by project
 
 kotlin {
-    val iosFrameworkName = "lib"
-    val xcf = XCFramework()
+    /*
+        Don't init XCFramework!!!
+        Under the hood, each "XCFramework" invocation creates a task
+
+        KMMBridge plugin creates this task on its own, additional invocation will result in error
+    */
+    // val framework = XCFramework()
 
     androidTarget {
         compilations.all {
@@ -68,33 +93,14 @@ kotlin {
         publishAllLibraryVariants()
     }
 
-    iosX64 {
-        binaries.framework {
-            baseName = iosFrameworkName
-            xcf.add(this)
-        }
-    }
-    iosArm64 {
-        binaries.framework {
-            baseName = iosFrameworkName
-            xcf.add(this)
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = iosFrameworkName
-            xcf.add(this)
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
-        framework {
-            baseName = iosFrameworkName
-        }
     }
 
     sourceSets {
@@ -104,7 +110,7 @@ kotlin {
                 api("com.apollographql.apollo:apollo-runtime:$apolloGraphQLVersion")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
-                implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
                 //implementation("com.ionspin.kotlin:bignum:0.3.6")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 //implementation("io.ktor:ktor-client-json:$ktorVersion")
@@ -242,8 +248,6 @@ tasks.register<Copy>("copyiOSTestResources") {
     from("src/iosTest/resources")
     into("build/bin/iosX64/debugTest/resources")
 }
-
-tasks.findByName("iosX64Test")!!.dependsOn("copyiOSTestResources")
 
 kover {
     useJacoco()
