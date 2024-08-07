@@ -1,9 +1,5 @@
 @Library('jenkins-library') _
 
-def jobParams = [
-  booleanParam(defaultValue: false, description: 'push to the dev profile', name: 'prDeployment')
-]
-
 def android_pipeline = new org.android.ShareFeature(
   steps: this,
   test: true,
@@ -13,8 +9,7 @@ def android_pipeline = new org.android.ShareFeature(
   publishCmd: ':lib:publishAndroidReleasePublicationToScnRepoRepository',
   sonarProjectKey: "sora:x-networking",
   sonarProjectName: "x-networking",
-  dojoProductType: "sora-mobile",
-  jobParams: jobParams
+  dojoProductType: "sora-mobile"
 )
 
 def ios_pipeline = new org.ios.AppPipeline(
@@ -24,8 +19,7 @@ def ios_pipeline = new org.ios.AppPipeline(
     disableUpdatePods: true,
     disableInstallPods: true,
     label: "mac-sora",
-    gradleCmd: "kmmBridgePublish",
-    jobParams: jobParams
+    gradleCmd: "kmmBridgePublish"
 )
 
 android_pipeline.runPipeline()
