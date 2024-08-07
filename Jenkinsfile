@@ -1,4 +1,4 @@
-@Library('jenkins-library@feature/DOPS-3339/x-networking') _
+@Library('jenkins-library') _
 
 def jobParams = [
   booleanParam(defaultValue: false, description: 'push to the dev profile', name: 'prDeployment')
