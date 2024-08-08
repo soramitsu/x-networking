@@ -20,6 +20,7 @@ plugins {
 }
 
 val libVersion: String by project
+val iosLibName = "XNetworking"
 
 group = "jp.co.soramitsu.xnetworking"
 version = libVersion
@@ -56,7 +57,7 @@ publishing {
  * and generate corresponding Package.swift file
  */
 kmmbridge {
-    frameworkName = "lib"
+    frameworkName = iosLibName
     manualVersions()
     mavenPublishArtifacts(
         repository = "scnRepo",
@@ -101,6 +102,9 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
+        framework {
+            baseName = iosLibName
+        }
     }
 
     sourceSets {
