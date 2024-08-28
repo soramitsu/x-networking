@@ -10,7 +10,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.Exter
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.sora.SoraApyFetcher
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetSbApyInfoQuery
+import jp.co.soramitsu.xnetworking.mainnet.GetSbApyInfoQuery
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith

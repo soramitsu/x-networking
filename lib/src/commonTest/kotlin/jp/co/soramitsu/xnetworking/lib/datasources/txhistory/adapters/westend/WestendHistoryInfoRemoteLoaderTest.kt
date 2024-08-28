@@ -6,10 +6,10 @@ import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.fearlesswallet.GetFearlessHistoryElementsQuery
-import jp.co.soramitsu.xnetworking.fearlesswallet.type.HistoryElementsOrderBy
-import jp.co.soramitsu.xnetworking.fearlesswallet.type.buildHistoryElementsConnection
-import jp.co.soramitsu.xnetworking.fearlesswallet.type.buildPageInfo
+import jp.co.soramitsu.xnetworking.westend.GetWestendHistoryElementsQuery
+import jp.co.soramitsu.xnetworking.westend.type.HistoryElementsOrderBy
+import jp.co.soramitsu.xnetworking.westend.type.buildHistoryElementsConnection
+import jp.co.soramitsu.xnetworking.westend.type.buildPageInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
@@ -20,7 +20,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistor
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.westend.WestendHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.fearlesswallet.type.buildHistoryElement
+import jp.co.soramitsu.xnetworking.westend.type.buildHistoryElement
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -58,7 +58,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = TxFilter.entries.toSet()
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -102,7 +102,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = TxFilter.entries.toSet()
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -110,7 +110,7 @@ class WestendHistoryInfoRemoteLoaderTest {
                 )
 
             val westendResponseToReturn =
-                GetFearlessHistoryElementsQuery.Data {
+                GetWestendHistoryElementsQuery.Data {
                     historyElements = null
                 }
             // Test Data End
@@ -158,7 +158,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = emptySet<TxFilter>()
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -166,7 +166,7 @@ class WestendHistoryInfoRemoteLoaderTest {
                 )
 
             val westendResponseToReturn =
-                GetFearlessHistoryElementsQuery.Data {
+                GetWestendHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {
@@ -260,7 +260,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = setOf(TxFilter.TRANSFER)
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -268,7 +268,7 @@ class WestendHistoryInfoRemoteLoaderTest {
                 )
 
             val westendResponseToReturn =
-                GetFearlessHistoryElementsQuery.Data {
+                GetWestendHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {
@@ -395,7 +395,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = setOf(TxFilter.REWARD)
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -403,7 +403,7 @@ class WestendHistoryInfoRemoteLoaderTest {
                 )
 
             val westendResponseToReturn =
-                GetFearlessHistoryElementsQuery.Data {
+                GetWestendHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {
@@ -526,7 +526,7 @@ class WestendHistoryInfoRemoteLoaderTest {
             val filters = setOf(TxFilter.EXTRINSIC)
 
             val westendRequestToMock =
-                GetFearlessHistoryElementsQuery(
+                GetWestendHistoryElementsQuery(
                     pageCount = pageCount,
                     address = signAddress,
                     cursor = cursor,
@@ -534,7 +534,7 @@ class WestendHistoryInfoRemoteLoaderTest {
                 )
 
             val westendResponseToReturn =
-                GetFearlessHistoryElementsQuery.Data {
+                GetWestendHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {

@@ -1,4 +1,4 @@
-query GetSoraHistoryElements(
+query GetMainnetHistoryElements(
     $pageCount: Int
     $cursor: Cursor
     $orderBy: [HistoryElementsOrderBy!]

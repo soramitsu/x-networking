@@ -16,7 +16,7 @@ abstract class RestClient {
         request: AbstractRestServerRequest.WithBody<T>
     ): T
 
-    abstract suspend fun postReturnString(
+    abstract suspend fun postAsString(
         request: AbstractRestServerRequest.WithBody<String>
     ): String
 
@@ -26,7 +26,7 @@ abstract class RestClient {
         request: AbstractRestServerRequest<T>
     ): T
 
-    abstract suspend fun getReturnString(
+    abstract suspend fun getAsString(
         request: AbstractRestServerRequest<String>
     ): String
 }

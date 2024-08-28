@@ -1,4 +1,4 @@
-query GetFearlessHistoryElements(
+query GetWestendHistoryElements(
     $pageCount: Int!
     $cursor: Cursor!
     $address: String!
