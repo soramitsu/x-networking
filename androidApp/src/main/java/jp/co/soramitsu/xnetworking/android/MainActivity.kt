@@ -155,7 +155,7 @@ private fun MainScreen() {
                     Log.e("srmts", "r start btn 4")
                     try {
                         val url = "http://www.arvifox.com/api/error.php"
-                        val r = DepBuilder.restClient.getReturnString(
+                        val r = DepBuilder.restClient.getAsString(
                             request = object : AbstractRestServerRequest<String>() {
                                 override val url: String
                                     get() = url

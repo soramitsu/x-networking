@@ -15,11 +15,11 @@ import jp.co.soramitsu.xnetworking.lib.engines.utils.asJsonObjectNullable
 import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
 import jp.co.soramitsu.xnetworking.lib.engines.utils.objectOrNull
 import jp.co.soramitsu.xnetworking.lib.engines.utils.primitiveOrNull
-import jp.co.soramitsu.xnetworking.sorawallet.GetSoraHistoryElementsQuery
-import jp.co.soramitsu.xnetworking.sorawallet.type.HistoryElementFilter
-import jp.co.soramitsu.xnetworking.sorawallet.type.HistoryElementsOrderBy
-import jp.co.soramitsu.xnetworking.sorawallet.type.JSONFilter
-import jp.co.soramitsu.xnetworking.sorawallet.type.StringFilter
+import jp.co.soramitsu.xnetworking.mainnet.GetMainnetHistoryElementsQuery
+import jp.co.soramitsu.xnetworking.mainnet.type.HistoryElementFilter
+import jp.co.soramitsu.xnetworking.mainnet.type.HistoryElementsOrderBy
+import jp.co.soramitsu.xnetworking.mainnet.type.JSONFilter
+import jp.co.soramitsu.xnetworking.mainnet.type.StringFilter
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
@@ -46,7 +46,7 @@ class SoraSubQueryHistoryInfoRemoteLoader(
         val response = checkNotNull(
             apolloClientStore.query(
                 serverUrl = configDAO.historyUrl(chainInfo.chainId),
-                GetSoraHistoryElementsQuery(
+                GetMainnetHistoryElementsQuery(
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
                     orderBy = Optional.present(listOf(HistoryElementsOrderBy.TIMESTAMP_DESC)),

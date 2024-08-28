@@ -33,7 +33,7 @@ class RestClientImpl(
         internalPost(request)
     }
 
-    override suspend fun postReturnString(
+    override suspend fun postAsString(
         request: AbstractRestServerRequest.WithBody<String>
     ): String = internalPost(request)
 
@@ -43,7 +43,7 @@ class RestClientImpl(
         internalGet(request)
     }
 
-    override suspend fun getReturnString(
+    override suspend fun getAsString(
         request: AbstractRestServerRequest<String>
     ): String = internalGet(request)
 

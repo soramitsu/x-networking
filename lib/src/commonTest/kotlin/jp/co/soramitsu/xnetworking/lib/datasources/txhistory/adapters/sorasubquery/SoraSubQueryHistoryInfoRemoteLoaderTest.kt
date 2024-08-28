@@ -17,11 +17,11 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistor
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.sorasubquery.SoraSubQueryHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetSoraHistoryElementsQuery
-import jp.co.soramitsu.xnetworking.sorawallet.type.HistoryElementsOrderBy
-import jp.co.soramitsu.xnetworking.sorawallet.type.buildHistoryElement
-import jp.co.soramitsu.xnetworking.sorawallet.type.buildHistoryElementsConnection
-import jp.co.soramitsu.xnetworking.sorawallet.type.buildPageInfo
+import jp.co.soramitsu.xnetworking.mainnet.GetMainnetHistoryElementsQuery
+import jp.co.soramitsu.xnetworking.mainnet.type.HistoryElementsOrderBy
+import jp.co.soramitsu.xnetworking.mainnet.type.buildHistoryElement
+import jp.co.soramitsu.xnetworking.mainnet.type.buildHistoryElementsConnection
+import jp.co.soramitsu.xnetworking.mainnet.type.buildPageInfo
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -60,10 +60,10 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
             val filters = TxFilter.entries.toSet()
 
             val soraRequestToMock =
-                GetSoraHistoryElementsQuery(
+                GetMainnetHistoryElementsQuery(
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
-                    orderBy = Optional.present(listOf(jp.co.soramitsu.xnetworking.sorawallet.type.HistoryElementsOrderBy.TIMESTAMP_DESC)),
+                    orderBy = Optional.present(listOf(jp.co.soramitsu.xnetworking.mainnet.type.HistoryElementsOrderBy.TIMESTAMP_DESC)),
                     filter = Optional.present(SoraSubQueryHistoryInfoRemoteLoader.createHistoryElementsFilter(signAddress))
                 )
             // Test Data End
@@ -104,7 +104,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
             val filters = TxFilter.entries.toSet()
 
             val soraRequestToMock =
-                GetSoraHistoryElementsQuery(
+                GetMainnetHistoryElementsQuery(
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
                     orderBy = Optional.present(listOf(HistoryElementsOrderBy.TIMESTAMP_DESC)),
@@ -116,7 +116,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
                 )
 
             val soraResponseToReturn =
-                GetSoraHistoryElementsQuery.Data {
+                GetMainnetHistoryElementsQuery.Data {
                     historyElements = null
                 }
             // Test Data End
@@ -164,7 +164,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
             val filters = emptySet<TxFilter>()
 
             val soraRequestToMock =
-                GetSoraHistoryElementsQuery(
+                GetMainnetHistoryElementsQuery(
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
                     orderBy = Optional.present(listOf(HistoryElementsOrderBy.TIMESTAMP_DESC)),
@@ -176,7 +176,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
                 )
 
             val soraResponseToReturn =
-                GetSoraHistoryElementsQuery.Data {
+                GetMainnetHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {
@@ -271,7 +271,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
             val filters = TxFilter.entries.toSet()
 
             val soraRequestToMock =
-                GetSoraHistoryElementsQuery(
+                GetMainnetHistoryElementsQuery(
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
                     orderBy = Optional.present(listOf(HistoryElementsOrderBy.TIMESTAMP_DESC)),
@@ -283,7 +283,7 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
                 )
 
             val soraResponseToReturn =
-                GetSoraHistoryElementsQuery.Data {
+                GetMainnetHistoryElementsQuery.Data {
                     historyElements = buildHistoryElementsConnection {
                         nodes = listOf(
                             buildHistoryElement {

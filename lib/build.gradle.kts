@@ -173,6 +173,7 @@ kotlin {
 }
 
 dependencies {
+    /* KSP is used for test mock generation */
     configurations
         .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
         .forEach {
@@ -213,11 +214,11 @@ android {
 }
 
 apollo {
-    service("fearlesswallet") {
-        packageName.set("jp.co.soramitsu.xnetworking.fearlesswallet")
-        schemaFiles.setFrom(file("../schema/fearless_westend_schema.graphqls"))
-        srcDir(file("${project.projectDir}/src/commonMain/qraphql/queries/txhistory/fearless"))
-        outputDir.set(File("${project.buildDir}/generated/apollo/fearless", "schemas"))
+    service("westend") {
+        packageName.set("jp.co.soramitsu.xnetworking.westend")
+        schemaFiles.setFrom(file("../schema/westend_schema.graphqls"))
+        srcDir(file("${project.projectDir}/src/commonMain/qraphql/queries/txhistory/westend"))
+        outputDir.set(File("${project.buildDir}/generated/apollo/westend", "schemas"))
         generateDataBuilders.set(true)
 
         mapScalarToKotlinString("Cursor")
@@ -230,11 +231,11 @@ apollo {
         )
     }
 
-    service("sorawallet") {
-        packageName.set("jp.co.soramitsu.xnetworking.sorawallet")
-        schemaFiles.setFrom(file("../schema/sora_schema.graphqls"))
-        srcDir(files("${project.projectDir}/src/commonMain/qraphql/queries/blockexplorer", "${project.projectDir}/src/commonMain/qraphql/queries/txhistory/sora"))
-        outputDir.set(File("${project.buildDir}/generated/apollo/sora", "schemas"))
+    service("mainnet") {
+        packageName.set("jp.co.soramitsu.xnetworking.mainnet")
+        schemaFiles.setFrom(file("../schema/mainnet_schema.graphqls"))
+        srcDir(files("${project.projectDir}/src/commonMain/qraphql/queries/blockexplorer", "${project.projectDir}/src/commonMain/qraphql/queries/txhistory/mainnet"))
+        outputDir.set(File("${project.buildDir}/generated/apollo/mainnet", "schemas"))
         generateDataBuilders.set(true)
 
         mapScalarToKotlinString("Cursor")

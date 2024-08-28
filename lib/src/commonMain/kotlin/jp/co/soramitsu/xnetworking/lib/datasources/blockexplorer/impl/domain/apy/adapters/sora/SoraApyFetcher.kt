@@ -4,7 +4,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetSbApyInfoQuery
+import jp.co.soramitsu.xnetworking.mainnet.GetSbApyInfoQuery
 
 class SoraApyFetcher(
     private val apolloClientStore: ApolloClientStore,
