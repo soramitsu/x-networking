@@ -11,7 +11,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetFiatDataQuery
+import jp.co.soramitsu.xnetworking.mainnet.GetFiatDataQuery
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals

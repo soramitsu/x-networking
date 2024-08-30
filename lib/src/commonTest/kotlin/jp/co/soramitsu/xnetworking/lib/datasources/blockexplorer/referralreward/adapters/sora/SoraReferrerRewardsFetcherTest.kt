@@ -11,7 +11,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetReferrerRewardsQuery
+import jp.co.soramitsu.xnetworking.mainnet.GetReferrerRewardsQuery
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith

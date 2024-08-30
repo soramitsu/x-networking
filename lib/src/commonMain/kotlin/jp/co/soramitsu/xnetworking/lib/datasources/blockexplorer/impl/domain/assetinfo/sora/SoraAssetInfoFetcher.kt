@@ -6,7 +6,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Asse
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.Utils.toDoubleNan
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.sorawallet.GetAssetsInfoQuery
+import jp.co.soramitsu.xnetworking.mainnet.GetAssetsInfoQuery
 
 class SoraAssetInfoFetcher(
     private val apolloClientStore: ApolloClientStore,

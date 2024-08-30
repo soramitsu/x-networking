@@ -34,7 +34,7 @@ class SuperWalletExternalApiDAOImplTest {
         )
 
     @Test
-    fun `TEST FearlessExternalApiDAO_historyType EXPECT ExternalApiDAOException_NullType`() = runTest {
+    fun `TEST superWalletExternalApiDAO_historyType EXPECT ExternalApiDAOException_NullType`() = runTest {
         // Test Data Start
         val configResponseToReturn =
             JsonObject(
@@ -106,7 +106,7 @@ class SuperWalletExternalApiDAOImplTest {
     }
 
     @Test
-    fun `TEST FearlessExternalApiDAO_historyUrl EXPECT ExternalApiDAOException_NullUrl`() = runTest {
+    fun `TEST superWalletExternalApiDAO_historyUrl EXPECT ExternalApiDAOException_NullUrl`() = runTest {
         // Test Data Start
         val configResponseToReturn =
             JsonObject(
@@ -178,7 +178,7 @@ class SuperWalletExternalApiDAOImplTest {
     }
 
     @Test
-    fun `TEST FearlessExternalApiDAO_stakingType EXPECT ExternalApiDAOException_NullType`() = runTest {
+    fun `TEST superWalletExternalApiDAO_stakingType EXPECT ExternalApiDAOException_NullType`() = runTest {
         // Test Data Start
         val configResponseToReturn =
             JsonObject(
