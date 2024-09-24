@@ -35,18 +35,18 @@ object DepBuilder {
     private val configDAO: ConfigDAO = SuperWalletConfigDAOImpl(
         configParser = RemoteConfigParserImpl(
             restClient = restClient,
-            chainsRequestUrl = "https://config.polkaswap2.io/stage/xn.json"
+            chainsRequestUrl = "https://config.polkaswap2.io/dev/xn.json",
         )
     )
 
     val historyRemoteLoaderFacade: HistoryInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
         configDAO = configDAO,
-        restClient = restClient
+        restClient = restClient,
     )
 
     val blockExplorerRepository: BlockExplorerRepository = BlockExplorerRepositoryImpl(
         configDAO = configDAO,
-        restClient = restClient
+        restClient = restClient,
     )
 
     // fun neededForSingingCommits(

@@ -26,12 +26,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
-import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.getAsString
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import java.util.concurrent.TimeUnit
 
@@ -51,6 +50,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 private fun MainScreen() {
     Column(
@@ -62,15 +62,19 @@ private fun MainScreen() {
         Button(
             onClick = {
                 GlobalScope.launch {
-                    val drs = assetsInfo.open("qweqwe.txt").bufferedReader().use { it.readText() }.let {
-                        Json.decodeFromString<List<String>>(it)
-                    }
+                    val drs =
+                        assetsInfo.open("qweqwe.txt").bufferedReader().use { it.readText() }.let {
+                            Json.decodeFromString<List<String>>(it)
+                        }
                     try {
                         Log.e("srmts", "r start btn 1 size=${drs.size}")
                         val r = DepBuilder.blockExplorerRepository.getAssetsInfo(
-                            ChainInfoConstants.Sora.chainInfo.chainId,
+                            ChainInfoConstants.SoraDev.chainInfo.chainId,
                             drs,
-                            (TimeUnit.SECONDS.convert(System.currentTimeMillis(), TimeUnit.MILLISECONDS) - 24 * 60 * 60).toInt()
+                            (TimeUnit.SECONDS.convert(
+                                System.currentTimeMillis(),
+                                TimeUnit.MILLISECONDS
+                            ) - 24 * 60 * 60).toInt()
                         ).sortedByDescending {
                             it.liquidity.toBigInteger()
                         }
@@ -135,7 +139,8 @@ private fun MainScreen() {
                     Log.e("srmts", "r start btn 3")
                     try {
 //                        val r = DepBuilder.blockExplorerRepository.getFiat(ChainAssetConstants.Sora.chainId)
-                        val r = DepBuilder.blockExplorerRepository.getApy(ChainInfoConstants.Sora.chainInfo.chainId)
+                        val r =
+                            DepBuilder.blockExplorerRepository.getApy(ChainInfoConstants.SoraProd.chainInfo.chainId)
 //                        val r = DepBuilder.blockExplorerRepository.getReferrerRewards(ChainAssetConstants.Sora.chainId, "")
                         Log.e("srmts", "r s = ${r.size}")
                         Log.e("srmts", "r = $r")
@@ -155,14 +160,7 @@ private fun MainScreen() {
                     Log.e("srmts", "r start btn 4")
                     try {
                         val url = "http://www.arvifox.com/api/error.php"
-                        val r = DepBuilder.restClient.getAsString(
-                            request = object : AbstractRestServerRequest<String>() {
-                                override val url: String
-                                    get() = url
-                                override val responseDeserializer: DeserializationStrategy<String>
-                                    get() = String.serializer()
-                            }
-                        )
+                        val r = DepBuilder.restClient.getAsString(url)
                         Log.e("srmts", "r = $r")
                     } catch (t: Throwable) {
                         Log.e("srmts", "t = ${t.localizedMessage}")
