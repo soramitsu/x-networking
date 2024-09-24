@@ -32,7 +32,7 @@ class NetworkService(
         ) - 24 * 60 * 60
 
         return blockExplorerRepository.getAssetsInfo(
-            chainId = ChainInfoConstants.Sora.chainInfo.chainId,
+            chainId = ChainInfoConstants.SoraStage.chainInfo.chainId,
             tokenIds = listOf(
                 "0x0200000000000000000000000000000000000000000000000000000000000000",
                 "0x0200040000000000000000000000000000000000000000000000000000000000",
@@ -47,16 +47,16 @@ class NetworkService(
     }
 
     suspend fun getFiat() = blockExplorerRepository.getFiat(
-        chainId = ChainInfoConstants.Sora.chainInfo.chainId
+        chainId = ChainInfoConstants.SoraStage.chainInfo.chainId
     )
 
     suspend fun getRewards() = blockExplorerRepository.getReferralReward(
-        chainId = ChainInfoConstants.Sora.chainInfo.chainId,
+        chainId = ChainInfoConstants.SoraStage.chainInfo.chainId,
         address = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
     )
 
     suspend fun getApy() = blockExplorerRepository.getApy(
-        chainId = ChainInfoConstants.Sora.chainInfo.chainId
+        chainId = ChainInfoConstants.SoraStage.chainInfo.chainId
     )
 
 //    suspend fun getHistorySora(page: Long) =

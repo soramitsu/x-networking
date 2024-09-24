@@ -16,8 +16,14 @@ enum class ChainInfoConstants(val chainInfo: ChainInfo) {
     Reef(
         chainInfo = ChainInfo.Simple("7834781d38e4798d548e34ec947d19deea29df148a7bf32484b7b24dacf8d4b7")
     ),
-    Sora(
+    SoraStage(
         chainInfo = ChainInfo.Simple("3266816be9fa51b32cfea58d3e33ca77246bc9618595a4300e44c8856a8d8a17")
+    ),
+    SoraProd(
+        chainInfo = ChainInfo.Simple("7e4e32d0feafd4f9c9414b0be86373f9a1efa904809b683453a9af6856d38ad5")
+    ),
+    SoraDev(
+        chainInfo = ChainInfo.Simple("710876b5984f5cc94488408be34b7cb9239d94eaa08882043986d1be9c6a8bcb")
     ),
     SubSquid(
         chainInfo = ChainInfo.Simple("91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3")
