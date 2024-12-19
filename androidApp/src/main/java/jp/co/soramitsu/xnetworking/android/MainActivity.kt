@@ -69,7 +69,7 @@ private fun MainScreen() {
                     try {
                         Log.e("srmts", "r start btn 1 size=${drs.size}")
                         val r = DepBuilder.blockExplorerRepository.getAssetsInfo(
-                            ChainInfoConstants.SoraDev.chainInfo.chainId,
+                            ChainInfoConstants.SoraTst.chainInfo.chainId,
                             drs,
                             (TimeUnit.SECONDS.convert(
                                 System.currentTimeMillis(),
@@ -110,9 +110,9 @@ private fun MainScreen() {
                         try {
                             val r = DepBuilder.historyRemoteLoaderFacade.loadHistoryInfo(
                                 pageCount = 1,
-                                cursor = page,
-                                signAddress = "paste your OkLink address",
-                                chainInfo = ChainInfoConstants.OkLink.chainInfo,
+                                cursor = null,
+                                signAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
+                                chainInfo = ChainInfoConstants.SoraTst.chainInfo,
                                 filters = setOf(TxFilter.TRANSFER)
                             )
                             Log.e(
