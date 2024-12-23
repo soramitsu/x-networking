@@ -17,22 +17,26 @@ internal inline fun SoraValidatorsRequest(
         """
             query MyQuery {
               stakingEraNominators(
-                where: {
-                  AND: {
+                filter: {
+                  and: {
                     era: {
-                      index_gte: $eraFrom, 
-                      index_lte: $eraTo
+                      index: {
+                        greaterThanOrEqualTo: $eraFrom,
+                        lessThanOrEqualTo: $eraTo
+                      }
+                    },
+                    staker: {
+                      id: {equalTo: "$accountAddress"}
                     }
-                  }, 
-                  staker: {
-                    id_eq: "$accountAddress"
                   }
                 }
               ) {
-                nominations {
-                  validator {
-                    validator {
-                      id
+                nodes {
+                  nominations {
+                    nodes {
+                      validator {
+                        stakerId
+                      }
                     }
                   }
                 }
@@ -47,20 +51,30 @@ internal inline fun SoraValidatorsRequest(
 
 @Serializable
 internal class SoraValidatorsResponse(
-    val stakingEraNominators: List<Nominator>
+    val stakingEraNominators: SoraValidatorsResponseNodes,
 ) {
     @Serializable
-    class Nominator(
-        val nominations: List<Nomination>
+    class SoraValidatorsResponseNodes(
+        val nodes: List<SoraValidatorsResponseNominations>,
     ) {
         @Serializable
-        class Nomination(
-            val validator: Validator
+        class SoraValidatorsResponseNominations(
+            val nominations: SoraValidatorsResponseNominations,
         ) {
             @Serializable
-            class Validator(
-                val id: String? = null
-            )
+            class SoraValidatorsResponseNominations(
+                val nodes: List<SoraValidatorsResponseValidator>,
+            ) {
+                @Serializable
+                class SoraValidatorsResponseValidator(
+                    val validator: SoraValidatorsResponse,
+                ) {
+                    @Serializable
+                    class SoraValidatorsResponse(
+                        val stakerId: String,
+                    )
+                }
+            }
         }
     }
 }

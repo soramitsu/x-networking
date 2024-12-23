@@ -6,15 +6,18 @@ import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsResponse
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsResponse.SoraValidatorsResponseNodes
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsResponse.SoraValidatorsResponseNodes.SoraValidatorsResponseNominations
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsResponse.SoraValidatorsResponseNodes.SoraValidatorsResponseNominations.SoraValidatorsResponseNominations.SoraValidatorsResponseValidator
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -185,15 +188,19 @@ class SoraValidatorsFetcherTest {
         val validatorsResponseToReturn =
             GraphQLResponseDataWrapper(
                 data = SoraValidatorsResponse(
-                    stakingEraNominators = listOf(
-                        SoraValidatorsResponse.Nominator(
-                            nominations = listOf(
-                                SoraValidatorsResponse.Nominator.Nomination(
-                                    validator = SoraValidatorsResponse.Nominator.Nomination.Validator(
-                                        id = "123"
-                                    )
-                                )
-                            )
+                    stakingEraNominators = SoraValidatorsResponseNodes(
+                        nodes = listOf(
+                            SoraValidatorsResponseNominations(
+                                nominations = SoraValidatorsResponseNominations.SoraValidatorsResponseNominations(
+                                    nodes = listOf(
+                                        SoraValidatorsResponseValidator(
+                                            validator = SoraValidatorsResponseValidator.SoraValidatorsResponse(
+                                                stakerId = "123",
+                                            ),
+                                        )
+                                    ),
+                                ),
+                            ),
                         )
                     )
                 )
@@ -234,10 +241,8 @@ class SoraValidatorsFetcherTest {
         }.wasInvoked(1)
 
         assertContentEquals(
-            validatorsResponseToReturn.data.stakingEraNominators
-                .flatMap { it.nominations }
-                .mapNotNull { it.validator.id }
-                .distinct(),
+            validatorsResponseToReturn.data.stakingEraNominators.nodes
+                .map { n1 -> n1.nominations.nodes.map { n2 -> n2.validator.stakerId } }.flatten().distinct(),
             result
         )
     }
