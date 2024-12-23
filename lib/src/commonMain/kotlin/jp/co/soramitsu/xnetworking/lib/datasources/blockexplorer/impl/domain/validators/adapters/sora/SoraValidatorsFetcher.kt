@@ -1,14 +1,14 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora
 
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 
 class SoraValidatorsFetcher(
     private val configDAO: ConfigDAO,
     private val restClient: RestClient
-): ValidatorsFetcher() {
+) : ValidatorsFetcher() {
 
     override suspend fun fetch(
         chainId: String,
@@ -30,11 +30,12 @@ class SoraValidatorsFetcher(
                 eraFrom = historicalRange.first(),
                 eraTo = historicalRange.last()
             )
-        ).data.stakingEraNominators.flatMap { it.nominations }
+        ).data.stakingEraNominators.nodes.map { node1 ->
+            node1.nominations.nodes.map { node2 ->
+                node2.validator.stakerId
+            }
+        }.flatten()
 
-        return validatorsInfoList.mapNotNull { validatorInfo ->
-            validatorInfo.validator.id
-        }.distinct()
+        return validatorsInfoList.distinct()
     }
-
 }

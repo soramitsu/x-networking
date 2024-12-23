@@ -1,21 +1,21 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators
 
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
-import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.subquery.SubQueryValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.subsquid.SubSquidValidatorsFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 
 class ValidatorsFetcherFacade(
     private val configDAO: ConfigDAO,
     private val restClient: RestClient
-): ValidatorsFetcher() {
+) : ValidatorsFetcher() {
     private data class Args(
         val externalApiType: ExternalApiType
-    ): CachingFactory.Args()
+    ) : CachingFactory.Args()
 
     private val cachingFactory = CachingFactory<Args, ValidatorsFetcher> {
         if (externalApiType === ExternalApiType.Sora) {

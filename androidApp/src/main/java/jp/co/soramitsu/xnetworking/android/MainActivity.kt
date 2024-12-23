@@ -138,10 +138,11 @@ private fun MainScreen() {
                 GlobalScope.launch {
                     Log.e("srmts", "r start btn 3")
                     try {
-//                        val r = DepBuilder.blockExplorerRepository.getFiat(ChainAssetConstants.Sora.chainId)
-                        val r =
-                            DepBuilder.blockExplorerRepository.getApy(ChainInfoConstants.SoraProd.chainInfo.chainId)
-//                        val r = DepBuilder.blockExplorerRepository.getReferrerRewards(ChainAssetConstants.Sora.chainId, "")
+                        val r = DepBuilder.blockExplorerRepository.getValidatorsList(
+                            ChainInfoConstants.SoraStage.chainInfo.chainId,
+                            stashAccountAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
+                            historicalRange = listOf("3660", "3675"),
+                        )
                         Log.e("srmts", "r s = ${r.size}")
                         Log.e("srmts", "r = $r")
                     } catch (t: Throwable) {
