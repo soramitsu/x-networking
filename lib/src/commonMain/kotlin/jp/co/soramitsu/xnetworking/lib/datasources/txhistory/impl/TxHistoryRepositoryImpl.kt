@@ -59,7 +59,7 @@ class TxHistoryRepositoryImpl(
         historyItemsFilter = historyItemsFilter
     )
 
-    private val soraHistoryDBImpl = SoraHistoryDBImpl(
+    override val soraHistoryDBImpl: SoraHistoryDBImpl = SoraHistoryDBImpl(
         soraHistoryDatabase = SoraHistoryDatabase(
             databaseDriverFactory.createDriver()
         )

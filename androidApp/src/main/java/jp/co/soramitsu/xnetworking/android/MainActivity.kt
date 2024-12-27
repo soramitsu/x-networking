@@ -17,6 +17,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    LaunchedEffect(key1 = Unit) {
+                        DepBuilder.createHistoryRepo(this@MainActivity.applicationContext)
+                    }
                     MainScreen()
                 }
             }
@@ -91,6 +95,37 @@ private fun MainScreen() {
         )
         Spacer(modifier = Modifier.size(8.dp))
         Row {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    GlobalScope.launch {
+                        Log.e("srmts", "r start btn 2")
+                        try {
+                            val r = DepBuilder.historyRemoteLoaderFacade.loadHistoryInfo(
+                                pageCount = 20,
+                                cursor = null,
+                                signAddress = "cnSDRMJMv7xZ6ozJ7NcpVjrYr7Nz2jHKRBK7xhTTa3TceNc8s",
+//                                signAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
+                                chainInfo = ChainInfoConstants.SoraStage.chainInfo,
+                                filters = TxFilter.entries.toSet(),
+                            )
+                            Log.e(
+                                "srmts",
+                                "r = ${r.items}"
+                            )
+                        } catch (t: Throwable) {
+                            Log.e("srmts", "t= ${t.localizedMessage}")
+                        }
+                    }
+                },
+                content = {
+                    Text(text = "btn2 his co")
+                },
+            )
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+        Row {
             var page by remember { mutableStateOf("1") }
             var res by remember { mutableStateOf("") }
             Column(modifier = Modifier.weight(2f)) {
@@ -108,12 +143,12 @@ private fun MainScreen() {
                     GlobalScope.launch {
                         Log.e("srmts", "r start btn 2")
                         try {
-                            val r = DepBuilder.historyRemoteLoaderFacade.loadHistoryInfo(
-                                pageCount = 1,
-                                cursor = null,
-                                signAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
-                                chainInfo = ChainInfoConstants.SoraTst.chainInfo,
-                                filters = setOf(TxFilter.TRANSFER)
+                            val r = DepBuilder.txHistoryRepository.getTransactionHistoryPaged(
+                                address = "cnSDRMJMv7xZ6ozJ7NcpVjrYr7Nz2jHKRBK7xhTTa3TceNc8s",
+                                page = page.toLong(),
+                                pageCount = 20,
+                                chainInfo = ChainInfoConstants.SoraStage.chainInfo,
+                                filters = TxFilter.entries.toSet(),
                             )
                             Log.e(
                                 "srmts",
@@ -127,7 +162,7 @@ private fun MainScreen() {
                     }
                 },
                 content = {
-                    Text(text = "btn2")
+                    Text(text = "btn2 his repo")
                 },
             )
         }
@@ -138,10 +173,22 @@ private fun MainScreen() {
                 GlobalScope.launch {
                     Log.e("srmts", "r start btn 3")
                     try {
-                        val r = DepBuilder.blockExplorerRepository.getValidatorsList(
+//                        val r = DepBuilder.blockExplorerRepository.getValidatorsList(
+//                            ChainInfoConstants.SoraStage.chainInfo.chainId,
+//                            stashAccountAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
+//                            historicalRange = listOf("3660", "3675"),
+//                        )
+                        val r = DepBuilder.blockExplorerRepository.getStakingRewarded(
                             ChainInfoConstants.SoraStage.chainInfo.chainId,
-                            stashAccountAddress = "cnVkoGs3rEMqLqY27c2nfVXJRGdzNJk2ns78DcqtppaSRe8qm",
-                            historicalRange = listOf("3660", "3675"),
+                            address = "cnSDRMJMv7xZ6ozJ7NcpVjrYr7Nz2jHKRBK7xhTTa3TceNc8s",
+                        )
+                        Log.e(
+                            "srmts",
+                            "MainScreen: sum = ${
+                                r.sumOf {
+                                    it.toBigDecimal()
+                                }
+                            }",
                         )
                         Log.e("srmts", "r s = ${r.size}")
                         Log.e("srmts", "r = $r")
