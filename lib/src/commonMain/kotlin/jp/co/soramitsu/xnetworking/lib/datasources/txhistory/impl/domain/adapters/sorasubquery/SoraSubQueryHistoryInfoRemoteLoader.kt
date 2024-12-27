@@ -132,6 +132,18 @@ class SoraSubQueryHistoryInfoRemoteLoader(
                                     HistoryElementFilter(
                                         module = Optional.present(
                                             value = StringFilter(
+                                                equalTo = Optional.present(value = "staking")
+                                            )
+                                        ),
+                                        method = Optional.present(
+                                            value = StringFilter(
+                                                equalTo = Optional.present(value = "Rewarded")
+                                            )
+                                        )
+                                    ),
+                                    HistoryElementFilter(
+                                        module = Optional.present(
+                                            value = StringFilter(
                                                 equalTo = Optional.present(value = "liquidityProxy")
                                             )
                                         ),

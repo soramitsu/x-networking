@@ -10,6 +10,7 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.Ap
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.AssetInfoFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ReferralRewardFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.StakingRewardedFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.UnbondingFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.BlockExplorerRepositoryImpl
@@ -36,6 +37,9 @@ class BlockExplorerImplTest {
     @Mock
     private val validatorsFetcherMock = mock(classOf<ValidatorsFetcher>())
 
+    @Mock
+    private val stakingRewarded = mock(classOf<StakingRewardedFetcher>())
+
     private val blockExplorerRepository: BlockExplorerRepository =
         BlockExplorerRepositoryImpl(
             apyFetcher = apyFetcherMock,
@@ -43,7 +47,8 @@ class BlockExplorerImplTest {
             fiatFetcher = fiatFetcherMock,
             referralRewardFetcher = referralRewardFetcherMock,
             unbondingFetcher = unbondingFetcherMock,
-            validatorsFetcher = validatorsFetcherMock
+            validatorsFetcher = validatorsFetcherMock,
+            stakingRewarded = stakingRewarded,
         )
 
     @Test

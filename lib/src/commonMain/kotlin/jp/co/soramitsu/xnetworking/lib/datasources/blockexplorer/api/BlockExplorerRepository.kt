@@ -89,6 +89,19 @@ abstract class BlockExplorerRepository {
         NullPointerException::class,
         RestClientException::class,
     )
+    abstract suspend fun getStakingRewarded(
+        chainId: String,
+        address: String,
+    ): List<String>
+
+    @Throws(
+        CancellationException::class,
+        ExternalApiDAOException::class,
+        IllegalArgumentException::class,
+        IllegalStateException::class,
+        NullPointerException::class,
+        RestClientException::class,
+    )
     abstract suspend fun getValidatorsList(
         chainId: String,
         stashAccountAddress: String,
