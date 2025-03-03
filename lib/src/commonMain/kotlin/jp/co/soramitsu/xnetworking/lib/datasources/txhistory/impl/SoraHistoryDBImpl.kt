@@ -43,6 +43,15 @@ internal class SoraHistoryDBImpl(
         return dbQuery.selectExtrinsic(txHash, signAddress, chainId).executeAsOneOrNull()
     }
 
+    fun getExtrinsicByTokenId(
+        tokenId: String,
+        count: Long,
+        address : String,
+        chainId: String
+    ): List<Extrinsics> {
+        return dbQuery.selectExtrinsicsByTokenId(tokenId, address, chainId, count).executeAsList()
+    }
+
     fun getExtrinsicNested(
         extrinsicHash: String
     ): List<Extrinsics> {

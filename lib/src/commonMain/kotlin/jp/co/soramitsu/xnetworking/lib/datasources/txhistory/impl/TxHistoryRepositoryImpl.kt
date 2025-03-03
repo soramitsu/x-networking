@@ -1,39 +1,39 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl
 
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.HistoryItemsFilter
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.TxHistoryRepository
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.wrappers.TxHistoryResult
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.builder.ExpectActualDBDriverFactory
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.usecase.FetchExtrinsicsAndSavePagedDecorator
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.usecase.FetchExtrinsicsAndSaveUseCase
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.HistoryMapper
-import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 import jp.co.soramitsu.xnetworking.db.Extrinsics
 import jp.co.soramitsu.xnetworking.db.SignerInfo
 import jp.co.soramitsu.xnetworking.db.SoraHistoryDatabase
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.HistoryItemsFilter
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.TxHistoryRepository
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.wrappers.TxHistoryResult
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.builder.ExpectActualDBDriverFactory
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.HistoryInfoRemoteLoaderFacade
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.usecase.FetchExtrinsicsAndSavePagedDecorator
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.usecase.FetchExtrinsicsAndSaveUseCase
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.HistoryMapper
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.impl.ApolloClientStoreImpl
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 
 class TxHistoryRepositoryImpl(
     private val databaseDriverFactory: ExpectActualDBDriverFactory,
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader,
     private val historyItemsFilter: HistoryItemsFilter
-): TxHistoryRepository(), HistoryItemsFilter by historyItemsFilter {
+) : TxHistoryRepository(), HistoryItemsFilter by historyItemsFilter {
 
     constructor(
         databaseDriverFactory: ExpectActualDBDriverFactory,
         configDAO: ConfigDAO,
         restClient: RestClient,
         historyItemsFilter: HistoryItemsFilter,
-    ): this(
+    ) : this(
         databaseDriverFactory = databaseDriverFactory,
         historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
             configDAO = configDAO,
@@ -49,7 +49,7 @@ class TxHistoryRepositoryImpl(
         apolloClientStore: ApolloClientStore,
         restClient: RestClient,
         historyItemsFilter: HistoryItemsFilter,
-    ): this(
+    ) : this(
         databaseDriverFactory = databaseDriverFactory,
         historyInfoRemoteLoader = HistoryInfoRemoteLoaderFacade(
             configDAO = configDAO,
@@ -130,6 +130,24 @@ class TxHistoryRepositoryImpl(
         } while (result.size < count && extrinsics.isNotEmpty())
 
         return result.filterCachedHistoryItems()
+    }
+
+    override fun getTokenTransactionHistoryCached(
+        tokenId: String,
+        count: Long,
+        address: String,
+        chainId: String,
+    ): List<TxHistoryItem> {
+        val extrinsics = soraHistoryDBImpl.getExtrinsicByTokenId(
+            tokenId = tokenId,
+            count = count,
+            address = address,
+            chainId = chainId
+        )
+        return buildResultHistoryInfo(
+            endReached = true,
+            extrinsics = extrinsics
+        ).items.filterCachedHistoryItems()
     }
 
     override suspend fun getTransactionHistoryPaged(
