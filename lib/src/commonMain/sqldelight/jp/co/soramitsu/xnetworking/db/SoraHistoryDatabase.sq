@@ -82,3 +82,8 @@ DELETE FROM SignerInfo;
 
 removeSignerInfo:
 DELETE FROM SignerInfo WHERE signAddress = :address AND networkName = :network;
+
+selectExtrinsicsByTokenId:
+SELECT Extrinsics.* FROM Extrinsics JOIN ExtrinsicParam ON Extrinsics.txHash = ExtrinsicParam.extrinsicHash
+WHERE ExtrinsicParam.paramValue = :tokenId AND Extrinsics.signAddress = :address AND Extrinsics.networkName = :network
+LIMIT :count;

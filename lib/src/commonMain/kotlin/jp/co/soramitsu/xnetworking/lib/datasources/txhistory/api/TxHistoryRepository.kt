@@ -38,6 +38,17 @@ abstract class TxHistoryRepository {
         CancellationException::class,
         IllegalArgumentException::class
     )
+    abstract fun getTokenTransactionHistoryCached(
+        tokenId : String,
+        count: Long,
+        address : String,
+        chainId: String
+    ): List<TxHistoryItem>
+
+    @Throws(
+        CancellationException::class,
+        IllegalArgumentException::class
+    )
     abstract fun getTransactionCached(
         txHash: String,
         address: String,
