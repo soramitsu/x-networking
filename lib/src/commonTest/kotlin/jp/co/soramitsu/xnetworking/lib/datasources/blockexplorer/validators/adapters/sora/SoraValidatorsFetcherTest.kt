@@ -1,11 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.validators.adapters.sora
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsRequest
@@ -32,11 +31,9 @@ class SoraValidatorsFetcherTest {
         const val stashAccountAddress = ""
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
+    private val restClient = mock(of<RestClient>())
 
     private val fetcher: ValidatorsFetcher = SoraValidatorsFetcher(
         configDAO = configDAO,
@@ -242,7 +239,8 @@ class SoraValidatorsFetcherTest {
 
         assertContentEquals(
             validatorsResponseToReturn.data.stakingEraNominators.nodes
-                .map { n1 -> n1.nominations.nodes.map { n2 -> n2.validator.stakerId } }.flatten().distinct(),
+                .map { n1 -> n1.nominations.nodes.map { n2 -> n2.validator.stakerId } }.flatten()
+                .distinct(),
             result
         )
     }

@@ -1,11 +1,13 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api
 
+import io.mockative.Mockable
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 import kotlin.coroutines.cancellation.CancellationException
 
+@Mockable
 abstract class ConfigDAO {
 
     @Throws(

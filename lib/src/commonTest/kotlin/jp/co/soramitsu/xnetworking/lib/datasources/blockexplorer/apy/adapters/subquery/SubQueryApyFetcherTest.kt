@@ -1,15 +1,11 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.apy.adapters.subquery
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.fake.valueOf
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryApyFetcher
@@ -17,8 +13,11 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryApyResponse
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryLastRoundRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryLastRoundResponse
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
@@ -31,11 +30,9 @@ class SubQueryApyFetcherTest {
         const val requestUrl = "quartz.url"
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
+    private val restClient = mock(of<RestClient>())
 
     private val fetcher: ApyFetcher = SubQueryApyFetcher(
         configDAO = configDAO,

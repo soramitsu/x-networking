@@ -1,10 +1,9 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.BlockExplorerRepository
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.AssetInfoFetcher
@@ -19,26 +18,19 @@ import kotlin.test.Test
 
 class BlockExplorerImplTest {
 
-    @Mock
-    private val apyFetcherMock = mock(classOf<ApyFetcher>())
+    private val apyFetcherMock = mock(of<ApyFetcher>())
 
-    @Mock
-    private val assetInfoFetcherMock = mock(classOf<AssetInfoFetcher>())
+    private val assetInfoFetcherMock = mock(of<AssetInfoFetcher>())
 
-    @Mock
-    private val fiatFetcherMock = mock(classOf<FiatFetcher>())
+    private val fiatFetcherMock = mock(of<FiatFetcher>())
 
-    @Mock
-    private val referralRewardFetcherMock = mock(classOf<ReferralRewardFetcher>())
+    private val referralRewardFetcherMock = mock(of<ReferralRewardFetcher>())
 
-    @Mock
-    private val unbondingFetcherMock = mock(classOf<UnbondingFetcher>())
+    private val unbondingFetcherMock = mock(of<UnbondingFetcher>())
 
-    @Mock
-    private val validatorsFetcherMock = mock(classOf<ValidatorsFetcher>())
+    private val validatorsFetcherMock = mock(of<ValidatorsFetcher>())
 
-    @Mock
-    private val stakingRewarded = mock(classOf<StakingRewardedFetcher>())
+    private val stakingRewarded = mock(of<StakingRewardedFetcher>())
 
     private val blockExplorerRepository: BlockExplorerRepository =
         BlockExplorerRepositoryImpl(

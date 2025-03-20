@@ -1,15 +1,14 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.sorasubquery
 
 import com.apollographql.apollo.api.Optional
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
@@ -41,11 +40,9 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
         const val signAddress = ""
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
-    @Mock
-    private val apolloClientStore = mock(classOf<ApolloClientStore>())
+    private val apolloClientStore = mock(of<ApolloClientStore>())
 
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
         SoraSubQueryHistoryInfoRemoteLoader(
@@ -64,7 +61,11 @@ class SoraSubQueryHistoryInfoRemoteLoaderTest {
                     pageCount = Optional.present(pageCount),
                     cursor = Optional.present(cursor),
                     orderBy = Optional.present(listOf(jp.co.soramitsu.xnetworking.mainnet.type.HistoryElementsOrderBy.TIMESTAMP_DESC)),
-                    filter = Optional.present(SoraSubQueryHistoryInfoRemoteLoader.createHistoryElementsFilter(signAddress))
+                    filter = Optional.present(
+                        SoraSubQueryHistoryInfoRemoteLoader.createHistoryElementsFilter(
+                            signAddress
+                        )
+                    )
                 )
             // Test Data End
 

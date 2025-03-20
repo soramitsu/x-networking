@@ -1,15 +1,14 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.referralreward.adapters.sora
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ReferralRewardFetcher
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.referralreward.sora.SoraReferralRewardsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
 import jp.co.soramitsu.xnetworking.mainnet.GetReferrerRewardsQuery
 import kotlinx.coroutines.test.runTest
@@ -29,11 +28,9 @@ class SoraReferrerRewardsFetcherTest {
         const val address = ""
     }
 
-    @Mock
-    private val apolloClientStore = mock(classOf<ApolloClientStore>())
+    private val apolloClientStore = mock(of<ApolloClientStore>())
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
     private val fetcher: ReferralRewardFetcher =
         SoraReferralRewardsFetcher(

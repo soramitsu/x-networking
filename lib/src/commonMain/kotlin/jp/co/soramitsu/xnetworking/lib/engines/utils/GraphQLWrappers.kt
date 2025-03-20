@@ -10,8 +10,6 @@ import kotlin.native.HiddenFromObjC
     iOS should always request for NSString result, and deserialize it on its own
 */
 @Serializable
-@OptIn(ExperimentalObjCRefinement::class)
-@HiddenFromObjC
 data class GraphQLResponseDataWrapper<T>(
     val data: T
 )

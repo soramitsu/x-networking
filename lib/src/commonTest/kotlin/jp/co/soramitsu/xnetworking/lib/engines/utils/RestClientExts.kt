@@ -1,10 +1,9 @@
 package jp.co.soramitsu.xnetworking.lib.engines.utils
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.builtins.serializer
@@ -12,8 +11,7 @@ import kotlin.test.Test
 
 class RestClientExts {
 
-    @Mock
-    private val restClientMock = mock(classOf<RestClient>())
+    private val restClientMock = mock(of<RestClient>())
 
     @Test
     fun `TEST restClient_getAsString_String EXPECT success`() = runTest {

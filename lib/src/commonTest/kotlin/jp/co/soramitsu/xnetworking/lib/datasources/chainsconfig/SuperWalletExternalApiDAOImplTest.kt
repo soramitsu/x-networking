@@ -1,10 +1,9 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
@@ -25,8 +24,7 @@ class SuperWalletExternalApiDAOImplTest {
         const val chainId = "sora"
     }
 
-    @Mock
-    private val configParser = mock(classOf<ConfigParser>())
+    private val configParser = mock(of<ConfigParser>())
 
     private val configDAO: ConfigDAO =
         SuperWalletConfigDAOImpl(
@@ -34,38 +32,39 @@ class SuperWalletExternalApiDAOImplTest {
         )
 
     @Test
-    fun `TEST superWalletExternalApiDAO_historyType EXPECT ExternalApiDAOException_NullType`() = runTest {
-        // Test Data Start
-        val configResponseToReturn =
-            JsonObject(
-                content = mapOf(
-                    "chainId" to JsonPrimitive(chainId),
-                    "externalApi" to JsonObject(
-                        content = mapOf(
-                            "history" to JsonObject(
-                                content = emptyMap()
+    fun `TEST superWalletExternalApiDAO_historyType EXPECT ExternalApiDAOException_NullType`() =
+        runTest {
+            // Test Data Start
+            val configResponseToReturn =
+                JsonObject(
+                    content = mapOf(
+                        "chainId" to JsonPrimitive(chainId),
+                        "externalApi" to JsonObject(
+                            content = mapOf(
+                                "history" to JsonObject(
+                                    content = emptyMap()
+                                )
                             )
                         )
                     )
                 )
-            )
-        // Test Data End
+            // Test Data End
 
-        // Mock Preparation Start
-        coEvery {
-            configParser.getChainObjectById(chainId)
-        }.returns(configResponseToReturn)
-        // Mock Preparation End
+            // Mock Preparation Start
+            coEvery {
+                configParser.getChainObjectById(chainId)
+            }.returns(configResponseToReturn)
+            // Mock Preparation End
 
-        assertFailsWith<ExternalApiDAOException.NullType> {
-            configDAO.historyType(chainId)
+            assertFailsWith<ExternalApiDAOException.NullType> {
+                configDAO.historyType(chainId)
+            }
+
+            // Verification & Assertion
+            coVerify {
+                configParser.getChainObjectById(chainId)
+            }.wasInvoked(1)
         }
-
-        // Verification & Assertion
-        coVerify {
-            configParser.getChainObjectById(chainId)
-        }.wasInvoked(1)
-    }
 
     @Test
     fun `TEST superWalletExternalApiDAO_historyType EXPECT success`() = runTest {
@@ -106,38 +105,39 @@ class SuperWalletExternalApiDAOImplTest {
     }
 
     @Test
-    fun `TEST superWalletExternalApiDAO_historyUrl EXPECT ExternalApiDAOException_NullUrl`() = runTest {
-        // Test Data Start
-        val configResponseToReturn =
-            JsonObject(
-                content = mapOf(
-                    "chainId" to JsonPrimitive(chainId),
-                    "externalApi" to JsonObject(
-                        content = mapOf(
-                            "history" to JsonObject(
-                                content = mapOf()
+    fun `TEST superWalletExternalApiDAO_historyUrl EXPECT ExternalApiDAOException_NullUrl`() =
+        runTest {
+            // Test Data Start
+            val configResponseToReturn =
+                JsonObject(
+                    content = mapOf(
+                        "chainId" to JsonPrimitive(chainId),
+                        "externalApi" to JsonObject(
+                            content = mapOf(
+                                "history" to JsonObject(
+                                    content = mapOf()
+                                )
                             )
                         )
                     )
                 )
-            )
-        // Test Data End
+            // Test Data End
 
-        // Mock Preparation Start
-        coEvery {
-            configParser.getChainObjectById(chainId)
-        }.returns(configResponseToReturn)
-        // Mock Preparation End
+            // Mock Preparation Start
+            coEvery {
+                configParser.getChainObjectById(chainId)
+            }.returns(configResponseToReturn)
+            // Mock Preparation End
 
-        assertFailsWith<ExternalApiDAOException.NullUrl> {
-            configDAO.historyUrl(chainId)
+            assertFailsWith<ExternalApiDAOException.NullUrl> {
+                configDAO.historyUrl(chainId)
+            }
+
+            // Verification & Assertion
+            coVerify {
+                configParser.getChainObjectById(chainId)
+            }.wasInvoked(1)
         }
-
-        // Verification & Assertion
-        coVerify {
-            configParser.getChainObjectById(chainId)
-        }.wasInvoked(1)
-    }
 
     @Test
     fun `TEST superWalletExternalApiDAO_historyUrl EXPECT success`() = runTest {
@@ -178,38 +178,39 @@ class SuperWalletExternalApiDAOImplTest {
     }
 
     @Test
-    fun `TEST superWalletExternalApiDAO_stakingType EXPECT ExternalApiDAOException_NullType`() = runTest {
-        // Test Data Start
-        val configResponseToReturn =
-            JsonObject(
-                content = mapOf(
-                    "chainId" to JsonPrimitive(chainId),
-                    "externalApi" to JsonObject(
-                        content = mapOf(
-                            "staking" to JsonObject(
-                                content = mapOf()
+    fun `TEST superWalletExternalApiDAO_stakingType EXPECT ExternalApiDAOException_NullType`() =
+        runTest {
+            // Test Data Start
+            val configResponseToReturn =
+                JsonObject(
+                    content = mapOf(
+                        "chainId" to JsonPrimitive(chainId),
+                        "externalApi" to JsonObject(
+                            content = mapOf(
+                                "staking" to JsonObject(
+                                    content = mapOf()
+                                )
                             )
                         )
                     )
                 )
-            )
-        // Test Data End
+            // Test Data End
 
-        // Mock Preparation Start
-        coEvery {
-            configParser.getChainObjectById(chainId)
-        }.returns(configResponseToReturn)
-        // Mock Preparation End
+            // Mock Preparation Start
+            coEvery {
+                configParser.getChainObjectById(chainId)
+            }.returns(configResponseToReturn)
+            // Mock Preparation End
 
-        assertFailsWith<ExternalApiDAOException.NullType> {
-            configDAO.stakingType(chainId)
+            assertFailsWith<ExternalApiDAOException.NullType> {
+                configDAO.stakingType(chainId)
+            }
+
+            // Verification & Assertion
+            coVerify {
+                configParser.getChainObjectById(chainId)
+            }.wasInvoked(1)
         }
-
-        // Verification & Assertion
-        coVerify {
-            configParser.getChainObjectById(chainId)
-        }.wasInvoked(1)
-    }
 
     @Test
     fun `TEST superWalletExternalApiDAO_stakingType EXPECT success`() = runTest {

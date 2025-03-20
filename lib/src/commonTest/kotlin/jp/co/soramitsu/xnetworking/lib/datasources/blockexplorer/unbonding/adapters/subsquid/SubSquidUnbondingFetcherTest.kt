@@ -1,21 +1,20 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.unbonding.adapters.subsquid
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.UnbondingFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Unbonding
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.unbonding.adapters.subsquid.SubSquidUnbondingFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.unbonding.adapters.subsquid.SubSquidUnbondingRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.unbonding.adapters.subsquid.SubSquidUnbondingResponse
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
@@ -28,11 +27,9 @@ class SubSquidUnbondingFetcherTest {
         const val requestUrl = "polkadot.url"
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
+    private val restClient = mock(of<RestClient>())
 
     private val fetcher: UnbondingFetcher = SubSquidUnbondingFetcher(
         configDAO = configDAO,
@@ -249,7 +246,7 @@ class SubSquidUnbondingFetcherTest {
                 chainId = chainId
             )
         }.returns(StakingOption.PARACHAIN)
-        
+
         coEvery {
             configDAO.stakingUrl(
                 chainId = chainId
@@ -292,7 +289,7 @@ class SubSquidUnbondingFetcherTest {
                             unbonding.timestamp == expectedUnbonding.timestamp &&
                             unbonding.type == expectedUnbonding.type
 
-                acc &&areElementsTheSame
+                acc && areElementsTheSame
             }
         }
     }

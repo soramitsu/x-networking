@@ -1,15 +1,14 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.data
 
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.eq
 import io.mockative.mock
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data.RemoteConfigParserImpl
-import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -24,8 +23,7 @@ class InMemorySavingConfigFetcherImplTest {
         const val requestUrl = "sora.url"
     }
 
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
+    private val restClient = mock(of<RestClient>())
 
 
     private val configParser: ConfigParser =

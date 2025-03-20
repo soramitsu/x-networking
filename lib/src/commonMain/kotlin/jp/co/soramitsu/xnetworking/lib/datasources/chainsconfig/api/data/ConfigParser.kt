@@ -1,5 +1,6 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data
 
+import io.mockative.Mockable
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 import kotlinx.serialization.json.JsonObject
 import kotlin.coroutines.cancellation.CancellationException
@@ -11,6 +12,7 @@ import kotlin.coroutines.cancellation.CancellationException
  *
  * It is a publicly available for reason: to make mocking process easier
  */
+@Mockable
 abstract class ConfigParser {
     @Throws(
         IllegalArgumentException::class,

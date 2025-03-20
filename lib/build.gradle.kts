@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import org.apache.groovy.json.internal.Chr.add
+import org.jetbrains.kotlin.config.JvmTarget
 
 plugins {
     id("maven-publish")
@@ -17,6 +18,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 
     id("co.touchlab.kmmbridge") version "0.5.5"
+    id("io.mockative") version "3.0.1"
 }
 
 val libVersion: String by project
@@ -40,10 +42,13 @@ publishing {
     repositories {
         maven {
             name = "scnRepo"
-            url = uri(if (hasProperty("RELEASE_REPOSITORY_URL")) property("RELEASE_REPOSITORY_URL")!! else System.getenv()["RELEASE_REPOSITORY_URL"]!!)
+            url =
+                uri(if (hasProperty("RELEASE_REPOSITORY_URL")) property("RELEASE_REPOSITORY_URL")!! else System.getenv()["RELEASE_REPOSITORY_URL"]!!)
             credentials {
-                username = if (hasProperty("NEXUS_USERNAME")) (property("NEXUS_USERNAME") as String) else System.getenv()["NEXUS_USERNAME"]
-                password = if (hasProperty("NEXUS_PASSWORD")) (property("NEXUS_PASSWORD") as String) else System.getenv()["NEXUS_PASSWORD"]
+                username =
+                    if (hasProperty("NEXUS_USERNAME")) (property("NEXUS_USERNAME") as String) else System.getenv()["NEXUS_USERNAME"]
+                password =
+                    if (hasProperty("NEXUS_PASSWORD")) (property("NEXUS_PASSWORD") as String) else System.getenv()["NEXUS_PASSWORD"]
             }
         }
     }
@@ -130,7 +135,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
-                implementation("io.mockative:mockative:2.2.0")
+                implementation("io.mockative:mockative:3.0.1")
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
             }
         }
@@ -167,7 +172,7 @@ kotlin {
             iosSimulatorArm64Test.dependsOn(this)
         }
     }
-    android {
+    androidTarget() {
         publishAllLibraryVariants()
     }
 }
@@ -177,7 +182,7 @@ dependencies {
     configurations
         .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
         .forEach {
-            add(it.name, "io.mockative:mockative-processor:2.2.0")
+            add(it.name, "io.mockative:mockative-processor:3.0.1")
         }
 }
 
@@ -190,7 +195,7 @@ sqldelight {
 
 android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }
@@ -234,7 +239,12 @@ apollo {
     service("mainnet") {
         packageName.set("jp.co.soramitsu.xnetworking.mainnet")
         schemaFiles.setFrom(file("../schema/mainnet_schema.graphqls"))
-        srcDir(files("${project.projectDir}/src/commonMain/qraphql/queries/blockexplorer", "${project.projectDir}/src/commonMain/qraphql/queries/txhistory/mainnet"))
+        srcDir(
+            files(
+                "${project.projectDir}/src/commonMain/qraphql/queries/blockexplorer",
+                "${project.projectDir}/src/commonMain/qraphql/queries/txhistory/mainnet"
+            )
+        )
         outputDir.set(File("${project.buildDir}/generated/apollo/mainnet", "schemas"))
         generateDataBuilders.set(true)
 
@@ -256,49 +266,48 @@ tasks.register<Copy>("copyiOSTestResources") {
 
 kover {
     useJacoco()
-}
+    reports {
+        variant("release") {
+            filters {
+                excludes {
+                    classes(
+                        "*.BuildConfig",
+                        "**.models.*",
+                        "**.core.network.*",
+                        "**.di.*",
+                        "**.shared_utils.wsrpc.*",
+                        "*NetworkDataSource",
+                        "*NetworkDataSource\$*",
+                        "*ChainConnection",
+                        "*ChainConnection\$*",
+                        "**.runtime.definitions.TypeDefinitionsTreeV2",
+                        "**.runtime.definitions.TypeDefinitionsTreeV2\$*",
 
-koverReport {
-    androidReports("release") {
-        filters {
-            excludes {
-                classes(
-                    "*.BuildConfig",
-                    "**.models.*",
-                    "**.core.network.*",
-                    "**.di.*",
-                    "**.shared_utils.wsrpc.*",
-                    "*NetworkDataSource",
-                    "*NetworkDataSource\$*",
-                    "*ChainConnection",
-                    "*ChainConnection\$*",
-                    "**.runtime.definitions.TypeDefinitionsTreeV2",
-                    "**.runtime.definitions.TypeDefinitionsTreeV2\$*",
-
-                    // TODO: Coverage these modules by tests
-                    "**.core.rpc.*",
-                    "**.core.utils.*",
-                    "**.core.extrinsic.*",
-                )
+                        // TODO: Coverage these modules by tests
+                        "**.core.rpc.*",
+                        "**.core.utils.*",
+                        "**.core.extrinsic.*",
+                    )
+                }
             }
-        }
 
-        xml {
-            onCheck = true
-            setReportFile(file("${project.rootDir}/report/coverage.xml"))
-        }
+            xml {
+                onCheck = true
+                xmlFile = file("${project.rootDir}/report/coverage.xml")
+            }
 
-        html {
-            onCheck = true
-        }
+            html {
+                onCheck = true
+            }
 
-        verify {
-            onCheck = true
+            verify {
+                onCheck = true
 
-            rule {
-                isEnabled = true
+                rule {
+                    disabled = false
 
-                minBound(5)
+                    minBound(5)
+                }
             }
         }
     }

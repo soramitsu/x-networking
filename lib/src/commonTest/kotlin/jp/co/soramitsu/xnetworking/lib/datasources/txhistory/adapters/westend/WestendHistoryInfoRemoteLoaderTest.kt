@@ -1,26 +1,25 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.westend
 
 import com.apollographql.apollo.api.Optional
-import io.mockative.Mock
-import io.mockative.classOf
 import io.mockative.coEvery
 import io.mockative.coVerify
 import io.mockative.mock
-import jp.co.soramitsu.xnetworking.westend.GetWestendHistoryElementsQuery
-import jp.co.soramitsu.xnetworking.westend.type.HistoryElementsOrderBy
-import jp.co.soramitsu.xnetworking.westend.type.buildHistoryElementsConnection
-import jp.co.soramitsu.xnetworking.westend.type.buildPageInfo
+import io.mockative.of
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.westend.WestendHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.westend.GetWestendHistoryElementsQuery
+import jp.co.soramitsu.xnetworking.westend.type.HistoryElementsOrderBy
 import jp.co.soramitsu.xnetworking.westend.type.buildHistoryElement
+import jp.co.soramitsu.xnetworking.westend.type.buildHistoryElementsConnection
+import jp.co.soramitsu.xnetworking.westend.type.buildPageInfo
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -39,11 +38,9 @@ class WestendHistoryInfoRemoteLoaderTest {
         const val signAddress = ""
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
+    private val configDAO = mock(of<ConfigDAO>())
 
-    @Mock
-    private val apolloClientStore = mock(classOf<ApolloClientStore>())
+    private val apolloClientStore = mock(of<ApolloClientStore>())
 
     private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
         WestendHistoryInfoRemoteLoader(
