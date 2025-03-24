@@ -1,10 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils
 
+import jp.co.soramitsu.xnetworking.db.ExtrinsicParam
+import jp.co.soramitsu.xnetworking.db.Extrinsics
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemNested
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
-import jp.co.soramitsu.xnetworking.db.ExtrinsicParam
-import jp.co.soramitsu.xnetworking.db.Extrinsics
 
 internal object HistoryMapper {
 

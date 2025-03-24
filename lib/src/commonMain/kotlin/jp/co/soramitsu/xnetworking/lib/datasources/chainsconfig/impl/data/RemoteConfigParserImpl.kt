@@ -1,9 +1,9 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data
 
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
-import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
-import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.fieldOrNull
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonArray

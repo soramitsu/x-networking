@@ -20,6 +20,8 @@ abstract class AbstractRestServerRequest<T> {
 
     abstract val url: String
 
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
     @Transient
     abstract val responseDeserializer: DeserializationStrategy<T>
 

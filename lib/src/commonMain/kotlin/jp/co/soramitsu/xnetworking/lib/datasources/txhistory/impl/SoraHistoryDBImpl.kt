@@ -1,10 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl
 
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.db.ExtrinsicParam
 import jp.co.soramitsu.xnetworking.db.Extrinsics
 import jp.co.soramitsu.xnetworking.db.SignerInfo
 import jp.co.soramitsu.xnetworking.db.SoraHistoryDatabase
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 
 internal class SoraHistoryDBImpl(
     soraHistoryDatabase: SoraHistoryDatabase

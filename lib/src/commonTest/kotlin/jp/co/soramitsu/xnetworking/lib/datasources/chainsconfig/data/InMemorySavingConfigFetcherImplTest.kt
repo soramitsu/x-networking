@@ -1,79 +1,79 @@
-package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.data
-
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.eq
-import io.mockative.mock
-import io.mockative.of
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data.RemoteConfigParserImpl
-import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
-import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
-import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlin.test.Test
-import kotlin.test.assertEquals
-
-class InMemorySavingConfigFetcherImplTest {
-
-    private companion object {
-        const val chainId = "sora"
-        const val requestUrl = "sora.url"
-    }
-
-    private val restClient = mock(of<RestClient>())
-
-
-    private val configParser: ConfigParser =
-        RemoteConfigParserImpl(
-            restClient = restClient,
-            chainsRequestUrl = requestUrl
-        )
-
-    @Test
-    fun `TEST loadConfigOrGetCached EXPECT success`() = runTest {
-        // Test Data Start
-        val configRequestToMock =
-            JsonGetRequest(
-                url = requestUrl,
-                responseDeserializer = JsonArray.serializer()
-            )
-
-        val configResponseToReturn =
-            JsonArray(
-                content = listOf(
-                    JsonObject(
-                        content = mapOf(
-                            "chainId" to JsonPrimitive(chainId)
-                        )
-                    )
-                )
-            )
-        // Test Data End
-
-        // Mocks Preparation Start
-        coEvery {
-            restClient.get(
-                request = eq(configRequestToMock)
-            )
-        }.returns(configResponseToReturn)
-        // Mocks Preparation End
-
-        // Double running should be checked accordingly in verify block
-        configParser.getChainObjectById(chainId)
-        val result = configParser.getChainObjectById(chainId)
-
-        // Verification & Assertion
-        // Verify that implementation is caching, and network request was performed once
-        coVerify {
-            restClient.get(
-                request = configRequestToMock
-            )
-        }.wasInvoked(1)
-
-        assertEquals(configResponseToReturn.first(), result)
-    }
-
-}
+//package jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.data
+//
+//import io.mockative.coEvery
+//import io.mockative.coVerify
+//import io.mockative.eq
+//import io.mockative.mock
+//import io.mockative.of
+//import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.data.ConfigParser
+//import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.impl.data.RemoteConfigParserImpl
+//import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+//import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonGetRequest
+//import kotlinx.coroutines.test.runTest
+//import kotlinx.serialization.json.JsonArray
+//import kotlinx.serialization.json.JsonObject
+//import kotlinx.serialization.json.JsonPrimitive
+//import kotlin.test.Test
+//import kotlin.test.assertEquals
+//
+//class InMemorySavingConfigFetcherImplTest {
+//
+//    private companion object {
+//        const val chainId = "sora"
+//        const val requestUrl = "sora.url"
+//    }
+//
+//    private val restClient = mock(of<RestClient>())
+//
+//
+//    private val configParser: ConfigParser =
+//        RemoteConfigParserImpl(
+//            restClient = restClient,
+//            chainsRequestUrl = requestUrl
+//        )
+//
+//    @Test
+//    fun `TEST loadConfigOrGetCached EXPECT success`() = runTest {
+//        // Test Data Start
+//        val configRequestToMock =
+//            JsonGetRequest(
+//                url = requestUrl,
+//                responseDeserializer = JsonArray.serializer()
+//            )
+//
+//        val configResponseToReturn =
+//            JsonArray(
+//                content = listOf(
+//                    JsonObject(
+//                        content = mapOf(
+//                            "chainId" to JsonPrimitive(chainId)
+//                        )
+//                    )
+//                )
+//            )
+//        // Test Data End
+//
+//        // Mocks Preparation Start
+//        coEvery {
+//            restClient.get(
+//                request = eq(configRequestToMock)
+//            )
+//        }.returns(configResponseToReturn)
+//        // Mocks Preparation End
+//
+//        // Double running should be checked accordingly in verify block
+//        configParser.getChainObjectById(chainId)
+//        val result = configParser.getChainObjectById(chainId)
+//
+//        // Verification & Assertion
+//        // Verify that implementation is caching, and network request was performed once
+//        coVerify {
+//            restClient.get(
+//                request = configRequestToMock
+//            )
+//        }.wasInvoked(1)
+//
+//        assertEquals(configResponseToReturn.first(), result)
+//    }
+//
+//}

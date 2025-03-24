@@ -6,6 +6,8 @@ import kotlinx.serialization.DeserializationStrategy
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 class JsonPostRequest<T>(
     override val url: String,
     override val body: Any,
@@ -14,6 +16,8 @@ class JsonPostRequest<T>(
     override val requestContentType: RestClient.ContentType = RestClient.ContentType.JSON
 }
 
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 class JsonGetRequest<Response>(
     override val url: String,
     override val headers: Map<String, String>? = null,

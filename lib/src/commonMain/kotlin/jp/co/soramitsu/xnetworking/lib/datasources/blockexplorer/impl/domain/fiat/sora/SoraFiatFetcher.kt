@@ -1,10 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.sora
 
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
-import jp.co.soramitsu.xnetworking.mainnet.GetFiatDataQuery
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.mainnet.GetFiatDataQuery
 
 class SoraFiatFetcher(
     private val apolloClientStore: ApolloClientStore,

@@ -6,6 +6,8 @@ import kotlin.native.HiddenFromObjC
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+@OptIn(ExperimentalObjCRefinement::class)
+@HiddenFromObjC
 fun PackedCursor.Companion.create(cursor: String?): ReadOnlyProperty<Any?, PackedCursor> =
     object : ReadOnlyProperty<Any?, PackedCursor> {
         private val packedCursor = PackedCursorImpl(cursor = cursor)

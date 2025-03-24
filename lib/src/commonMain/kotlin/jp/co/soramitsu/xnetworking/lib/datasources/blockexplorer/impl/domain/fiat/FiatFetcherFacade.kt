@@ -1,12 +1,12 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat
 
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.sora.SoraFiatFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.FiatFetcher
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.fiat.sora.SoraFiatFetcher
-import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.lib.engines.utils.CachingFactory
 
 class FiatFetcherFacade(
     private val configDAO: ConfigDAO,

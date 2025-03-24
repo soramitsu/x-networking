@@ -1,10 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.referralreward.sora
 
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ReferralRewardFetcher
-import jp.co.soramitsu.xnetworking.mainnet.GetReferrerRewardsQuery
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+import jp.co.soramitsu.xnetworking.mainnet.GetReferrerRewardsQuery
 
 class SoraReferralRewardsFetcher(
     private val apolloClientStore: ApolloClientStore,

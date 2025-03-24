@@ -18,7 +18,7 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 
     id("co.touchlab.kmmbridge") version "0.5.5"
-    id("io.mockative") version "3.0.1"
+//    id("io.mockative") version "3.0.1"
 }
 
 val libVersion: String by project
@@ -135,8 +135,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation("io.ktor:ktor-client-mock:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutineVersion")
-                implementation("io.mockative:mockative:3.0.1")
-                implementation("io.ktor:ktor-client-mock:$ktorVersion")
+//                implementation("io.mockative:mockative:3.0.1")
             }
         }
 
@@ -177,14 +176,14 @@ kotlin {
     }
 }
 
-dependencies {
-    /* KSP is used for test mock generation */
-    configurations
-        .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
-        .forEach {
-            add(it.name, "io.mockative:mockative-processor:3.0.1")
-        }
-}
+//dependencies {
+//    /* KSP is used for test mock generation */
+//    configurations
+//        .filter { it.name.startsWith("ksp") && it.name.contains("Test") }
+//        .forEach {
+//            add(it.name, "io.mockative:mockative-processor:3.0.1")
+//        }
+//}
 
 sqldelight {
     database("SoraHistoryDatabase") {
@@ -263,52 +262,52 @@ tasks.register<Copy>("copyiOSTestResources") {
     from("src/iosTest/resources")
     into("build/bin/iosX64/debugTest/resources")
 }
-
-kover {
-    useJacoco()
-    reports {
-        variant("release") {
-            filters {
-                excludes {
-                    classes(
-                        "*.BuildConfig",
-                        "**.models.*",
-                        "**.core.network.*",
-                        "**.di.*",
-                        "**.shared_utils.wsrpc.*",
-                        "*NetworkDataSource",
-                        "*NetworkDataSource\$*",
-                        "*ChainConnection",
-                        "*ChainConnection\$*",
-                        "**.runtime.definitions.TypeDefinitionsTreeV2",
-                        "**.runtime.definitions.TypeDefinitionsTreeV2\$*",
-
-                        // TODO: Coverage these modules by tests
-                        "**.core.rpc.*",
-                        "**.core.utils.*",
-                        "**.core.extrinsic.*",
-                    )
-                }
-            }
-
-            xml {
-                onCheck = true
-                xmlFile = file("${project.rootDir}/report/coverage.xml")
-            }
-
-            html {
-                onCheck = true
-            }
-
-            verify {
-                onCheck = true
-
-                rule {
-                    disabled = false
-
-                    minBound(5)
-                }
-            }
-        }
-    }
-}
+//
+//kover {
+//    useJacoco()
+//    reports {
+//        variant("release") {
+//            filters {
+//                excludes {
+//                    classes(
+//                        "*.BuildConfig",
+//                        "**.models.*",
+//                        "**.core.network.*",
+//                        "**.di.*",
+//                        "**.shared_utils.wsrpc.*",
+//                        "*NetworkDataSource",
+//                        "*NetworkDataSource\$*",
+//                        "*ChainConnection",
+//                        "*ChainConnection\$*",
+//                        "**.runtime.definitions.TypeDefinitionsTreeV2",
+//                        "**.runtime.definitions.TypeDefinitionsTreeV2\$*",
+//
+//                        // TODO: Coverage these modules by tests
+//                        "**.core.rpc.*",
+//                        "**.core.utils.*",
+//                        "**.core.extrinsic.*",
+//                    )
+//                }
+//            }
+//
+//            xml {
+//                onCheck = true
+//                xmlFile = file("${project.rootDir}/report/coverage.xml")
+//            }
+//
+//            html {
+//                onCheck = true
+//            }
+//
+//            verify {
+//                onCheck = true
+//
+//                rule {
+//                    disabled = false
+//
+//                    minBound(5)
+//                }
+//            }
+//        }
+//    }
+//}

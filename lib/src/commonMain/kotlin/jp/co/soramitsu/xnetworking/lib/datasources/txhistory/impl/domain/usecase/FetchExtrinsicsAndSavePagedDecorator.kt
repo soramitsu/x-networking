@@ -1,10 +1,10 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.usecase
 
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.SoraHistoryDBImpl
 import jp.co.soramitsu.xnetworking.db.Extrinsics
 import jp.co.soramitsu.xnetworking.db.SignerInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.SoraHistoryDBImpl
 
 internal class FetchExtrinsicsAndSavePagedDecorator(
     private val fetchExtrinsicsAndSaveUseCase: FetchExtrinsicsAndSaveUseCase,

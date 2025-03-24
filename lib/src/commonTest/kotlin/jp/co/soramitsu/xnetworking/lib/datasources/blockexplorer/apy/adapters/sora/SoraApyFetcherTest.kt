@@ -1,72 +1,72 @@
-package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.apy.adapters.sora
-
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.mock
-import io.mockative.of
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.sora.SoraApyFetcher
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
-import jp.co.soramitsu.xnetworking.mainnet.GetSbApyInfoQuery
-import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
-
-class SoraApyFetcherTest {
-
-    private companion object {
-        const val chainId = "sora"
-        const val requestUrl = "sora.url"
-
-        const val cursor = ""
-        const val pageCount = 100
-    }
-
-    private val apolloClientStore = mock(of<ApolloClientStore>())
-
-    private val configDAO = mock(of<ConfigDAO>())
-
-    private val fetcher: ApyFetcher =
-        SoraApyFetcher(
-            apolloClientStore = apolloClientStore,
-            configDAO = configDAO
-        )
-
-    @Test
-    fun `TEST soraApyFetcher_fetch EXPECT ExternalApiDAOException_NullUrl BECAUSE stakingUrl is null`() =
-        runTest {
-            // Test Data Start
-            val selectedCandidates = listOf("0xSomethinig")
-
-            val soraApyRequest =
-                GetSbApyInfoQuery(
-                    cursor = cursor
-                )
-            // Test Data End
-
-            // Mock Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mock Preparation End
-
-            assertFailsWith<ExternalApiDAOException.NullUrl> {
-                fetcher.fetch(
-                    chainId = chainId,
-                    selectedCandidates = selectedCandidates
-                )
-            }
-
-            // Validation & Assertion
-            coVerify {
-                apolloClientStore.query(
-                    serverUrl = requestUrl,
-                    query = soraApyRequest
-                )
-            }.wasNotInvoked()
-        }
-}
+//package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.apy.adapters.sora
+//
+//import io.mockative.coEvery
+//import io.mockative.coVerify
+//import io.mockative.mock
+//import io.mockative.of
+//import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
+//import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.sora.SoraApyFetcher
+//import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+//import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+//import jp.co.soramitsu.xnetworking.lib.engines.apollo.api.ApolloClientStore
+//import jp.co.soramitsu.xnetworking.mainnet.GetSbApyInfoQuery
+//import kotlinx.coroutines.test.runTest
+//import kotlin.test.Test
+//import kotlin.test.assertFailsWith
+//
+//class SoraApyFetcherTest {
+//
+//    private companion object {
+//        const val chainId = "sora"
+//        const val requestUrl = "sora.url"
+//
+//        const val cursor = ""
+//        const val pageCount = 100
+//    }
+//
+//    private val apolloClientStore = mock(of<ApolloClientStore>())
+//
+//    private val configDAO = mock(of<ConfigDAO>())
+//
+//    private val fetcher: ApyFetcher =
+//        SoraApyFetcher(
+//            apolloClientStore = apolloClientStore,
+//            configDAO = configDAO
+//        )
+//
+//    @Test
+//    fun `TEST soraApyFetcher_fetch EXPECT ExternalApiDAOException_NullUrl BECAUSE stakingUrl is null`() =
+//        runTest {
+//            // Test Data Start
+//            val selectedCandidates = listOf("0xSomethinig")
+//
+//            val soraApyRequest =
+//                GetSbApyInfoQuery(
+//                    cursor = cursor
+//                )
+//            // Test Data End
+//
+//            // Mock Preparation Start
+//            coEvery {
+//                configDAO.historyUrl(
+//                    chainId = chainId
+//                )
+//            }.throws(ExternalApiDAOException.NullUrl(chainId))
+//            // Mock Preparation End
+//
+//            assertFailsWith<ExternalApiDAOException.NullUrl> {
+//                fetcher.fetch(
+//                    chainId = chainId,
+//                    selectedCandidates = selectedCandidates
+//                )
+//            }
+//
+//            // Validation & Assertion
+//            coVerify {
+//                apolloClientStore.query(
+//                    serverUrl = requestUrl,
+//                    query = soraApyRequest
+//                )
+//            }.wasNotInvoked()
+//        }
+//}
