@@ -1,14 +1,14 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subquery
 
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLSerializableRequestWrapper
-import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonPostRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.GraphQLExts.and
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.GraphQLExts.anyOf
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.GraphQLExts.not
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.utils.GraphQLExts.or
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLSerializableRequestWrapper
+import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonPostRequest
 import kotlinx.serialization.Serializable
 
 @Suppress("FunctionName")

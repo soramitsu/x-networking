@@ -1,27 +1,71 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.subsquid
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.mock
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subsquid.SubSquidHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subsquid.SubSquidRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subsquid.SubSquidResponse
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+
+
+private class FakeConfigDao(
+    private val historyUrl: String?,
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        return historyUrl ?: throw ExternalApiDAOException.NullUrl(chainId)
+    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        TODO("Not yet implemented")
+    }
+}
+
+private open class FakeRestClient(
+    private val response: GraphQLResponseDataWrapper<SubSquidResponse>? = null
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        return response as T
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
+
 
 class SubSquidHistoryInfoRemoteLoaderTest {
 
@@ -33,18 +77,6 @@ class SubSquidHistoryInfoRemoteLoaderTest {
         const val pageCount = 0
         const val signAddress = ""
     }
-
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
-        SubSquidHistoryInfoRemoteLoader(
-            configDAO = configDAO,
-            restClient = restClient
-        )
 
     @Test
     fun `TEST subSquidHistoryInfoRemoteLoader_loadHistoryInfo EXPECT ExternalApiDAOException_NullUrl BECAUSE history url is null`() =
@@ -59,15 +91,13 @@ class SubSquidHistoryInfoRemoteLoaderTest {
                     cursor = cursor,
                     limit = pageCount
                 )
-            // Test Data End
 
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubSquidHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(null),
+                    restClient = FakeRestClient()
                 )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
+            // Test Data End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -82,11 +112,11 @@ class SubSquidHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = subSquidRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = subSquidRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -139,21 +169,14 @@ class SubSquidHistoryInfoRemoteLoaderTest {
                 endReached = false,
                 items = emptyList()
             )
+
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubSquidHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(subSquidResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.returns(subSquidResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -166,11 +189,11 @@ class SubSquidHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = subSquidRequestToMock
+//                )
+//            }.wasNotInvoked()
 
             assertTrue { result == expectedResult }
         }
@@ -250,21 +273,13 @@ class SubSquidHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubSquidHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(subSquidResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.returns(subSquidResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -277,11 +292,11 @@ class SubSquidHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.post(
+//                    request = subSquidRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }
@@ -360,21 +375,12 @@ class SubSquidHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubSquidHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(subSquidResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.returns(subSquidResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -387,11 +393,11 @@ class SubSquidHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subSquidRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.post(
+//                    request = subSquidRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }

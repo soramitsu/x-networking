@@ -68,7 +68,7 @@ abstract class AbstractRestServerRequest<T> {
     abstract class WithBody<Response>: AbstractRestServerRequest<Response>() {
 
         abstract val requestContentType: RestClient.ContentType
-        
+
         abstract val body: Any
 
         override fun equals(other: Any?): Boolean {
@@ -82,7 +82,7 @@ abstract class AbstractRestServerRequest<T> {
 
             return areEqual
         }
-        
+
     }
 
 }

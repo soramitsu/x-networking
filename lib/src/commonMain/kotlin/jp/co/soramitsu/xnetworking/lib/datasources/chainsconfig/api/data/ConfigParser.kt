@@ -11,6 +11,7 @@ import kotlin.coroutines.cancellation.CancellationException
  *
  * It is a publicly available for reason: to make mocking process easier
  */
+
 abstract class ConfigParser {
     @Throws(
         IllegalArgumentException::class,

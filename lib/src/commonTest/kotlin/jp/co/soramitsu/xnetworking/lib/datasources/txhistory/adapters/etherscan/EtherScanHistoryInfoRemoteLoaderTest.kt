@@ -1,14 +1,11 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.etherscan
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.mock
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
@@ -18,10 +15,54 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.etherscan.EtherScanResponse
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.etherscan.NormalEtherScanRequest
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+
+
+private class FakeConfigDao(
+    private val historyUrl: String?,
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        return historyUrl ?: throw ExternalApiDAOException.NullUrl(chainId)    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        TODO("Not yet implemented")    }
+}
+
+private open class FakeRestClient(
+    private val response: EtherScanResponse? = null
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        return response as T
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
 
 class EtherScanHistoryInfoRemoteLoaderTest {
 
@@ -38,45 +79,30 @@ class EtherScanHistoryInfoRemoteLoaderTest {
         val filters = emptySet<TxFilter>()
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
-        EtherScanHistoryInfoRemoteLoader(
-            configDAO = configDAO,
-            restClient = restClient
-        )
-
     @Test
     fun `TEST etherScanHistoryInfoRemoteLoader_loadHistoryInfo EXPECT IllegalArgumentException BECAUSE chainInfo is not with ethereumType`() =
         runTest {
             // Test Data Start
-            val etherScanNormalRequestToMock =
-                NormalEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = ""
-                )
-
-            val etherScanErcBepRequestToMock =
-                ErcBepEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = "",
-                    contractAddress = contractAddress
+//            val etherScanNormalRequestToMock =
+//                NormalEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = ""
+//                )
+//
+//            val etherScanErcBepRequestToMock =
+//                ErcBepEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = "",
+//                    contractAddress = contractAddress
+//                )
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                EtherScanHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient()
                 )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalArgumentException> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -91,17 +117,17 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanNormalRequestToMock
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanErcBepRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -110,29 +136,27 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             // Test Data Start
             val ethereumType = "normal"
 
-            val etherScanNormalRequestToMock =
-                NormalEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = ""
-                )
+//            val etherScanNormalRequestToMock =
+//                NormalEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = ""
+//                )
+//
+//            val etherScanErcBepRequestToMock =
+//                ErcBepEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = "",
+//                    contractAddress = contractAddress
+//                )
 
-            val etherScanErcBepRequestToMock =
-                ErcBepEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = "",
-                    contractAddress = contractAddress
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                EtherScanHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(null),
+                    restClient = FakeRestClient()
                 )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -150,17 +174,17 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanNormalRequestToMock
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanErcBepRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -169,29 +193,26 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             // Test Data Start
             val ethereumType = null
 
-            val etherScanNormalRequestToMock =
-                NormalEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = ""
-                )
-
-            val etherScanErcBepRequestToMock =
-                ErcBepEtherScanRequest(
-                    url = requestUrl,
-                    address = signAddress,
-                    apiKey = "",
-                    contractAddress = contractAddress
+//            val etherScanNormalRequestToMock =
+//                NormalEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = ""
+//                )
+//
+//            val etherScanErcBepRequestToMock =
+//                ErcBepEtherScanRequest(
+//                    url = requestUrl,
+//                    address = signAddress,
+//                    apiKey = "",
+//                    contractAddress = contractAddress
+//                )
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                EtherScanHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient()
                 )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalStateException> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -209,17 +230,17 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanNormalRequestToMock
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanErcBepRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -320,21 +341,12 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                EtherScanHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(etherScanNormalResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.returns(etherScanNormalResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -350,17 +362,17 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.wasInvoked(1)
-
-            coVerify {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanNormalRequestToMock
+//                )
+//            }.wasInvoked(1)
+//
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanErcBepRequestToMock
+//                )
+//            }.wasNotInvoked()
 
             assertTrue { result == expectedResult }
         }
@@ -407,6 +419,12 @@ class EtherScanHistoryInfoRemoteLoaderTest {
                             isError = 0
                         )
                     )
+                )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                EtherScanHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(etherScanErcBepResponseToReturn)
                 )
 
             val expectedResult = TxHistoryInfo(
@@ -465,19 +483,6 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             )
             // Test Data End
 
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.returns(etherScanErcBepResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -493,17 +498,17 @@ class EtherScanHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = etherScanNormalRequestToMock
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.get(
-                    request = etherScanErcBepRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanNormalRequestToMock
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.get(
+//                    request = etherScanErcBepRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }

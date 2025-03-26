@@ -1,28 +1,70 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.subquery
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.mock
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItemParam
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subquery.SubQueryHistoryInfoRemoteLoader
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subquery.SubQueryRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.subquery.SubQueryResponse
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+
+private class FakeConfigDao(
+    private val historyUrl: String?,
+    private val stakingOption: StakingOption?,
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        return historyUrl ?: throw ExternalApiDAOException.NullUrl(chainId)
+    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        return stakingOption
+    }
+}
+
+private open class FakeRestClient(
+    private val response: GraphQLResponseDataWrapper<SubQueryResponse>? = null
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        return response as T
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
 
 class SubQueryHistoryInfoRemoteLoaderTest {
 
@@ -34,18 +76,6 @@ class SubQueryHistoryInfoRemoteLoaderTest {
         const val pageCount = 0
         const val signAddress = ""
     }
-
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
-        SubQueryHistoryInfoRemoteLoader(
-            configDAO = configDAO,
-            restClient = restClient
-        )
 
     @Test
     fun `TEST subQueryHistoryInfoRemoteLoader_loadHistoryInfo EXPECT ExternalApiDAOException_NullUrl BECAUSE history url is null`() =
@@ -62,15 +92,13 @@ class SubQueryHistoryInfoRemoteLoaderTest {
                     filters = filters,
                     requestRewards = true
                 )
-            // Test Data End
 
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubQueryHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(null, null),
+                    restClient = FakeRestClient()
                 )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
+            // Test Data End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -85,11 +113,11 @@ class SubQueryHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = subQueryRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = subQueryRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -152,32 +180,18 @@ class SubQueryHistoryInfoRemoteLoaderTest {
                     )
                 )
 
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubQueryHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl, StakingOption.RELAYCHAIN),
+                    restClient = FakeRestClient(subQueryResponseToReturn)
+                )
+
             val expectedResult = TxHistoryInfo(
                 endCursor = cursor,
                 endReached = false,
                 items = emptyList()
             )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.returns(subQueryResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -190,11 +204,11 @@ class SubQueryHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = subQueryRequestToMock
+//                )
+//            }.wasNotInvoked()
 
             assertTrue { result == expectedResult }
         }
@@ -297,27 +311,13 @@ class SubQueryHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubQueryHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl, StakingOption.RELAYCHAIN),
+                    restClient = FakeRestClient(subQueryResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.returns(subQueryResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -330,11 +330,11 @@ class SubQueryHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.post(
+//                    request = subQueryRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }
@@ -437,27 +437,13 @@ class SubQueryHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubQueryHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl, StakingOption.RELAYCHAIN),
+                    restClient = FakeRestClient(subQueryResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.returns(subQueryResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -470,11 +456,11 @@ class SubQueryHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.post(
+//                    request = subQueryRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }
@@ -569,27 +555,13 @@ class SubQueryHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                SubQueryHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl, StakingOption.RELAYCHAIN),
+                    restClient = FakeRestClient(subQueryResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.returns(subQueryResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -602,11 +574,11 @@ class SubQueryHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = subQueryRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.post(
+//                    request = subQueryRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }

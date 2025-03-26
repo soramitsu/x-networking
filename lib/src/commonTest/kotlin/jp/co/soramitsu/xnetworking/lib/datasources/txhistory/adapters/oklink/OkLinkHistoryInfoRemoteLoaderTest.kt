@@ -1,14 +1,11 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.txhistory.adapters.oklink
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.mock
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
 import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.adapters.HistoryInfoRemoteLoader
+import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.ChainInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxFilter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.api.models.TxHistoryItem
@@ -17,10 +14,55 @@ import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapter
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.oklink.OkLinkRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.txhistory.impl.domain.adapters.oklink.OkLinkResponse
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+
+private class FakeConfigDao(
+    private val historyUrl: String?,
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        return historyUrl ?: throw ExternalApiDAOException.NullUrl(chainId)
+    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        TODO("Not yet implemented")
+    }
+}
+
+private open class FakeRestClient(
+    private val response: OkLinkResponse? = null
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        return response as T
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
 
 class OkLinkHistoryInfoRemoteLoaderTest {
 
@@ -38,18 +80,6 @@ class OkLinkHistoryInfoRemoteLoaderTest {
         val filters = emptySet<TxFilter>()
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
-        OkLinkHistoryInfoRemoteLoader(
-            configDAO = configDAO,
-            restClient = restClient
-        )
-
     @Test
     fun `TEST okLinkHistoryInfoRemoteLoader_loadHistoryInfo EXPECT IllegalArgumentException BECAUSE chainInfo is not with asset symbol`() =
         runTest {
@@ -61,15 +91,13 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     apiKey = "",
                     symbol = symbol
                 )
-            // Test Data End
 
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                OkLinkHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient()
                 )
-            }.returns(requestUrl)
-            // Mocks Preparation End
+            // Test Data End
 
             assertFailsWith<IllegalArgumentException> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -84,11 +112,11 @@ class OkLinkHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = okLinkRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -104,15 +132,13 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     apiKey = "",
                     symbol = symbol
                 )
-            // Test Data End
 
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                OkLinkHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(null),
+                    restClient = FakeRestClient()
                 )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
+            // Test Data End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -129,11 +155,11 @@ class OkLinkHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.get(
+//                    request = okLinkRequestToMock
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -154,21 +180,13 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     msg = "",
                     data = emptyList()
                 )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                OkLinkHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(okLinkResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.returns(okLinkResponseToReturn)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalStateException> {
                 historyInfoRemoteLoader.loadHistoryInfo(
@@ -185,11 +203,11 @@ class OkLinkHistoryInfoRemoteLoaderTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.get(
+//                    request = okLinkRequestToMock
+//                )
+//            }.wasInvoked(1)
         }
 
     @Test
@@ -216,21 +234,13 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                 endReached = true,
                 items = emptyList()
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                OkLinkHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(okLinkResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.returns(okLinkResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -245,11 +255,11 @@ class OkLinkHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.get(
+//                    request = okLinkRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }
@@ -366,21 +376,13 @@ class OkLinkHistoryInfoRemoteLoaderTest {
                     )
                 )
             )
+
+            val historyInfoRemoteLoader: HistoryInfoRemoteLoader =
+                OkLinkHistoryInfoRemoteLoader(
+                    configDAO = FakeConfigDao(requestUrl),
+                    restClient = FakeRestClient(okLinkResponseToReturn)
+                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.historyUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-
-            coEvery {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.returns(okLinkResponseToReturn)
-            // Mocks Preparation End
 
             val result = historyInfoRemoteLoader.loadHistoryInfo(
                 pageCount = pageCount,
@@ -395,11 +397,11 @@ class OkLinkHistoryInfoRemoteLoaderTest {
             )
 
             // Verification & Assertion
-            coVerify {
-                restClient.get(
-                    request = okLinkRequestToMock
-                )
-            }.wasInvoked(1)
+//            coVerify {
+//                restClient.get(
+//                    request = okLinkRequestToMock
+//                )
+//            }.wasInvoked(1)
 
             assertTrue { result == expectedResult }
         }

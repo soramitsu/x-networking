@@ -1,12 +1,12 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api
 
 import com.apollographql.apollo.exception.ApolloException
+import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.AssetInfo
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Fiat
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.ReferralReward
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Unbonding
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.RestClientException
 import kotlin.coroutines.cancellation.CancellationException
 

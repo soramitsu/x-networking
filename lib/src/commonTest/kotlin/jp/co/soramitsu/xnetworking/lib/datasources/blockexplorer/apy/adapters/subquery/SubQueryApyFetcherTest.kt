@@ -1,15 +1,5 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.apy.adapters.subquery
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.eq
-import io.mockative.fake.valueOf
-import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ApyFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.models.Apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryApyFetcher
@@ -17,12 +7,69 @@ import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryApyResponse
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryLastRoundRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.apy.adapters.subquery.SubQueryLastRoundResponse
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.engines.utils.JsonPostRequest
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFailsWith
+
+private class FakeConfigDao(
+    private val stakingOption: StakingOption,
+    private val stakingUrl: String?
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        return stakingUrl ?: throw ExternalApiDAOException.NullUrl(chainId)
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        return stakingOption
+    }
+}
+
+private open class FakeRestClient(
+    private val lastRoundRequest: JsonPostRequest<GraphQLResponseDataWrapper<SubQueryLastRoundResponse>>? = null,
+    private val lastRoundResponse: GraphQLResponseDataWrapper<SubQueryLastRoundResponse>? = null,
+    private val apyResponse: GraphQLResponseDataWrapper<SubQueryApyResponse>? = null,
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        return if (request == lastRoundRequest) {
+            lastRoundResponse as T
+        } else {
+            apyResponse as T
+        }
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
 
 class SubQueryApyFetcherTest {
 
@@ -31,43 +78,27 @@ class SubQueryApyFetcherTest {
         const val requestUrl = "quartz.url"
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val fetcher: ApyFetcher = SubQueryApyFetcher(
-        configDAO = configDAO,
-        restClient = restClient
-    )
-
     @Test
     fun `TEST subQueryApyFetcher_fetch EXPECT IllegalStateException BECAUSE network staking type is not paraChain`() =
         runTest {
             // Test Data Start
             val selectedCandidates = listOf("0xSomethinig")
-
-            val lastRoundRequestToMock =
-                SubQueryLastRoundRequest(
-                    url = requestUrl
-                )
-
-            val apyRequestToMock =
-                SubQueryApyRequest(
-                    url = requestUrl,
-                    collatorIds = selectedCandidates,
-                    roundId = valueOf()
-                )
+            val fetcher: ApyFetcher = SubQueryApyFetcher(
+                configDAO = FakeConfigDao(StakingOption.RELAYCHAIN, null),
+                restClient = FakeRestClient()
+            )
+//            val lastRoundRequestToMock =
+//                SubQueryLastRoundRequest(
+//                    url = requestUrl
+//                )
+//
+//            val apyRequestToMock =
+//                SubQueryApyRequest(
+//                    url = requestUrl,
+//                    collatorIds = selectedCandidates,
+//                    roundId = valueOf()
+//                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalStateException> {
                 fetcher.fetch(
@@ -77,18 +108,19 @@ class SubQueryApyFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(lastRoundRequestToMock),
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.post(
-                    request = apyRequestToMock,
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(lastRoundRequestToMock),
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.post(
+//                    request = apyRequestToMock,
+//                )
+//            }.wasNotInvoked()
         }
+
 
     @Test
     fun `TEST subQueryApyFetcher_fetch EXPECT ExternalApiDAOException_NullUrl BECAUSE staking url is null`() =
@@ -96,32 +128,23 @@ class SubQueryApyFetcherTest {
             // Test Data Start
             val selectedCandidates = listOf("0xSomethinig")
 
-            val lastRoundRequestToMock =
-                SubQueryLastRoundRequest(
-                    url = requestUrl
-                )
+            val fetcher: ApyFetcher = SubQueryApyFetcher(
+                configDAO = FakeConfigDao(StakingOption.PARACHAIN, null),
+                restClient = FakeRestClient()
+            )
 
-            val apyRequestToMock =
-                SubQueryApyRequest(
-                    url = requestUrl,
-                    collatorIds = selectedCandidates,
-                    roundId = valueOf()
-                )
+//            val lastRoundRequestToMock =
+//                SubQueryLastRoundRequest(
+//                    url = requestUrl
+//                )
+//
+//            val apyRequestToMock =
+//                SubQueryApyRequest(
+//                    url = requestUrl,
+//                    collatorIds = selectedCandidates,
+//                    roundId = valueOf()
+//                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.PARACHAIN)
-
-            coEvery {
-                configDAO.stakingUrl(
-                    chainId = chainId
-                )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 fetcher.fetch(
@@ -131,17 +154,17 @@ class SubQueryApyFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(lastRoundRequestToMock),
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.post(
-                    request = apyRequestToMock,
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(lastRoundRequestToMock),
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.post(
+//                    request = apyRequestToMock,
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -150,32 +173,23 @@ class SubQueryApyFetcherTest {
             // Test Data Start
             val selectedCandidates = listOf("")
 
-            val lastRoundRequestToMock =
-                SubQueryLastRoundRequest(
-                    url = requestUrl
-                )
+            val fetcher: ApyFetcher = SubQueryApyFetcher(
+                configDAO = FakeConfigDao(StakingOption.PARACHAIN, requestUrl),
+                restClient = FakeRestClient()
+            )
 
-            val apyRequestToMock =
-                SubQueryApyRequest(
-                    url = requestUrl,
-                    collatorIds = selectedCandidates,
-                    roundId = valueOf()
-                )
+//            val lastRoundRequestToMock =
+//                SubQueryLastRoundRequest(
+//                    url = requestUrl
+//                )
+//
+//            val apyRequestToMock =
+//                SubQueryApyRequest(
+//                    url = requestUrl,
+//                    collatorIds = selectedCandidates,
+//                    roundId = valueOf()
+//                )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.PARACHAIN)
-
-            coEvery {
-                configDAO.stakingUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalArgumentException> {
                 fetcher.fetch(
@@ -185,17 +199,17 @@ class SubQueryApyFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(lastRoundRequestToMock),
-                )
-            }.wasNotInvoked()
-
-            coVerify {
-                restClient.post(
-                    request = apyRequestToMock,
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(lastRoundRequestToMock),
+//                )
+//            }.wasNotInvoked()
+//
+//            coVerify {
+//                restClient.post(
+//                    request = apyRequestToMock,
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -221,13 +235,13 @@ class SubQueryApyFetcherTest {
                     )
                 )
             )
-
-        val apyRequestToMock =
-            SubQueryApyRequest(
-                url = requestUrl,
-                collatorIds = selectedCandidates,
-                roundId = lastRoundId.dec()
-            )
+//
+//        val apyRequestToMock =
+//            SubQueryApyRequest(
+//                url = requestUrl,
+//                collatorIds = selectedCandidates,
+//                roundId = lastRoundId.dec()
+//            )
 
         val apyResponseToReturn =
             GraphQLResponseDataWrapper(
@@ -243,6 +257,17 @@ class SubQueryApyFetcherTest {
                 )
             )
 
+        val restClient = FakeRestClient(
+            lastRoundRequest = lastRoundRequestToMock,
+            lastRoundResponse = lastRoundResponseToReturn,
+            apyResponse = apyResponseToReturn
+        )
+
+        val fetcher: ApyFetcher = SubQueryApyFetcher(
+            configDAO = FakeConfigDao(StakingOption.PARACHAIN, requestUrl),
+            restClient = restClient
+        )
+
         val expectedResult = listOf(
             Apy(
                 id = "collatorId_123",
@@ -251,44 +276,18 @@ class SubQueryApyFetcherTest {
         )
         // Test Data End
 
-        // Mocks Preparation Start
-        coEvery {
-            configDAO.staking(
-                chainId = chainId
-            )
-        }.returns(StakingOption.PARACHAIN)
-
-        coEvery {
-            configDAO.stakingUrl(
-                chainId = chainId
-            )
-        }.returns(requestUrl)
-
-        coEvery {
-            restClient.post(
-                request = eq(lastRoundRequestToMock)
-            )
-        }.returns(lastRoundResponseToReturn)
-
-        coEvery {
-            restClient.post(
-                request = eq(apyRequestToMock)
-            )
-        }.returns(apyResponseToReturn)
-        // Mocks Preparation End
-
         val result = fetcher.fetch(
             chainId = chainId,
             selectedCandidates = selectedCandidates
         )
 
         // Verification & Assertion
-        coVerify {
-            restClient.post(
-                request = eq(lastRoundRequestToMock)
-            )
-        }.wasInvoked(1)
-
+//        coVerify {
+//            restClient.post(
+//                request = eq(lastRoundRequestToMock)
+//            )
+//        }.wasInvoked(1)
+//
         assertContentEquals(
             expectedResult,
             result

@@ -4,6 +4,7 @@ import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServe
 import kotlin.experimental.ExperimentalObjCRefinement
 import kotlin.native.HiddenFromObjC
 
+
 abstract class RestClient {
 
     enum class ContentType {

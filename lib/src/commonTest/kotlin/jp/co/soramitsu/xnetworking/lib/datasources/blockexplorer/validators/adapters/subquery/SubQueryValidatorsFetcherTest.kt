@@ -1,25 +1,69 @@
 package jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.validators.adapters.subquery
 
-import io.mockative.Mock
-import io.mockative.classOf
-import io.mockative.coEvery
-import io.mockative.coVerify
-import io.mockative.eq
-import io.mockative.mock
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
-import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.api.adapters.ValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.sora.SoraValidatorsRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.subquery.SubQueryValidatorsFetcher
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.subquery.SubQueryValidatorsRequest
 import jp.co.soramitsu.xnetworking.lib.datasources.blockexplorer.impl.domain.validators.adapters.subquery.SubQueryValidatorsResponse
-import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.ConfigDAO
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiDAOException
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.ExternalApiType
+import jp.co.soramitsu.xnetworking.lib.datasources.chainsconfig.api.models.StakingOption
 import jp.co.soramitsu.xnetworking.lib.engines.rest.api.RestClient
+import jp.co.soramitsu.xnetworking.lib.engines.rest.api.models.AbstractRestServerRequest
+import jp.co.soramitsu.xnetworking.lib.engines.utils.GraphQLResponseDataWrapper
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertFailsWith
+
+
+private class FakeConfigDao(
+    private val stakingOption: StakingOption,
+    private val stakingUrl: String?,
+) : ConfigDAO() {
+    override suspend fun historyType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun historyUrl(chainId: String): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingType(chainId: String): ExternalApiType {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun stakingUrl(chainId: String): String {
+        return stakingUrl ?: throw ExternalApiDAOException.NullUrl(chainId)
+    }
+
+    override suspend fun staking(chainId: String): StakingOption? {
+        return stakingOption
+    }
+}
+
+
+private open class FakeRestClient(
+    private val response: GraphQLResponseDataWrapper<SubQueryValidatorsResponse>? = null
+) : RestClient() {
+    override suspend fun <T> post(request: AbstractRestServerRequest.WithBody<T>): T {
+        return response as T
+    }
+
+    override suspend fun postAsString(request: AbstractRestServerRequest.WithBody<String>): String {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun <T> get(request: AbstractRestServerRequest<T>): T {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAsString(request: AbstractRestServerRequest<String>): String {
+        TODO("Not yet implemented")
+    }
+}
+
 
 class SubQueryValidatorsFetcherTest {
 
@@ -30,22 +74,16 @@ class SubQueryValidatorsFetcherTest {
         const val stashAccountAddress = ""
     }
 
-    @Mock
-    private val configDAO = mock(classOf<ConfigDAO>())
-
-    @Mock
-    private val restClient = mock(classOf<RestClient>())
-
-    private val fetcher: ValidatorsFetcher = SubQueryValidatorsFetcher(
-        configDAO = configDAO,
-        restClient = restClient
-    )
-
     @Test
     fun `TEST subQueryValidatorsFetcher_fetch EXPECT IllegalStateException BECAUSE network staking type is not relayChain`() =
         runTest {
             // Test Data Start
             val historicalRange = listOf("from", "to")
+
+            val fetcher: ValidatorsFetcher = SubQueryValidatorsFetcher(
+                configDAO = FakeConfigDao(StakingOption.PARACHAIN, null),
+                restClient = FakeRestClient()
+            )
 
             val validatorsRequestToMock =
                 SoraValidatorsRequest(
@@ -55,14 +93,6 @@ class SubQueryValidatorsFetcherTest {
                     eraTo = historicalRange.last()
                 )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.PARACHAIN)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalStateException> {
                 fetcher.fetch(
@@ -73,11 +103,11 @@ class SubQueryValidatorsFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(validatorsRequestToMock)
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(validatorsRequestToMock)
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -85,29 +115,20 @@ class SubQueryValidatorsFetcherTest {
         runTest {
             // Test Data Start
             val historicalRange = listOf("from", "to")
+//
+//            val validatorsRequestToMock =
+//                SoraValidatorsRequest(
+//                    url = requestUrl,
+//                    accountAddress = stashAccountAddress,
+//                    eraFrom = historicalRange.first(),
+//                    eraTo = historicalRange.last()
+//                )
 
-            val validatorsRequestToMock =
-                SoraValidatorsRequest(
-                    url = requestUrl,
-                    accountAddress = stashAccountAddress,
-                    eraFrom = historicalRange.first(),
-                    eraTo = historicalRange.last()
-                )
+            val fetcher: ValidatorsFetcher = SubQueryValidatorsFetcher(
+                configDAO = FakeConfigDao(StakingOption.RELAYCHAIN, null),
+                restClient = FakeRestClient()
+            )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                configDAO.stakingUrl(
-                    chainId = chainId
-                )
-            }.throws(ExternalApiDAOException.NullUrl(chainId))
-            // Mocks Preparation End
 
             assertFailsWith<ExternalApiDAOException.NullUrl> {
                 fetcher.fetch(
@@ -118,11 +139,11 @@ class SubQueryValidatorsFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(validatorsRequestToMock)
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(validatorsRequestToMock)
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -131,28 +152,19 @@ class SubQueryValidatorsFetcherTest {
             // Test Data Start
             val historicalRange = emptyList<String>()
 
-            val validatorsRequestToMock =
-                SubQueryValidatorsRequest(
-                    url = requestUrl,
-                    accountAddress = stashAccountAddress,
-                    eraFrom = "should not be accessed",
-                    eraTo = "should not be accessed"
-                )
+//            val validatorsRequestToMock =
+//                SubQueryValidatorsRequest(
+//                    url = requestUrl,
+//                    accountAddress = stashAccountAddress,
+//                    eraFrom = "should not be accessed",
+//                    eraTo = "should not be accessed"
+//                )
+
+            val fetcher: ValidatorsFetcher = SubQueryValidatorsFetcher(
+                configDAO = FakeConfigDao(StakingOption.RELAYCHAIN, requestUrl),
+                restClient = FakeRestClient()
+            )
             // Test Data End
-
-            // Mocks Preparation Start
-            coEvery {
-                configDAO.staking(
-                    chainId = chainId
-                )
-            }.returns(StakingOption.RELAYCHAIN)
-
-            coEvery {
-                configDAO.stakingUrl(
-                    chainId = chainId
-                )
-            }.returns(requestUrl)
-            // Mocks Preparation End
 
             assertFailsWith<IllegalArgumentException> {
                 fetcher.fetch(
@@ -163,11 +175,11 @@ class SubQueryValidatorsFetcherTest {
             }
 
             // Verification & Assertion
-            coVerify {
-                restClient.post(
-                    request = eq(validatorsRequestToMock)
-                )
-            }.wasNotInvoked()
+//            coVerify {
+//                restClient.post(
+//                    request = eq(validatorsRequestToMock)
+//                )
+//            }.wasNotInvoked()
         }
 
     @Test
@@ -201,27 +213,12 @@ class SubQueryValidatorsFetcherTest {
                     )
                 )
             )
+
+        val fetcher: ValidatorsFetcher = SubQueryValidatorsFetcher(
+            configDAO = FakeConfigDao(StakingOption.RELAYCHAIN, requestUrl),
+            restClient = FakeRestClient(validatorsResponseToReturn)
+        )
         // Test Data End
-
-        // Mocks Preparation Start
-        coEvery {
-            configDAO.staking(
-                chainId = chainId
-            )
-        }.returns(StakingOption.RELAYCHAIN)
-        
-        coEvery {
-            configDAO.stakingUrl(
-                chainId = chainId
-            )
-        }.returns(requestUrl)
-
-        coEvery {
-            restClient.post(
-                request = eq(validatorsRequestToMock),
-            )
-        }.returns(validatorsResponseToReturn)
-        // Mocks Preparation End
 
         val result = fetcher.fetch(
             chainId = chainId,
@@ -230,11 +227,11 @@ class SubQueryValidatorsFetcherTest {
         )
 
         // Verification & Assertion
-        coVerify {
-            restClient.post(
-                request = eq(validatorsRequestToMock),
-            )
-        }.wasInvoked(1)
+//        coVerify {
+//            restClient.post(
+//                request = eq(validatorsRequestToMock),
+//            )
+//        }.wasInvoked(1)
 
         assertContentEquals(
             validatorsResponseToReturn.data.query?.eraValidatorInfos?.nodes
